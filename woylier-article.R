@@ -19,7 +19,7 @@ library(GGally)
 library(corrplot)
 
 
-## ----splines2d-static, out.width = "100%", fig.height = 4, layout = "l-page", fig.cap="Modified spline index computed on within-plane rotations of the same projection has very different values: (a) original pair has maximum index value of 1.00, (b) axes rotated 45$^o$ drops index value to 0.83, (c) axes rotated 60$^o$ drops index to a very low 0.26. This shows an index that is rotationally variable.", fig.alt = "Three side-by-side scatterplots. The left side plot shows two variables, V5, V6, with a sine curve. The index value is the maximum of 1. The middle plot shows the two variables rotated 45 degrees clock-wise, and the calculated index value is 0.83. The right-side plot is rotated 60 degrees, and the calculated index value is 0.26."----
+## ----splines2d-static, out.width = "100%", fig.width = 9, fig.height = 4.5, layout = "l-body", fig.cap="Modified spline index computed on within-plane rotations of the same projection has very different values: (a) original pair has maximum index value of 1.00, (b) axes rotated 45$^o$ drops index value to 0.83, (c) axes rotated 60$^o$ drops index to a very low 0.26. This shows an index that is rotationally variable.", fig.alt = "Three side-by-side scatterplots. The left side plot shows two variables, V5, V6, with a sine curve. The index value is the maximum of 1. The middle plot shows the two variables rotated 45 degrees clock-wise, and the calculated index value is 0.83. The right-side plot is rotated 60 degrees, and the calculated index value is 0.26."----
 data("sine_curve")
 
 # modified the splines2d
@@ -59,6 +59,7 @@ p1 <- ggplot(mat, aes(x=V5, y=V6)) +
   geom_segment(data=tibble(cnt=c(0,0), V5=c(1,0), V6=c(0,1)), mapping=aes(x=cnt, xend=V5, y=cnt, yend=V6)) +
   geom_text(data=tibble(V5=c(1,0), V6=c(0,1), label=c("V5", "V6")), aes(x=V5, y=V6, label=label)) +
   xlim(c(-1.2, 1.2)) + ylim(c(-1.2, 1.2)) +
+  xlab("Proj 1") + ylab("Proj 2") +
   ggtitle(paste("a. 0 deg: ", mat_idx)) +
   theme_bw() +
   theme(aspect.ratio=1)
@@ -83,7 +84,7 @@ p3 <- ggplot(mat_rot2, aes(x=x, y=y)) +
 p1+p2+p3
 
 
-## ----dogs, echo=FALSE, out.width="50%", fig.align = "center", fig.show='hold', fig.cap="Plane to plane interpolation (left) and Frame to frame interpolation (right). We used dog index for illustration purposes. For some non-linear index orientation of data could affect the index."----
+## ----dogs, echo=FALSE, out.width="45%", fig.align = "center", fig.show='hold', fig.cap="Plane to plane interpolation (left) and Frame to frame interpolation (right). We used dog index for illustration purposes. For some non-linear index orientation of data could affect the index."----
 knitr::include_graphics(
   c("plane.png",
     "frame.png"))
@@ -287,7 +288,7 @@ knitr::include_graphics(
     "geodesic_sine.png"))
 
 
-## ----currency, fig.height = 5, fig.cap="All the currencies are standardised and the sign is flipped. The high value means the currency strengthened against the USD, and low means that it weakened."----
+## ----currency, out.width="100%", fig.width = 9, fig.height = 4.5, layout = "l-body", fig.cap="All the currencies are standardised and the sign is flipped. The high value means the currency strengthened against the USD, and low means that it weakened."----
 rates <- read_csv("rates_Nov19_Mar20.csv", show_col_types = FALSE) %>% 
   select(date, ARS, AUD, EUR, JPY, KRW, MYR) 
 rates_sub <- rates %>%
@@ -296,21 +297,25 @@ rates_sub_long <- rates_sub %>%
   pivot_longer(cols=ARS:MYR, 
                names_to="currency",
                values_to="crossrate") 
-ggplot(rates_sub_long, aes(x=date, y=crossrate, colour=currency)) + geom_line() +
-  scale_colour_viridis_d("")+
-  theme_bw()
+ggplot(rates_sub_long, aes(x=date, y=crossrate, colour=currency)) +
+  geom_line() +
+  scale_colour_brewer("", palette = "Dark2") +
+  theme_bw() +
+  theme(aspect.ratio = 0.3,
+        legend.position = "bottom")
+# saving months for coloring in later
+rate_march <- lubridate::month(rates$date)==3
 
 
-## ----currency-corr, fig.height = 5, fig.cap="After standardisation, these currencies are still highly correlated with each other."----
-corr <- cor(rates[2:7])
-corrplot(corr, type = "upper", order = "hclust", 
-         tl.col = "black", tl.srt = 45)
-
-
-## ----pca-result-static, echo=FALSE, out.width="50%", fig.align = "center", fig.show='hold', include=knitr::is_latex_output(), eval=knitr::is_latex_output(), fig.cap="There is a strong non-linear dependence between PC1 and PC2."----
+## ----pca-result-static, echo=FALSE, out.width="80%", fig.width=8, fig.height=8, fig.align = "center", fig.show='hold', fig.cap="There is a strong non-linear dependence between PC1 and PC2. Observations in March 2020 are highlighted in dark blue, all other months are shown in grey."----
 # Use PCA to remove linear dependence
 rates_pca <- prcomp(rates[,-1], scale. = TRUE)
-pca <- ggscatmat(rates_pca$x)
+pca <- ggscatmat(cbind(tibble::as_tibble(rates_pca$x), rate_march),
+                 color = "rate_march") +
+  scale_color_manual(values = c("grey", "darkblue")) +
+  theme_bw() +
+  theme(aspect.ratio = 1,
+        legend.position = "none")
 pca
 
 
@@ -340,39 +345,78 @@ rates_pca_sd <-  apply(rates_pca$x, 2, function(x) (x-mean(x))/sd(x))
 #>   }
 #> }
 #> 
-#> set.seed(202212)
-#> basis2 <- basis_random(n=4, d = 2)
-#> anim_geo <- save_history(rates_pca_sd[,1:4], tour_path = guided_tour(new_splines2d(), current = basis2))
+#> col_rates <- rep("grey", nrow(rates))
+#> col_rates[rate_march] <- "darkblue"
+#> basis_start <- matrix(rep(0, 8), ncol = 2)
+#> basis_start[3,1] <- 1
+#> basis_start[4,2] <- 1
+#> set.seed(2023)
+#> record_search_geodesic <- animate_pca(rates_pca_sd[,1:4], pc_coefs = rates_pca$rotation[,1:4],
+#>             tour_path = guided_tour(new_splines2d(), current = basis_start),
+#>             col = col_rates)
+#> set.seed(2023)
+#> record_search_givens <- animate_pca(rates_pca_sd[,1:4], pc_coefs = rates_pca$rotation[,1:4],
+#>            tour_path = guided_tour_givens(new_splines2d(),
+#>                                           current = basis_start,
+#>                                           optim = "search_better",
+#>                                           max.tries = 100,
+#>                                           alpha = 1),
+#>            col = col_rates)
+#> set.seed(2023)
+#> record_search_better <-animate_pca(rates_pca_sd[,1:4], pc_coefs = rates_pca$rotation[,1:4],
+#>            tour_path = guided_tour(new_splines2d(),
+#>                                           current = basis_start,
+#>                                           search_f = search_better,
+#>                                           max.tries = 100,
+#>                                           alpha = 1),
+#>            col = col_rates)
+
+
+## ----echo=FALSE, eval=FALSE---------------------------------------------------
+#> library(ferrn)
+#> get_interp(record_search_geodesic) %>%
+#>   ggplot(aes(id, index_val)) +
+#>   geom_line() +
+#>   geom_point(data = dplyr::bind_rows(get_start(record_search_geodesic),
+#>                                      get_interp_last(record_search_geodesic))) +
+#>   ylim(0,1)
 #> 
-#> anim_givens <- save_history(rates_pca_sd[,1:4], tour_path = guided_tour_givens(new_splines2d(), current = basis2, search_f = search_better, max.tries = 100))
 #> 
-#> anim_givens_random <- save_history(rates_pca_sd[,1:4], tour_path = guided_tour_givens(new_splines2d(), current = basis2, search_f = search_better_random, max.tries = 100))
+#> get_interp(record_search_better) %>%
+#>   ggplot(aes(id, index_val)) +
+#>   geom_line() +
+#>   geom_point(data = dplyr::bind_rows(get_start(record_search_better),
+#>                                      get_interp_last(record_search_better))) +
+#>   ylim(0,1)
 #> 
-#> render_gif(rates_pca_sd[,1:4], planned_tour(anim_geo), display = display_xy(), gif_file = "guided_geo.gif", loop = FALSE)
-#> render_gif(rates_pca_sd[,1:4], planned_tour(anim_givens), display = display_xy(), gif_file = "guided_givens.gif", loop = FALSE)
-#> render_gif(rates_pca_sd[,1:4], planned_tour(anim_givens_random), display = display_xy(), gif_file = "guided_givens_random.gif", loop = FALSE)
+#> get_interp(record_search_givens) %>%
+#>   ggplot(aes(id, index_val)) +
+#>   geom_line() +
+#>   geom_point(data = dplyr::bind_rows(get_start(record_search_givens),
+#>                                      get_interp_last(record_search_givens))) +
+#>   ylim(0,1)
 
 
 ## ----guided-geo-dynamic, out.width="50%", fig.align="center", echo = FALSE, fig.height = 3, fig.cap="Guided tour optimization of splines index using geodesic interpolation.", include=knitr::is_html_output(), eval=knitr::is_html_output()----
-#> knitr::include_graphics("guided_geo.gif")
+#> #knitr::include_graphics("guided_geo.gif")
 
 
 ## ----guided-geo-static, out.width="50%", fig.align="center", echo = FALSE, fig.height = 3, fig.cap="Guided tour optimization of splines index using geodesic interpolation.", include=knitr::is_latex_output(), eval=knitr::is_latex_output()----
-knitr::include_graphics("guided_geo.png")
+#knitr::include_graphics("guided_geo.png")
 
 
 ## ----guided-givens-dynamic, out.width="50%", fig.align="center", echo = FALSE, fig.height = 3, fig.cap="Guided tour optimization of splines index using Givens interpolation.", include=knitr::is_html_output(), eval=knitr::is_html_output()----
-#> knitr::include_graphics("guided_givens.gif")
+#> #knitr::include_graphics("guided_givens.gif")
 
 
 ## ----guided-givens-static, out.width="50%", fig.align="center", echo = FALSE, fig.height = 3, fig.cap="Guided tour optimization of modified splines index using Givens interpolation.", include=knitr::is_latex_output(), eval=knitr::is_latex_output()----
-knitr::include_graphics("guided_givens.png")
+#knitr::include_graphics("guided_givens.png")
 
 
 ## ----guided-givens-random-dynamic, out.width="50%", fig.align="center", echo = FALSE, fig.height = 3, fig.cap="Guided tour optimization of modified splines index using Givens interpolation with better optimization.", include=knitr::is_html_output(), eval=knitr::is_html_output()----
-#> knitr::include_graphics("guided_givens_random.gif")
+#> #knitr::include_graphics("guided_givens_random.gif")
 
 
 ## ----guided-givens-random-static, out.width="50%", fig.align="center", echo = FALSE, fig.height = 3, fig.cap="Guided tour optimization of modified splines index using Givens interpolation with better optimization.", include=knitr::is_latex_output(), eval=knitr::is_latex_output()----
-knitr::include_graphics("guided_givens_random.png")
+#knitr::include_graphics("guided_givens_random.png")
 
