@@ -497,7 +497,7 @@ This section describes the application of Givens interpolation path with guided 
 
 We have cross-rates for currencies relative to the US dollar. A cross-rate is an exchange rate between two currencies computed by reference to a third currency, usually the US dollar. 
 
-The data was extracted from [openexchangerates](https://openexchangerates.org) and contains cross-rate for ARS, AUD, EUR, JPY, KRW, MYR between 2019-11-1 to 2020-03-31. Figure `r knitr::asis_output(ifelse(knitr::is_html_output(), '\\@ref(fig:currency)', '\\@ref(fig:currency)'))` shows how the currencies changed relative to USD over the time period. 
+The data was extracted from [openexchangerates](https://openexchangerates.org) and contains cross-rate for ARS, AUD, EUR, JPY, KRW, MYR between 2019-11-1 to 2020-03-31. Figure `r knitr::asis_output(ifelse(knitr::is_html_output(), '\\@ref(fig:currency)', '\\@ref(fig:currency)'))` shows how the currencies changed relative to USD over the time period. We see some collective behavior in March of 2020 with EUR and JPY increasing in a similar manner, and smaller currencies decreasing in value. This could be understood as a consequence of flight-to-quality at this uncertain times.  
 
 ```{r currency, fig.height = 5, fig.cap="All the currencies are standardised and the sign is flipped. The high value means the currency strengthened against the USD, and low means that it weakened."}
 rates <- read_csv("rates_Nov19_Mar20.csv", show_col_types = FALSE) %>% 
@@ -508,27 +508,29 @@ rates_sub_long <- rates_sub %>%
   pivot_longer(cols=ARS:MYR, 
                names_to="currency",
                values_to="crossrate") 
-ggplot(rates_sub_long, aes(x=date, y=crossrate, colour=currency)) + geom_line() +
-  scale_colour_viridis_d("")+
-  theme_bw()
+ggplot(rates_sub_long, aes(x=date, y=crossrate, colour=currency)) +
+  geom_line() +
+  scale_colour_brewer("", palette = "Dark2") +
+  theme_bw() +
+  theme(aspect.ratio = 0.3)
+# saving months for coloring in later
+rate_march <- lubridate::month(rates$date)==3
 ```
 
-Figure `r knitr::asis_output(ifelse(knitr::is_html_output(), '\\@ref(fig:currency-corr)', '\\@ref(fig:currency-corr)'))` visualises the correlation matrix of dataset. We can see that these currencies are highly correlated with each other. 
-
-```{r currency-corr, fig.height = 5, fig.cap="After standardisation, these currencies are still highly correlated with each other."}
-corr <- cor(rates[2:7])
-corrplot(corr, type = "upper", order = "hclust", 
-         tl.col = "black", tl.srt = 45)
-```
+We are interested in capturing this relations over time, and from the time series visualization we expect that we can capture the main dynamics in a two-dimensional projection from the six-dimensional space of currencies. Thus we start from $p=6$ (the different currencies) and $n=152$ the number of days in our sample. We expect that a projection onto $d=2$ dimensions should capture the relation between the two groups of currencies mentioned above, and this should be identified within the noise of the random fluctuations.
 
 **PCA result**
 
-Since our goal is to explore non-linear association in the dataset, we will use the principal components of the currency rates rather than original rates. Figure `r knitr::asis_output(ifelse(knitr::is_html_output(), '\\@ref(fig:pca-result)', '\\@ref(fig:pca-result)'))` shows scatter plot matrix of PCs of our dataset. The PC1 and PC2 has strong non-linear association.  
+Since the collective behavior observed in March 2020 clearly stands out in the time series display, we may expect that we can capture the dependence between the two groups using principal components analysis. Figure `r knitr::asis_output(ifelse(knitr::is_html_output(), '\\@ref(fig:pca-result)', '\\@ref(fig:pca-result)'))` shows a scatter plot matrix of the PCs of our dataset. Indeed we find strong non-linear association between the first two PCs. Investigation of the rotation shows that the first principal component is primarily a balanced combination between ARS, AUD, KRW and MYR (and a smaller contribution of EUR), and the second contribution is dominated by EUR and JPY contrasted with smaller contributions from ARS and MYR. Our next step is thus to use projection pursuit to identify the best projection matrix that captures the non-linear functional dependence.
 
-```{r pca-result-static, echo=FALSE, out.width="50%", fig.align = "center", fig.show='hold', include=knitr::is_latex_output(), eval=knitr::is_latex_output(), fig.cap="There is a strong non-linear dependence between PC1 and PC2."}
+```{r pca-result-static, echo=FALSE, out.width="50%", fig.align = "center", fig.show='hold', include=knitr::is_latex_output(), eval=knitr::is_latex_output(), fig.cap="There is a strong non-linear dependence between PC1 and PC2. Observations in March 2020 are highlighted in dark blue, all other months are shown in grey."}
 # Use PCA to remove linear dependence
 rates_pca <- prcomp(rates[,-1], scale. = TRUE)
-pca <- ggscatmat(rates_pca$x)
+pca <- ggscatmat(cbind(tibble::as_tibble(rates_pca$x), rate_march),
+                 color = "rate_march") +
+  scale_color_manual(values = c("grey", "darkblue")) +
+  theme_bw() +
+  theme(legend.position = "none")
 pca
 ```
 
@@ -540,6 +542,8 @@ pca
 ```
 
 **New splines2d index**
+
+We now use the splines index to identify a projection with functional dependence between the first and second direction of the projection. Note here that because of strong linear correlations between the currencies, we start from the first five principal components, explaining over 99% of the variance in the data. We start the optimization from a random projection to avoid starting from the view previously identified in the first two principal components, and we use the PCA display in `tourr` to show the projection in terms of the original variables.
 
 ```{r}
 rates_pca_sd <-  apply(rates_pca$x, 2, function(x) (x-mean(x))/sd(x))
@@ -560,21 +564,67 @@ new_splines2d <- function ()
   }
 }
 
-set.seed(202212)
-basis2 <- basis_random(n=4, d = 2)
-anim_geo <- save_history(rates_pca_sd[,1:4], tour_path = guided_tour(new_splines2d(), current = basis2))
-
-anim_givens <- save_history(rates_pca_sd[,1:4], tour_path = guided_tour_givens(new_splines2d(), current = basis2, search_f = search_better, max.tries = 100))
-
-anim_givens_random <- save_history(rates_pca_sd[,1:4], tour_path = guided_tour_givens(new_splines2d(), current = basis2, search_f = search_better_random, max.tries = 100))
-
-render_gif(rates_pca_sd[,1:4], planned_tour(anim_geo), display = display_xy(), gif_file = "guided_geo.gif", loop = FALSE)
-render_gif(rates_pca_sd[,1:4], planned_tour(anim_givens), display = display_xy(), gif_file = "guided_givens.gif", loop = FALSE)
-render_gif(rates_pca_sd[,1:4], planned_tour(anim_givens_random), display = display_xy(), gif_file = "guided_givens_random.gif", loop = FALSE)
+col_rates <- rep("grey", nrow(rates))
+col_rates[rate_march] <- "darkblue"
+basis_start <- matrix(rep(0, 8), ncol = 2)
+basis_start[3,1] <- 1
+basis_start[4,2] <- 1
+set.seed(2023)
+record_search_geodesic <- animate_pca(rates_pca_sd[,1:4], pc_coefs = rates_pca$rotation[,1:4],
+            tour_path = guided_tour(new_splines2d(), current = basis_start),
+            col = col_rates)
+set.seed(2023)
+record_search_givens <- animate_pca(rates_pca_sd[,1:4], pc_coefs = rates_pca$rotation[,1:4],
+           tour_path = guided_tour_givens(new_splines2d(),
+                                          current = basis_start,
+                                          optim = "search_better",
+                                          max.tries = 100,
+                                          alpha = 1),
+           col = col_rates)
+set.seed(2023)
+record_search_better <-animate_pca(rates_pca_sd[,1:4], pc_coefs = rates_pca$rotation[,1:4],
+           tour_path = guided_tour(new_splines2d(),
+                                          current = basis_start,
+                                          search_f = search_better,
+                                          max.tries = 100,
+                                          alpha = 1),
+           col = col_rates)
 ```
 
+```{r echo=FALSE, eval=FALSE}
+library(ferrn)
+get_interp(record_search_geodesic) %>%
+  ggplot(aes(id, index_val)) +
+  geom_line() +
+  geom_point(data = dplyr::bind_rows(get_start(record_search_geodesic),
+                                     get_interp_last(record_search_geodesic))) +
+  ylim(0,1)
+
+             
+get_interp(record_search_better) %>%
+  ggplot(aes(id, index_val)) +
+  geom_line() +
+  geom_point(data = dplyr::bind_rows(get_start(record_search_better),
+                                     get_interp_last(record_search_better))) +
+  ylim(0,1)          
+
+get_interp(record_search_givens) %>%
+  ggplot(aes(id, index_val)) +
+  geom_line() +
+  geom_point(data = dplyr::bind_rows(get_start(record_search_givens),
+                                     get_interp_last(record_search_givens))) +
+  ylim(0,1)
+```
+
+What do we learn from looking at the traces?
+
+- geodesic search does not have problem from rotation dependent index because it is searching along geodesic path, so everything is consistent, but it can get stuck and cannot jump to better solutions
+- instead we might want to use random search (simulated annealing), but here we have huge problems from the rotation dependence of the index - even though this search should only accept target planes with higher index values we get big drops just because of the change in index value after rotation, the search path is very long and cannot find a good optimum
+- using givens interpolation with the random search can fix these issues, we can step across valleys with lower index values but each target plane is increasing the index value, we do not need to restart the search - even with longer interpolations from the within-plane rotation this search is much more efficient (shorter path), the final index value in our run is above what the random search with geodesic interpolation has found, the final view is certainly more interesting
+
+
 ```{r guided-geo-dynamic, out.width="50%", fig.align="center", echo = FALSE, fig.height = 3, fig.cap="Guided tour optimization of splines index using geodesic interpolation.", include=knitr::is_html_output(), eval=knitr::is_html_output()}
-knitr::include_graphics("guided_geo.gif")
+#knitr::include_graphics("guided_geo.gif")
 ```
 
 Value  0.826   0.0 % better 
@@ -586,12 +636,14 @@ Final projection:
 -0.333  -0.394  
 
 ```{r guided-geo-static, out.width="50%", fig.align="center", echo = FALSE, fig.height = 3, fig.cap="Guided tour optimization of splines index using geodesic interpolation.", include=knitr::is_latex_output(), eval=knitr::is_latex_output()}
-knitr::include_graphics("guided_geo.png")
+#knitr::include_graphics("guided_geo.png")
 ```
 
 
+
+
 ```{r guided-givens-dynamic, out.width="50%", fig.align="center", echo = FALSE, fig.height = 3, fig.cap="Guided tour optimization of splines index using Givens interpolation.", include=knitr::is_html_output(), eval=knitr::is_html_output()}
-knitr::include_graphics("guided_givens.gif")
+#knitr::include_graphics("guided_givens.gif")
 ```
 
 Value  0.842   0.0 % better 
@@ -603,11 +655,11 @@ Final projection:
 0.312  -0.442  
 
 ```{r guided-givens-static, out.width="50%", fig.align="center", echo = FALSE, fig.height = 3, fig.cap="Guided tour optimization of modified splines index using Givens interpolation.", include=knitr::is_latex_output(), eval=knitr::is_latex_output()}
-knitr::include_graphics("guided_givens.png")
+#knitr::include_graphics("guided_givens.png")
 ```
 
 ```{r guided-givens-random-dynamic, out.width="50%", fig.align="center", echo = FALSE, fig.height = 3, fig.cap="Guided tour optimization of modified splines index using Givens interpolation with better optimization.", include=knitr::is_html_output(), eval=knitr::is_html_output()}
-knitr::include_graphics("guided_givens_random.gif")
+#knitr::include_graphics("guided_givens_random.gif")
 ```
 
 Value  0.785   0.0 % better 
@@ -619,7 +671,7 @@ Final projection:
 -0.350  0.399  
 
 ```{r guided-givens-random-static, out.width="50%", fig.align="center", echo = FALSE, fig.height = 3, fig.cap="Guided tour optimization of modified splines index using Givens interpolation with better optimization.", include=knitr::is_latex_output(), eval=knitr::is_latex_output()}
-knitr::include_graphics("guided_givens_random.png")
+#knitr::include_graphics("guided_givens_random.png")
 ```
 
 
