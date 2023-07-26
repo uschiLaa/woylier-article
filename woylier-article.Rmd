@@ -549,7 +549,7 @@ pca
 
 **New splines2d index**
 
-We now use the splines index to identify a projection with functional dependence between the first and second direction of the projection. Note here that because of strong linear correlations between the currencies, we start from the first five principal components, explaining over 99% of the variance in the data. We start the optimization from a random projection to avoid starting from the view previously identified in the first two principal components, and we use the PCA display in `tourr` to show the projection in terms of the original variables.
+We now use the splines index to identify a projection with functional dependence between the first and second direction of the projection. Note here that because of strong linear correlations between the currencies, we start from the first four principal components, explaining over 99% of the variance in the data. To avoid starting from the view already identified in the first two principal components we start from a projections onto the third and forth principal components. The PCA display in `tourr` to show the projection in terms of the original variables while only touring within the smaller space spanned by the first four principal components.
 
 ```{r}
 rates_pca_sd <-  apply(rates_pca$x, 2, function(x) (x-mean(x))/sd(x))
@@ -557,6 +557,7 @@ rates_pca_sd <-  apply(rates_pca$x, 2, function(x) (x-mean(x))/sd(x))
 
 ```{r echo = FALSE, eval=FALSE}
 # modified the splines2d
+# same as defined above, but keeping this block self-contained
 new_splines2d <- function ()
 {
   function(mat) {
@@ -569,7 +570,7 @@ new_splines2d <- function ()
     return(measure)
   }
 }
-
+library(tourr)
 col_rates <- rep("grey", nrow(rates))
 col_rates[rate_march] <- "darkblue"
 basis_start <- matrix(rep(0, 8), ncol = 2)
@@ -595,31 +596,85 @@ record_search_better <-animate_pca(rates_pca_sd[,1:4], pc_coefs = rates_pca$rota
                                           max.tries = 100,
                                           alpha = 1),
            col = col_rates)
+save(record_search_better, record_search_geodesic, record_search_givens,
+     file = "rates_tour_records.RData")
 ```
 
-```{r echo=FALSE, eval=FALSE}
+```{r echo = FALSE, eval=FALSE}
+# generating gifs for the three guided tours
+load("rates_tour_records.RData")
 library(ferrn)
-get_interp(record_search_geodesic) %>%
+path_geodesic <- get_interp(record_search_geodesic)$basis
+path_better <- get_interp(record_search_better)$basis
+path_givens <- get_interp(record_search_givens)$basis
+
+col_rates <- rep("grey", nrow(rates))
+col_rates[rate_march] <- "darkblue"
+# it seems this is using smaller interpolation steps so we set frames to
+# some high number to make sure we capture the full path
+tourr::render_gif(rates_pca_sd[,1:4],
+                  display = display_pca(col = col_rates,
+                                        pc_coefs = rates_pca$rotation[,1:4]),
+                  tour_path = planned_tour(path_geodesic),
+                  "rates_tour_geodesic.gif", frames = 500)
+
+tourr::render_gif(rates_pca_sd[,1:4],
+                  display = display_pca(col = col_rates,
+                                        pc_coefs = rates_pca$rotation[,1:4]),
+                  tour_path = planned_tour_givens(path_givens),
+                  "rates_tour_givens.gif", frames = 500)
+
+tourr::render_gif(rates_pca_sd[,1:4],
+                  display = display_pca(col = col_rates,
+                                        pc_coefs = rates_pca$rotation[,1:4]),
+                  tour_path = planned_tour(path_better),
+                  "rates_tour_better.gif", frames = 1000)
+
+```
+
+```{r compare-rates-guided, echo=FALSE, out.width="30%", fig.align = "center", fig.show='hold', include=knitr::is_html_output(), eval=knitr::is_html_output(), fig.cap="Optimisation in the guided tour using geodesic optimization (left), simulated annealing with geodesic interpolation (middle) and simulated annealign with givens interpolation (right)"}
+knitr::include_graphics(
+  c("rates_tour_geodesic.gif",
+    "rates_tour_better.gif",
+    "rates_tour_givens.gif"))
+```
+
+```{r echo=FALSE, eval=TRUE}
+load("rates_tour_records.RData")
+library(ferrn)
+p1 <- get_interp(record_search_geodesic) %>%
   ggplot(aes(id, index_val)) +
   geom_line() +
   geom_point(data = dplyr::bind_rows(get_start(record_search_geodesic),
                                      get_interp_last(record_search_geodesic))) +
-  ylim(0,1)
+  ylim(0,1) +
+  xlab(NULL) +
+  ylab(NULL) +
+  theme_bw()
 
              
-get_interp(record_search_better) %>%
+p2 <- get_interp(record_search_better) %>%
   ggplot(aes(id, index_val)) +
   geom_line() +
   geom_point(data = dplyr::bind_rows(get_start(record_search_better),
                                      get_interp_last(record_search_better))) +
-  ylim(0,1)          
+  ylim(0,1)+
+  xlab(NULL) +
+  ylab("Index value") +
+  theme_bw() 
+          
 
-get_interp(record_search_givens) %>%
+p3 <- get_interp(record_search_givens) %>%
   ggplot(aes(id, index_val)) +
   geom_line() +
   geom_point(data = dplyr::bind_rows(get_start(record_search_givens),
                                      get_interp_last(record_search_givens))) +
-  ylim(0,1)
+  ylim(0,1)+
+  xlab("Interpolation step") +
+  ylab(NULL) +
+  theme_bw() 
+
+gridExtra::grid.arrange(p1, p2, p3, ncol = 1)
 ```
 
 What do we learn from looking at the traces?
@@ -633,13 +688,6 @@ What do we learn from looking at the traces?
 #knitr::include_graphics("guided_geo.gif")
 ```
 
-Value  0.826   0.0 % better 
-No better bases found after 25 tries.  Giving up.
-Final projection: 
-0.855  -0.231  
--0.294  0.465  
-0.268  0.758  
--0.333  -0.394  
 
 ```{r guided-geo-static, out.width="50%", fig.align="center", echo = FALSE, fig.height = 3, fig.cap="Guided tour optimization of splines index using geodesic interpolation.", include=knitr::is_latex_output(), eval=knitr::is_latex_output()}
 #knitr::include_graphics("guided_geo.png")
@@ -652,13 +700,7 @@ Final projection:
 #knitr::include_graphics("guided_givens.gif")
 ```
 
-Value  0.842   0.0 % better 
-No better bases found after 100 tries.  Giving up.
-Final projection: 
--0.847  -0.055  
-0.399  0.527  
--0.164  0.723  
-0.312  -0.442  
+
 
 ```{r guided-givens-static, out.width="50%", fig.align="center", echo = FALSE, fig.height = 3, fig.cap="Guided tour optimization of modified splines index using Givens interpolation.", include=knitr::is_latex_output(), eval=knitr::is_latex_output()}
 #knitr::include_graphics("guided_givens.png")
@@ -668,20 +710,12 @@ Final projection:
 #knitr::include_graphics("guided_givens_random.gif")
 ```
 
-Value  0.785   0.0 % better 
-No better bases found after 100 tries.  Giving up.
-Final projection: 
-0.835  0.305  
--0.269  -0.462  
-0.328  -0.730  
--0.350  0.399  
+
 
 ```{r guided-givens-random-static, out.width="50%", fig.align="center", echo = FALSE, fig.height = 3, fig.cap="Guided tour optimization of modified splines index using Givens interpolation with better optimization.", include=knitr::is_latex_output(), eval=knitr::is_latex_output()}
 #knitr::include_graphics("guided_givens_random.png")
 ```
 
-
-Conclusions from above
 
 # Conclusion
 
