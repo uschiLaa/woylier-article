@@ -379,29 +379,49 @@ set.seed(2022)
 p <- 6
 n <- 5000
 d <- 2
-base1 <- tourr::basis_random(p, d=2)
+base1 <- tourr::basis_random(p, d=2) # this is start 1
 base2 <- tourr::basis_random(p, d=2)
+start2 <- tourr::basis_random(p, d=2)
+start3 <- tourr::basis_random(p, d=2)
 frames_2d <- givens_full_path(base1, base2, 100)
+frames_2d_2 <- givens_full_path(start2, base2, 100)
+frames_2d_3 <- givens_full_path(start3, base2, 100)
 proj_2d <- map(1:n, ~basis_random(n = p,  d=d)) %>%
   purrr::flatten_dbl() %>% 
   matrix(ncol = p*2, byrow = TRUE) %>%
   as_tibble()
-path_2d <- t(apply(frames_2d, 3, c)) %>% 
-  as.data.frame() %>% 
+path_2d <- rbind(as.data.frame(t(as.vector(base1))),
+                 as.data.frame(t(apply(frames_2d, 3, c))),
+                 as.data.frame(t(as.vector(start2))),
+                 as.data.frame(t(apply(frames_2d_2, 3, c))),
+                 as.data.frame(t(as.vector(start3))),
+                 as.data.frame(t(apply(frames_2d_3, 3, c)))) %>%
+#<- t(apply(frames_2d, 3, c)) %>% 
+  #as.data.frame() %>% 
   mutate(type="givens")
 proj_2d <- proj_2d %>% 
   mutate(type="torus")
 pt_geo <- save_history(flea[, 1:p], planned_tour(list(base1, base2)))
 int_geo <- interpolate(pt_geo)
-path_geo <- t(apply(int_geo, 3, c)) %>% 
-  as.data.frame() %>% 
+pt_geo_2 <- save_history(flea[, 1:p], planned_tour(list(start2, base2)))
+int_geo_2 <- interpolate(pt_geo_2)
+pt_geo_3 <- save_history(flea[, 1:p], planned_tour(list(start3, base2)))
+int_geo_3 <- interpolate(pt_geo_3)
+path_geo <- rbind(as.data.frame(t(apply(int_geo, 3, c))),
+                  as.data.frame(t(apply(int_geo_2, 3, c))),
+                  as.data.frame(t(apply(int_geo_3, 3, c)))) %>%
+  #t(apply(int_geo, 3, c)) %>% 
+  #as.data.frame() %>% 
   mutate(type="geodesic")
 
-base2_rot <- matrix(ncol = 12, nrow = 201)
+base2_rot <- matrix(ncol = 12, nrow = 2*201)
 i <- 1
 for (a in seq(0,2*pi, pi/100)){
     rotM <- matrix(c(cos(a), sin(a), -sin(a), cos(a)), ncol = 2)
     dprj <- base2 %*% rotM
+    base2_rot[i,] <- as.vector(dprj)
+    i <- i+1
+    dprj <- base2[,c(2,1)] %*% rotM
     base2_rot[i,] <- as.vector(dprj)
     i <- i+1
 }
