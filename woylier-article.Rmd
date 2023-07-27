@@ -377,11 +377,11 @@ knitr::include_graphics("torus_static.png")
 # trying with more information in one animation
 set.seed(2022)
 p <- 6
-n <- 1500
+n <- 5000
 d <- 2
 base1 <- tourr::basis_random(p, d=2)
 base2 <- tourr::basis_random(p, d=2)
-frames_2d <- givens_full_path(base1, base2, 10)
+frames_2d <- givens_full_path(base1, base2, 100)
 proj_2d <- map(1:n, ~basis_random(n = p,  d=d)) %>%
   purrr::flatten_dbl() %>% 
   matrix(ncol = p*2, byrow = TRUE) %>%
@@ -391,7 +391,7 @@ path_2d <- t(apply(frames_2d, 3, c)) %>%
   mutate(type="givens")
 proj_2d <- proj_2d %>% 
   mutate(type="torus")
-pt_geo <- save_history(flea[, 1:6], planned_tour(list(base1, base2)))
+pt_geo <- save_history(flea[, 1:p], planned_tour(list(base1, base2)))
 int_geo <- interpolate(pt_geo)
 path_geo <- t(apply(int_geo, 3, c)) %>% 
   as.data.frame() %>% 
@@ -406,17 +406,13 @@ for (a in seq(0,2*pi, pi/100)){
     i <- i+1
 }
 rot_base2 <- as.data.frame(base2_rot) %>% 
-  mutate(type="rotated target")
+  mutate(type="target")
 proj_path <- bind_rows(proj_2d, path_2d, path_geo, rot_base2)
-p1 <- mutate(proj_path[,c(1:6, 13)], proj = 1)
-p2 <- mutate(proj_path[,c(7:12, 13)], proj = 2)
-colnames(p2) <- c(paste0("V", 1:6), "type", "proj")
-proj_path <- rbind(p1, p2)
 proj_path$type <- factor(proj_path$type, levels=c("torus", "target",
                                                "givens", "geodesic"))
-proj_path <- arrange(proj_path, desc(type))
-animate_xy(proj_path[,1:6], col=proj_path$type, palette="Teal-Rose", 
-           cex=c(rep(0.5, 2*n), rep(1, nrow(proj_path)-2*n)),
+proj_path <- arrange(proj_path, type)
+animate_xy(proj_path[,1:12], col=proj_path$type, palette="Teal-Rose", 
+           cex=c(rep(0.5, n), rep(1, nrow(proj_path)-n)),
                  axes="off")
 
 ```
