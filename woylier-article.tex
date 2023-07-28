@@ -423,7 +423,9 @@ shows a scatter plot matrix of the PCs of our dataset. Indeed we find strong non
 
 \textbf{New splines2d index}
 
-We now use the splines index to identify a projection with functional dependence between the first and second direction of the projection. Note here that because of strong linear correlations between the currencies, we start from the first five principal components, explaining over 99\% of the variance in the data. We start the optimization from a random projection to avoid starting from the view previously identified in the first two principal components, and we use the PCA display in \texttt{tourr} to show the projection in terms of the original variables.
+We now use the splines index to identify a projection with functional dependence between the first and second direction of the projection. Note here that because of strong linear correlations between the currencies, we start from the first four principal components, explaining over 99\% of the variance in the data. To avoid starting from the view already identified in the first two principal components we start from a projections onto the third and forth principal components. The PCA display in \texttt{tourr} to show the projection in terms of the original variables while only touring within the smaller space spanned by the first four principal components.
+
+\includegraphics{woylier-article_files/figure-latex/unnamed-chunk-11-1.pdf}
 
 What do we learn from looking at the traces?
 
@@ -436,32 +438,6 @@ What do we learn from looking at the traces?
 \item
   using givens interpolation with the random search can fix these issues, we can step across valleys with lower index values but each target plane is increasing the index value, we do not need to restart the search - even with longer interpolations from the within-plane rotation this search is much more efficient (shorter path), the final index value in our run is above what the random search with geodesic interpolation has found, the final view is certainly more interesting
 \end{itemize}
-
-Value 0.826 0.0 \% better
-No better bases found after 25 tries. Giving up.
-Final projection:
-0.855 -0.231\\
--0.294 0.465\\
-0.268 0.758\\
--0.333 -0.394
-
-Value 0.842 0.0 \% better
-No better bases found after 100 tries. Giving up.
-Final projection:
--0.847 -0.055\\
-0.399 0.527\\
--0.164 0.723\\
-0.312 -0.442
-
-Value 0.785 0.0 \% better
-No better bases found after 100 tries. Giving up.
-Final projection:
-0.835 0.305\\
--0.269 -0.462\\
-0.328 -0.730\\
--0.350 0.399
-
-Conclusions from above
 
 \hypertarget{conclusion}{%
 \section{Conclusion}\label{conclusion}}

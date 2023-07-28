@@ -177,6 +177,70 @@ knitr::include_graphics("torus_static.png")
 
 
 ## ----echo = FALSE, eval=FALSE-------------------------------------------------
+#> # trying with more information in one animation
+#> set.seed(2022)
+#> p <- 6
+#> n <- 5000
+#> d <- 2
+#> base1 <- tourr::basis_random(p, d=2) # this is start 1
+#> base2 <- tourr::basis_random(p, d=2)
+#> start2 <- tourr::basis_random(p, d=2)
+#> start3 <- tourr::basis_random(p, d=2)
+#> frames_2d <- givens_full_path(base1, base2, 100)
+#> frames_2d_2 <- givens_full_path(start2, base2, 100)
+#> frames_2d_3 <- givens_full_path(start3, base2, 100)
+#> proj_2d <- map(1:n, ~basis_random(n = p,  d=d)) %>%
+#>   purrr::flatten_dbl() %>%
+#>   matrix(ncol = p*2, byrow = TRUE) %>%
+#>   as_tibble()
+#> path_2d <- rbind(as.data.frame(t(as.vector(base1))),
+#>                  as.data.frame(t(apply(frames_2d, 3, c))),
+#>                  as.data.frame(t(as.vector(start2))),
+#>                  as.data.frame(t(apply(frames_2d_2, 3, c))),
+#>                  as.data.frame(t(as.vector(start3))),
+#>                  as.data.frame(t(apply(frames_2d_3, 3, c)))) %>%
+#> #<- t(apply(frames_2d, 3, c)) %>%
+#>   #as.data.frame() %>%
+#>   mutate(type="givens")
+#> proj_2d <- proj_2d %>%
+#>   mutate(type="torus")
+#> pt_geo <- save_history(flea[, 1:p], planned_tour(list(base1, base2)))
+#> int_geo <- interpolate(pt_geo)
+#> pt_geo_2 <- save_history(flea[, 1:p], planned_tour(list(start2, base2)))
+#> int_geo_2 <- interpolate(pt_geo_2)
+#> pt_geo_3 <- save_history(flea[, 1:p], planned_tour(list(start3, base2)))
+#> int_geo_3 <- interpolate(pt_geo_3)
+#> path_geo <- rbind(as.data.frame(t(apply(int_geo, 3, c))),
+#>                   as.data.frame(t(apply(int_geo_2, 3, c))),
+#>                   as.data.frame(t(apply(int_geo_3, 3, c)))) %>%
+#>   #t(apply(int_geo, 3, c)) %>%
+#>   #as.data.frame() %>%
+#>   mutate(type="geodesic")
+#> 
+#> base2_rot <- matrix(ncol = 12, nrow = 2*201)
+#> i <- 1
+#> for (a in seq(0,2*pi, pi/100)){
+#>     rotM <- matrix(c(cos(a), sin(a), -sin(a), cos(a)), ncol = 2)
+#>     dprj <- base2 %*% rotM
+#>     base2_rot[i,] <- as.vector(dprj)
+#>     i <- i+1
+#>     dprj <- base2[,c(2,1)] %*% rotM
+#>     base2_rot[i,] <- as.vector(dprj)
+#>     i <- i+1
+#> }
+#> rot_base2 <- as.data.frame(base2_rot) %>%
+#>   mutate(type="target")
+#> proj_path <- bind_rows(proj_2d, path_2d, path_geo, rot_base2)
+#> proj_path$type <- factor(proj_path$type, levels=c("torus", "target",
+#>                                                "givens", "geodesic"))
+#> proj_path <- arrange(proj_path, type)
+#> animate_xy(proj_path[,1:12], col=proj_path$type, palette="Teal-Rose",
+#>            cex=c(rep(0.5, n), rep(1, nrow(proj_path)-n)),
+#>                  axes="off")
+#> 
+
+
+## ----echo = FALSE, eval=FALSE-------------------------------------------------
 #> # Generate a sample interpolation
 #> set.seed(5543)
 #> base1 <- tourr::orthonormalise(tourr::basis_random(6, d=2))
@@ -219,7 +283,7 @@ knitr::include_graphics("torus_static.png")
 #>   theme(aspect.ratio=1,
 #>         plot.background = element_rect(fill=NULL, colour = "black"))
 #> 
-#> animate(sine_anim, fps=8, renderer = gifski_renderer(loop = TRUE), width=400, height=400)
+#> animate(sine_anim, fps=8, renderer = gifski_renderer(loop = FALSE), width=400, height=400)
 #> anim_save("sine_anim_givens.gif")
 
 
@@ -272,7 +336,7 @@ knitr::include_graphics("torus_static.png")
 #>   theme(aspect.ratio=1,
 #>         plot.background = element_rect(fill=NULL, colour = "black"))
 #> 
-#> animate(sine_anim, fps=8, renderer = gifski_renderer(loop = TRUE), width=400, height=400)
+#> animate(sine_anim, fps=8, renderer = gifski_renderer(loop = FALSE), width=400, height=400)
 #> anim_save("sine_anim_geodesic.gif")
 
 
@@ -332,6 +396,7 @@ rates_pca_sd <-  apply(rates_pca$x, 2, function(x) (x-mean(x))/sd(x))
 
 ## ----echo = FALSE, eval=FALSE-------------------------------------------------
 #> # modified the splines2d
+#> # same as defined above, but keeping this block self-contained
 #> new_splines2d <- function ()
 #> {
 #>   function(mat) {
@@ -344,7 +409,7 @@ rates_pca_sd <-  apply(rates_pca$x, 2, function(x) (x-mean(x))/sd(x))
 #>     return(measure)
 #>   }
 #> }
-#> 
+#> library(tourr)
 #> col_rates <- rep("grey", nrow(rates))
 #> col_rates[rate_march] <- "darkblue"
 #> basis_start <- matrix(rep(0, 8), ncol = 2)
@@ -370,31 +435,88 @@ rates_pca_sd <-  apply(rates_pca$x, 2, function(x) (x-mean(x))/sd(x))
 #>                                           max.tries = 100,
 #>                                           alpha = 1),
 #>            col = col_rates)
+#> save(record_search_better, record_search_geodesic, record_search_givens,
+#>      file = "rates_tour_records.RData")
 
 
-## ----echo=FALSE, eval=FALSE---------------------------------------------------
+## ----echo = FALSE, eval=FALSE-------------------------------------------------
+#> # generating gifs for the three guided tours
+#> load("rates_tour_records.RData")
 #> library(ferrn)
-#> get_interp(record_search_geodesic) %>%
-#>   ggplot(aes(id, index_val)) +
-#>   geom_line() +
-#>   geom_point(data = dplyr::bind_rows(get_start(record_search_geodesic),
-#>                                      get_interp_last(record_search_geodesic))) +
-#>   ylim(0,1)
+#> path_geodesic <- get_interp(record_search_geodesic)$basis
+#> path_better <- get_interp(record_search_better)$basis
+#> path_givens <- get_interp(record_search_givens)$basis
 #> 
+#> col_rates <- rep("grey", nrow(rates))
+#> col_rates[rate_march] <- "darkblue"
+#> # it seems this is using smaller interpolation steps so we set frames to
+#> # some high number to make sure we capture the full path
+#> tourr::render_gif(rates_pca_sd[,1:4],
+#>                   display = display_pca(col = col_rates,
+#>                                         pc_coefs = rates_pca$rotation[,1:4]),
+#>                   tour_path = planned_tour(path_geodesic),
+#>                   "rates_tour_geodesic.gif", frames = 500,
+#>                   loop = FALSE, width=200, height=200)
 #> 
-#> get_interp(record_search_better) %>%
-#>   ggplot(aes(id, index_val)) +
-#>   geom_line() +
-#>   geom_point(data = dplyr::bind_rows(get_start(record_search_better),
-#>                                      get_interp_last(record_search_better))) +
-#>   ylim(0,1)
+#> tourr::render_gif(rates_pca_sd[,1:4],
+#>                   display = display_pca(col = col_rates,
+#>                                         pc_coefs = rates_pca$rotation[,1:4]),
+#>                   tour_path = planned_tour_givens(path_givens),
+#>                   "rates_tour_givens.gif", frames = 500,
+#>                   loop = FALSE, width=200, height=200)
 #> 
-#> get_interp(record_search_givens) %>%
-#>   ggplot(aes(id, index_val)) +
-#>   geom_line() +
-#>   geom_point(data = dplyr::bind_rows(get_start(record_search_givens),
-#>                                      get_interp_last(record_search_givens))) +
-#>   ylim(0,1)
+#> tourr::render_gif(rates_pca_sd[,1:4],
+#>                   display = display_pca(col = col_rates,
+#>                                         pc_coefs = rates_pca$rotation[,1:4]),
+#>                   tour_path = planned_tour(path_better),
+#>                   "rates_tour_better.gif", frames = 1000,
+#>                   loop = FALSE, width=200, height=200)
+#> 
+
+
+## ----compare-rates-guided, echo=FALSE, out.width="30%", fig.align = "center", fig.show='hold', include=knitr::is_html_output(), eval=knitr::is_html_output(), fig.cap="Optimisation in the guided tour using geodesic optimization (left), simulated annealing with geodesic interpolation (middle) and simulated annealign with givens interpolation (right)"----
+#> knitr::include_graphics(
+#>   c("rates_tour_geodesic.gif",
+#>     "rates_tour_better.gif",
+#>     "rates_tour_givens.gif"))
+
+
+## ----echo=FALSE, eval=TRUE----------------------------------------------------
+load("rates_tour_records.RData")
+library(ferrn)
+p1 <- get_interp(record_search_geodesic) %>%
+  ggplot(aes(id, index_val)) +
+  geom_line() +
+  geom_point(data = dplyr::bind_rows(get_start(record_search_geodesic),
+                                     get_interp_last(record_search_geodesic))) +
+  ylim(0,1) +
+  xlab(NULL) +
+  ylab(NULL) +
+  theme_bw()
+
+             
+p2 <- get_interp(record_search_better) %>%
+  ggplot(aes(id, index_val)) +
+  geom_line() +
+  geom_point(data = dplyr::bind_rows(get_start(record_search_better),
+                                     get_interp_last(record_search_better))) +
+  ylim(0,1)+
+  xlab(NULL) +
+  ylab("Index value") +
+  theme_bw() 
+          
+
+p3 <- get_interp(record_search_givens) %>%
+  ggplot(aes(id, index_val)) +
+  geom_line() +
+  geom_point(data = dplyr::bind_rows(get_start(record_search_givens),
+                                     get_interp_last(record_search_givens))) +
+  ylim(0,1)+
+  xlab("Interpolation step") +
+  ylab(NULL) +
+  theme_bw() 
+
+gridExtra::grid.arrange(p1, p2, p3, ncol = 1)
 
 
 ## ----guided-geo-dynamic, out.width="50%", fig.align="center", echo = FALSE, fig.height = 3, fig.cap="Guided tour optimization of splines index using geodesic interpolation.", include=knitr::is_html_output(), eval=knitr::is_html_output()----

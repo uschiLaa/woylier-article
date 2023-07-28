@@ -486,7 +486,7 @@ sine_anim <- ggplot() +
   theme(aspect.ratio=1,
         plot.background = element_rect(fill=NULL, colour = "black"))
 
-animate(sine_anim, fps=8, renderer = gifski_renderer(loop = TRUE), width=400, height=400)
+animate(sine_anim, fps=8, renderer = gifski_renderer(loop = FALSE), width=400, height=400)
 anim_save("sine_anim_givens.gif")
 ```
 
@@ -540,7 +540,7 @@ sine_anim <- ggplot() +
   theme(aspect.ratio=1,
         plot.background = element_rect(fill=NULL, colour = "black"))
 
-animate(sine_anim, fps=8, renderer = gifski_renderer(loop = TRUE), width=400, height=400)
+animate(sine_anim, fps=8, renderer = gifski_renderer(loop = FALSE), width=400, height=400)
 anim_save("sine_anim_geodesic.gif")
 ```
 
@@ -681,19 +681,22 @@ tourr::render_gif(rates_pca_sd[,1:4],
                   display = display_pca(col = col_rates,
                                         pc_coefs = rates_pca$rotation[,1:4]),
                   tour_path = planned_tour(path_geodesic),
-                  "rates_tour_geodesic.gif", frames = 500)
+                  "rates_tour_geodesic.gif", frames = 500,
+                  loop = FALSE, width=200, height=200)
 
 tourr::render_gif(rates_pca_sd[,1:4],
                   display = display_pca(col = col_rates,
                                         pc_coefs = rates_pca$rotation[,1:4]),
                   tour_path = planned_tour_givens(path_givens),
-                  "rates_tour_givens.gif", frames = 500)
+                  "rates_tour_givens.gif", frames = 500,
+                  loop = FALSE, width=200, height=200)
 
 tourr::render_gif(rates_pca_sd[,1:4],
                   display = display_pca(col = col_rates,
                                         pc_coefs = rates_pca$rotation[,1:4]),
                   tour_path = planned_tour(path_better),
-                  "rates_tour_better.gif", frames = 1000)
+                  "rates_tour_better.gif", frames = 1000,
+                  loop = FALSE, width=200, height=200)
 
 ```
 
