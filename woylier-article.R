@@ -150,17 +150,21 @@ givens_full_path(base1, base2, nsteps = 5)
 #> edges.col <- c(rep(clrs[3], 10), rep(clrs[6], 10)) #factor(rep("path", 10), levels=c("point1", "path", "proj_space",
 #>                                   "point2"))
 #> 
+#> cex <- c(rep(1, n), rep(3, nrow(sp_path)-n))
+#> 
 #> animate_xy(as.matrix(sp_path[,1:p]), axes="off",
 #>                                        col=sp_path$typecol,
 #>                                        edges=edges,
-#>                                        edges.col=edges.col)
+#>                                        edges.col=edges.col,
+#>                                        cex=cex)
 #> 
 #> tourr::render_gif(as.matrix(sp_path[,1:p]),
 #>                   tour_path = grand_tour(),
 #>                   display = display_xy(axes="off",
 #>                                        col=sp_path$typecol,
 #>                                        edges=edges,
-#>                                        edges.col=edges.col),
+#>                                        edges.col=edges.col,
+#>                                        cex=cex),
 #>                   frames = 100,
 #>                   "sphere.gif")
 
