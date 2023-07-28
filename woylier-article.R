@@ -165,21 +165,21 @@ givens_full_path(base1, base2, nsteps = 5)
 #>                   "sphere.gif")
 
 
-## ----1d-path-dynamic, out.width="50%", fig.align="center", echo = FALSE, fig.height = 3, fig.cap="Interpolation steps of 1D projections of 6D data", include=knitr::is_html_output(), eval=knitr::is_html_output(), fig.alt = "2 highlighted points on the surface of sphere connected by 10 interpolated steps, rotating."----
-#> knitr::include_graphics("sphere.gif")
+## ----1d-path-dynamic, out.width="45%", fig.align="center", echo = FALSE, fig.height = 3, fig.show='hold', fig.cap="Interpolation steps of 1D and 2D projections of 3D data", include=knitr::is_html_output(), eval=knitr::is_html_output(), fig.alt = "Two highlighted points on the surface of sphere connected by 10 interpolated steps, rotating."----
+#> knitr::include_graphics(c("sphere.gif", "torus.gif"))
 
 
-## ----1d-path-static, out.width="50%", fig.align="center", echo = FALSE, fig.height = 3, fig.cap="Interpolation steps of 1D projections of 6D data", include=knitr::is_latex_output(), eval=knitr::is_latex_output(), fig.alt = "2 highlighted points on the surface of sphere connected by 10 interpolated steps, rotating."----
-knitr::include_graphics("sphere_static.png")
+## ----1d-path-static, out.width="50%", fig.align="center", echo = FALSE, fig.height = 3, fig.show='hold', fig.cap="Interpolation steps of 1D projections of 6D data", include=knitr::is_latex_output(), eval=knitr::is_latex_output(), fig.alt = "2 highlighted points on the surface of sphere connected by 10 interpolated steps, rotating."----
+knitr::include_graphics(c("sphere_static.png", "torus_static.png"))
 
 
 ## ----echo = FALSE, eval=FALSE-------------------------------------------------
-#> set.seed(2022)
+#> set.seed(319)
 #> p <- 3
 #> n <- 5000
 #> d <- 2
-#> base1 <- tourr::basis_random(p, d=2)
-#> base2 <- tourr::basis_random(p, d=2)
+#> base1 <- orthonormalise(tourr::basis_random(p, d=2))
+#> base2 <- orthonormalise(tourr::basis_random(p, d=2))
 #> frames_2d <- givens_full_path(base1, base2, 10)
 #> proj_2d <- map(1:n, ~basis_random(n=p,  d=2)) %>%
 #>   purrr::flatten_dbl() %>% matrix(ncol = p*2, byrow = TRUE)
@@ -193,11 +193,11 @@ knitr::include_graphics("sphere_static.png")
 #>   #t(apply(frames_2d, 3, c)) %>%
 #>   #as.data.frame()
 #> 
-#> base <- save_history(flea[,1:3], grand_tour(2), max_bases = 2)
+#> base <- save_history(flea[,1:p], grand_tour(2), max_bases = 2)
 #> base[,,1] <- base1[,1]
 #> base[,,2] <- base2[,1]
 #> # This throws an error
-#> planes_2d <- interpolate(base, angle=proj_dist(base1, base2)/10)[,,-11] #last plane duplicated
+#> planes_2d <- interpolate(base, angle=proj_dist(base1, base2)/10)[,,1:10] #last plane duplicated
 #> proj_2d <- bind_cols(proj_2d, rep("torus", n))
 #>   #mutate(type="torus")
 #> path_2d <- bind_cols(path_2d, rep("path", 10))

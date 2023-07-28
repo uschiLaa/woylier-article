@@ -343,8 +343,8 @@ givens_full_path(base1, base2, nsteps = 5)
 #> [6,] -0.62502981  0.03766958
 \end{verbatim}
 
-\hypertarget{examples-of-interpolated-paths}{%
-\section{Examples of interpolated paths}\label{examples-of-interpolated-paths}}
+\hypertarget{comparison-of-geodesic-interpolation-and-givens-interpolation}{%
+\section{Comparison of geodesic interpolation and Givens interpolation}\label{comparison-of-geodesic-interpolation-and-givens-interpolation}}
 
 In this section, we illustrate the use of \emph{givens\_full\_path()} function by plotting the interpolated path between 2 frames. This also a way of checking if interpolated path is moving in equal size at each step.
 
@@ -356,7 +356,7 @@ For plotting the interpolated path of projections, we used \CRANpkg{geozoo} pack
 
 \begin{figure}
 
-{\centering \includegraphics[width=0.5\linewidth]{sphere_static} 
+{\centering \includegraphics[width=0.5\linewidth]{sphere_static} \includegraphics[width=0.5\linewidth]{torus_static} 
 
 }
 
@@ -366,18 +366,6 @@ For plotting the interpolated path of projections, we used \CRANpkg{geozoo} pack
 \textbf{Interpolated paths of 2D projection}
 
 In case of 2D projections, we can plot the interpolated path between 2 frames on the surface of torus. Torus can be seen as crossing of 2 circles that are orthonormal. Figure \ref{fig:2d-path-static} shows the Givens interpolation steps in 2D projection of 6D data.
-
-\begin{figure}
-
-{\centering \includegraphics[width=0.5\linewidth]{torus_static} 
-
-}
-
-\caption{Interpolation steps of 2D projections of 6D data}\label{fig:2d-path-static}
-\end{figure}
-
-\hypertarget{comparison-of-geodesic-interpolation-and-givens-interpolation}{%
-\section{Comparison of geodesic interpolation and Givens interpolation}\label{comparison-of-geodesic-interpolation-and-givens-interpolation}}
 
 In this section, we used simulated data for comparing geodesic and Givens interpolation paths. The data has 6 variables and 500 observations. The variable 5 and 6 has sine structure and the remaining variables are randomly generated from normal distribution. The sine is non-linear structure and can be detected using splines2d index.
 

@@ -286,7 +286,7 @@ givens_full_path(base1, base2, nsteps = 5)
 ```
 
 
-# Examples of interpolated paths
+# Comparison of geodesic interpolation and Givens interpolation
 
 In this section, we illustrate the use of *givens_full_path()* function by plotting the interpolated path between 2 frames. This also a way of checking if interpolated path is moving in equal size at each step.
 
@@ -357,12 +357,12 @@ tourr::render_gif(as.matrix(sp_path[,1:p]),
                   "sphere.gif")
 ```
 
-```{r 1d-path-dynamic, out.width="50%", fig.align="center", echo = FALSE, fig.height = 3, fig.cap="Interpolation steps of 1D projections of 6D data", include=knitr::is_html_output(), eval=knitr::is_html_output(), fig.alt = "2 highlighted points on the surface of sphere connected by 10 interpolated steps, rotating."}
-knitr::include_graphics("sphere.gif")
+```{r 1d-path-dynamic, out.width="45%", fig.align="center", echo = FALSE, fig.height = 3, fig.show='hold', fig.cap="Interpolation steps of 1D and 2D projections of 3D data", include=knitr::is_html_output(), eval=knitr::is_html_output(), fig.alt = "Two highlighted points on the surface of sphere connected by 10 interpolated steps, rotating."}
+knitr::include_graphics(c("sphere.gif", "torus.gif"))
 ```
 
-```{r 1d-path-static, out.width="50%", fig.align="center", echo = FALSE, fig.height = 3, fig.cap="Interpolation steps of 1D projections of 6D data", include=knitr::is_latex_output(), eval=knitr::is_latex_output(), fig.alt = "2 highlighted points on the surface of sphere connected by 10 interpolated steps, rotating."}
-knitr::include_graphics("sphere_static.png")
+```{r 1d-path-static, out.width="50%", fig.align="center", echo = FALSE, fig.height = 3, fig.show='hold', fig.cap="Interpolation steps of 1D projections of 6D data", include=knitr::is_latex_output(), eval=knitr::is_latex_output(), fig.alt = "2 highlighted points on the surface of sphere connected by 10 interpolated steps, rotating."}
+knitr::include_graphics(c("sphere_static.png", "torus_static.png"))
 ```
 
 **Interpolated paths of 2D projection**
@@ -370,12 +370,12 @@ knitr::include_graphics("sphere_static.png")
 In case of 2D projections, we can plot the interpolated path between 2 frames on the surface of torus. Torus can be seen as crossing of 2 circles that are orthonormal. Figure `r knitr::asis_output(ifelse(knitr::is_html_output(), '\\@ref(fig:2d-path-dynamic)', '\\@ref(fig:2d-path-static)'))` shows the Givens interpolation steps in 2D projection of 6D data. 
 
 ```{r echo = FALSE, eval=FALSE}
-set.seed(2022)
+set.seed(319)
 p <- 3
 n <- 5000
 d <- 2
-base1 <- tourr::basis_random(p, d=2)
-base2 <- tourr::basis_random(p, d=2)
+base1 <- orthonormalise(tourr::basis_random(p, d=2))
+base2 <- orthonormalise(tourr::basis_random(p, d=2))
 frames_2d <- givens_full_path(base1, base2, 10)
 proj_2d <- map(1:n, ~basis_random(n=p,  d=2)) %>%
   purrr::flatten_dbl() %>% matrix(ncol = p*2, byrow = TRUE) 
@@ -389,11 +389,11 @@ path_2d <- bind_cols(path_2d_1, path_2d_1)
   #t(apply(frames_2d, 3, c)) %>% 
   #as.data.frame()
 
-base <- save_history(flea[,1:3], grand_tour(2), max_bases = 2)
+base <- save_history(flea[,1:p], grand_tour(2), max_bases = 2)
 base[,,1] <- base1[,1]
 base[,,2] <- base2[,1]
 # This throws an error
-planes_2d <- interpolate(base, angle=proj_dist(base1, base2)/10)[,,-11] #last plane duplicated
+planes_2d <- interpolate(base, angle=proj_dist(base1, base2)/10)[,,1:10] #last plane duplicated
 proj_2d <- bind_cols(proj_2d, rep("torus", n))
   #mutate(type="torus")
 path_2d <- bind_cols(path_2d, rep("path", 10))
@@ -422,6 +422,7 @@ tourr::render_gif(proj_path[,1:6],
                   "torus.gif")
 ```
 
+<!--
 ```{r 2d-path-dynamic, out.width="50%", fig.align="center", echo = FALSE, fig.height = 3, fig.cap="Interpolation steps of 2D projections of 6D data", include=knitr::is_html_output(), eval=knitr::is_html_output(), fig.alt = "2 highlighted points on the surface of torus connected by 10 interpolated steps, rotating."}
 
 knitr::include_graphics("torus.gif")
@@ -431,7 +432,7 @@ knitr::include_graphics("torus.gif")
 
 knitr::include_graphics("torus_static.png")
 ```
-
+-->
 
 ```{r echo = FALSE, eval=FALSE}
 # trying with more information in one animation
@@ -497,7 +498,6 @@ animate_xy(proj_path[,1:12], col=proj_path$type, palette="Teal-Rose",
 
 ```
 
-# Comparison of geodesic interpolation and Givens interpolation
 
 In this section, we used simulated data for comparing geodesic and Givens interpolation paths. The data has 6 variables and 500 observations. The variable 5 and 6 has sine structure and the remaining variables are randomly generated from normal distribution. The sine is non-linear structure and can be detected using splines2d index. 
 
