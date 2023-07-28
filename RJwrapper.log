@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.7.19)  28 JUL 2023 11:22
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.7.19)  28 JUL 2023 15:17
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -791,46 +791,39 @@ File: torus_static.png Graphic file (type png)
 <use torus_static.png>
 Package pdftex.def Info: torus_static.png  used on input line 372.
 (pdftex.def)             Requested size: 199.16928pt x 199.37968pt.
-<given_sine.png, id=116, 398.48875pt x 392.46625pt>
-File: given_sine.png Graphic file (type png)
-<use given_sine.png>
-Package pdftex.def Info: given_sine.png  used on input line 388.
-(pdftex.def)             Requested size: 199.16928pt x 196.16077pt.
-<geodesic_sine.png, id=117, 394.47375pt x 395.97937pt>
-File: geodesic_sine.png Graphic file (type png)
-<use geodesic_sine.png>
-Package pdftex.def Info: geodesic_sine.png  used on input line 388.
-(pdftex.def)             Requested size: 199.16928pt x 199.92873pt.
-[7 <./sphere_static.png> <./torus_static.png>] [8 <./given_sine.png> <./geodesic_sine.png>]
-<woylier-article_files/figure-latex/currency-1.pdf, id=137, 640.3925pt x 256.96pt>
+
+LaTeX Warning: Reference `fig:compare-interpolations-static' on page 7 undefined on input line 384.
+
+[7 <./sphere_static.png> <./torus_static.png>]
+<woylier-article_files/figure-latex/currency-1.pdf, id=127, 640.3925pt x 256.96pt>
 File: woylier-article_files/figure-latex/currency-1.pdf Graphic file (type pdf)
 <use woylier-article_files/figure-latex/currency-1.pdf>
-Package pdftex.def Info: woylier-article_files/figure-latex/currency-1.pdf  used on input line 405.
+Package pdftex.def Info: woylier-article_files/figure-latex/currency-1.pdf  used on input line 396.
 (pdftex.def)             Requested size: 398.33858pt x 159.83502pt.
-<woylier-article_files/figure-latex/pca-result-static-1.pdf, id=138, 568.1225pt x 556.0775pt>
+<woylier-article_files/figure-latex/pca-result-static-1.pdf, id=128, 555.07375pt x 544.0325pt>
 File: woylier-article_files/figure-latex/pca-result-static-1.pdf Graphic file (type pdf)
 <use woylier-article_files/figure-latex/pca-result-static-1.pdf>
-Package pdftex.def Info: woylier-article_files/figure-latex/pca-result-static-1.pdf  used on input line 417.
-(pdftex.def)             Requested size: 318.67207pt x 311.92735pt.
-<woylier-article_files/figure-latex/unnamed-chunk-11-1.pdf, id=139, 463.7325pt x 316.18124pt>
+Package pdftex.def Info: woylier-article_files/figure-latex/pca-result-static-1.pdf  used on input line 408.
+(pdftex.def)             Requested size: 318.67207pt x 312.33478pt.
+<woylier-article_files/figure-latex/unnamed-chunk-11-1.pdf, id=129, 463.7325pt x 316.18124pt>
 File: woylier-article_files/figure-latex/unnamed-chunk-11-1.pdf Graphic file (type pdf)
 <use woylier-article_files/figure-latex/unnamed-chunk-11-1.pdf>
-Package pdftex.def Info: woylier-article_files/figure-latex/unnamed-chunk-11-1.pdf  used on input line 428.
+Package pdftex.def Info: woylier-article_files/figure-latex/unnamed-chunk-11-1.pdf  used on input line 419.
 (pdftex.def)             Requested size: 463.73135pt x 316.18047pt.
 
-Overfull \hbox (80.39278pt too wide) in paragraph at lines 428--429
+Overfull \hbox (80.39278pt too wide) in paragraph at lines 419--420
 [][] 
  []
 
-[9 <./woylier-article_files/figure-latex/currency-1.pdf>] [10 <./woylier-article_files/figure-latex/pca-result-static-1.pdf> <./woylier-article_files/figure-latex/unnamed-chunk-11-1.pdf>]
+[8 <./woylier-article_files/figure-latex/currency-1.pdf>] [9 <./woylier-article_files/figure-latex/pca-result-static-1.pdf> <./woylier-article_files/figure-latex/unnamed-chunk-11-1.pdf>]
 No file RJwrapper.bbl.
 
 LaTeX Font Warning: Font shape `T1/zi4/m/it' undefined
-(Font)              using `T1/zi4/m/n' instead on input line 496.
+(Font)              using `T1/zi4/m/n' instead on input line 487.
 
 LaTeX Font Info:    Font shape `T1/zi4/m/it' will be
-(Font)              scaled to size 9.18004pt on input line 496.
-[11]) [12] (./RJwrapper.aux)
+(Font)              scaled to size 9.18004pt on input line 487.
+[10]) [11] (./RJwrapper.aux)
  ***********
 LaTeX2e <2023-06-01> patch level 1
 L3 programming layer <2023-06-30>
@@ -838,22 +831,25 @@ L3 programming layer <2023-06-30>
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
+
+LaTeX Warning: There were undefined references.
+
 Package rerunfilecheck Info: File `RJwrapper.out' has not changed.
 (rerunfilecheck)             Checksum: 5BCE4F6734FF5D15F6081D317053409B;1832.
  ) 
 Here is how much of TeX's memory you used:
- 26637 strings out of 477197
- 485156 string characters out of 5813095
+ 26613 strings out of 477197
+ 484664 string characters out of 5813095
  1934244 words of memory out of 5000000
- 46849 multiletter control sequences out of 15000+600000
+ 46827 multiletter control sequences out of 15000+600000
  596087 words of font info for 244 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  117i,12n,131p,1248b,848s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </Users/cookd/Library/TinyTeX/texmf-dist/fonts/type1/public/inconsolata/Inconsolata-zi4r.pfb></Users/cookd/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></Users/cookd/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></Users/cookd/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></Users/cookd/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></Users/cookd/Library/TinyTeX/texmf-dist/fonts/type1/public/mathpazo/fplmri.pfb></Users/cookd/Library/TinyTeX/texmf-dist/fonts/type1/urw/palatino/uplb8a.pfb></Users/cookd/Library/TinyTeX/texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb></Users/cookd/Library/TinyTeX/texmf-dist/fonts/type1/urw/palatino/uplri8a.pfb>
-Output written on RJwrapper.pdf (12 pages, 658154 bytes).
+Output written on RJwrapper.pdf (11 pages, 645750 bytes).
 PDF statistics:
- 266 PDF objects out of 1000 (max. 8388607)
- 207 compressed objects within 3 object streams
- 54 named destinations out of 1000 (max. 500000)
- 51335 words of extra memory for PDF output out of 51595 (max. 10000000)
+ 256 PDF objects out of 1000 (max. 8388607)
+ 202 compressed objects within 3 object streams
+ 52 named destinations out of 1000 (max. 500000)
+ 51325 words of extra memory for PDF output out of 51595 (max. 10000000)
 

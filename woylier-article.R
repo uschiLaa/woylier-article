@@ -105,16 +105,26 @@ givens_full_path(base1, base2, nsteps = 5)
 
 
 ## ----echo = FALSE, eval=FALSE-------------------------------------------------
-#> set.seed(2022)
-#> p <- 6
+#> set.seed(315)
+#> p <- 3
+#> n <- 2000
 #> base1 <- tourr::basis_random(p, d=1)
 #> base2 <- tourr::basis_random(p, d=1)
 #> 
 #> frames <- givens_full_path(base1, base2, nsteps = 10)
 #> 
-#> sp <- generate_space_view(p=p)
+#> base <- save_history(flea[,1:3], grand_tour(1), max_bases = 2)
+#> base[,,1] <- base1[,1]
+#> base[,,2] <- base2[,1]
+#> planes <- interpolate(base, angle=proj_dist(base1, base2)/10)[,,1:10] #last plane duplicated
+#> 
+#> sp <- generate_space_view(n=n, p=p)
 #> 
 #> sp_path <- add_path(sp, frames)
+#> sp_path <- add_path(sp_path, planes)
+#> # Correct labels
+#> sp_path$type[(n+1):(n+10)] <- "f_path"
+#> sp_path$type[(n+11):(n+20)] <- "p_path"
 #> 
 #> point1 <- as.data.frame(t(base1))
 #> point1$type <- "point1"
@@ -123,10 +133,34 @@ givens_full_path(base1, base2, nsteps = 5)
 #> point2$type <- "point2"
 #> 
 #> sp_path <- rbind(sp_path, point1, point2)
+#> #sp_path$type <- factor(sp_path$type,
+#> #                       levels = c("point1", "path", "proj_space",
+#> #                                  "point2"))
 #> 
-#> tourr::render_gif(sp_path[,1:p],
+#> # Colours from
+#> # paletteer::scale_colour_paletteer_d("rcartocolor::TealRose")
+#> clrs <- c("#F1EAC8FF", "#B1C7B3FF", "#72AAA1FF", "#009392FF", "#E5B9ADFF", "#D98994FF", "#D0587EFF")
+#> sp_path$typecol <- case_when(sp_path$type=="proj_space" ~ clrs[1],
+#>                              sp_path$type=="point1" ~ clrs[2],
+#>                              sp_path$type=="f_path" ~ clrs[3],
+#>                              sp_path$type=="point2" ~ clrs[4],
+#>                              sp_path$type=="p_path" ~ clrs[6])
+#> 
+#> edges <- matrix(c(n+20+1, seq(n+1, n+10, 1), seq(n+11, n+19, 1), seq(n+1, n+10, 1), n+20+2, seq(n+12, n+20, 1)), ncol=2, byrow=FALSE)
+#> edges.col <- c(rep(clrs[3], 10), rep(clrs[6], 10)) #factor(rep("path", 10), levels=c("point1", "path", "proj_space",
+#>                                   "point2"))
+#> 
+#> animate_xy(as.matrix(sp_path[,1:p]), axes="off",
+#>                                        col=sp_path$typecol,
+#>                                        edges=edges,
+#>                                        edges.col=edges.col)
+#> 
+#> tourr::render_gif(as.matrix(sp_path[,1:p]),
 #>                   tour_path = grand_tour(),
-#>                   display = display_xy(axes="bottomleft", col=sp_path$type),
+#>                   display = display_xy(axes="off",
+#>                                        col=sp_path$typecol,
+#>                                        edges=edges,
+#>                                        edges.col=edges.col),
 #>                   frames = 100,
 #>                   "sphere.gif")
 
@@ -141,27 +175,53 @@ knitr::include_graphics("sphere_static.png")
 
 ## ----echo = FALSE, eval=FALSE-------------------------------------------------
 #> set.seed(2022)
-#> p <- 6
-#> n <- 1500
+#> p <- 3
+#> n <- 5000
 #> d <- 2
 #> base1 <- tourr::basis_random(p, d=2)
 #> base2 <- tourr::basis_random(p, d=2)
 #> frames_2d <- givens_full_path(base1, base2, 10)
-#> proj_2d <- map(1:n, ~basis_random(n = p,  d=d)) %>%
-#>   purrr::flatten_dbl() %>%
-#>   matrix(ncol = p*2, byrow = TRUE) %>%
-#>   as_tibble()
-#> path_2d <- t(apply(frames_2d, 3, c)) %>%
-#>   as.data.frame()
-#> proj_2d <- proj_2d %>%
-#>   mutate(type="torus")
-#> path_2d <- path_2d %>%
-#>   mutate(type="path")
-#> proj_path <- bind_rows(proj_2d, path_2d)
+#> proj_2d <- map(1:n, ~basis_random(n=p,  d=2)) %>%
+#>   purrr::flatten_dbl() %>% matrix(ncol = p*2, byrow = TRUE)
+#>   #map(1:n, ~basis_random(n = p,  d=d)) %>%
+#>   #purrr::flatten_dbl() %>%
+#>   #matrix(ncol = p*2, byrow = TRUE) %>%
+#>   #as_tibble()
+#> path_2d_1 <- apply(frames_2d[,1,], 1, c)
+#> path_2d_1 <- apply(frames_2d[,2,], 1, c)
+#> path_2d <- bind_cols(path_2d_1, path_2d_1)
+#>   #t(apply(frames_2d, 3, c)) %>%
+#>   #as.data.frame()
+#> 
+#> base <- save_history(flea[,1:3], grand_tour(2), max_bases = 2)
+#> base[,,1] <- base1[,1]
+#> base[,,2] <- base2[,1]
+#> # This throws an error
+#> planes_2d <- interpolate(base, angle=proj_dist(base1, base2)/10)[,,-11] #last plane duplicated
+#> proj_2d <- bind_cols(proj_2d, rep("torus", n))
+#>   #mutate(type="torus")
+#> path_2d <- bind_cols(path_2d, rep("path", 10))
+#>   #mutate(type="path")
+#> proj_path <- rbind(proj_2d, path_2d) #bind_rows(proj_2d, path_2d)
+#> colnames(proj_path) <- c(paste0("V", 1:12), "type")
+#> proj_path <- as.data.frame(proj_path)
+#> 
+#> # Colours from
+#> # paletteer::scale_colour_paletteer_d("rcartocolor::TealRose")
+#> clrs <- c("#F1EAC8FF", "#B1C7B3FF", "#72AAA1FF", "#009392FF", "#E5B9ADFF", "#D98994FF", "#D0587EFF")
+#> proj_path$typecol <- case_when(proj_path$type=="torus" ~ clrs[1],
+#>                              proj_path$type=="path" ~ clrs[3])
+#> 
+#> proj_path_edges <- matrix(c(seq(n+1, n+9, 1), seq(n+2, n+10, 1)), ncol=2, byrow=FALSE)
+#> proj_path_edges.col <- rep(clrs[3], 10)
+#> 
 #> 
 #> tourr::render_gif(proj_path[,1:6],
 #>                   tour_path = grand_tour(),
-#>                   display = display_xy(axes="bottomleft", col=proj_path$type),
+#>                   display = display_xy(axes="off",
+#>                                        col=proj_path$typecol,
+#>                                        edges=proj_path_edges,
+#>                                        edges.col=proj_path_edges.col),
 #>                   frames = 100,
 #>                   "torus.gif")
 
@@ -379,7 +439,8 @@ pca <- ggscatmat(cbind(tibble::as_tibble(rates_pca$x), rate_march),
   scale_color_manual(values = c("grey", "darkblue")) +
   theme_bw() +
   theme(aspect.ratio = 1,
-        legend.position = "none")
+        legend.position = "none") +
+  xlab("") + ylab("")
 pca
 
 
@@ -474,7 +535,7 @@ rates_pca_sd <-  apply(rates_pca$x, 2, function(x) (x-mean(x))/sd(x))
 #> 
 
 
-## ----compare-rates-guided, echo=FALSE, out.width="30%", fig.align = "center", fig.show='hold', include=knitr::is_html_output(), eval=knitr::is_html_output(), fig.cap="Optimisation in the guided tour using geodesic optimization (left), simulated annealing with geodesic interpolation (middle) and simulated annealign with givens interpolation (right)"----
+## ----compare-rates-guided, echo=FALSE, out.width="33%", fig.align = "center", fig.show='hold', include=knitr::is_html_output(), eval=knitr::is_html_output(), fig.cap="Optimisation in the guided tour using geodesic optimization (left), simulated annealing with geodesic interpolation (middle) and simulated annealing with givens interpolation (right). (Refresh page to re-start the animation.)"----
 #> knitr::include_graphics(
 #>   c("rates_tour_geodesic.gif",
 #>     "rates_tour_better.gif",

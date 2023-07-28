@@ -169,7 +169,7 @@ Performing these rotations would go from the starting frame to the target frame 
 
 \textbf{Projection pursuit index functions}
 
-The properties of several projection pursuit index functions were investigated.(Laa and Cook 2020) The smoothness, squintability, flexibility, rotation invariance, and speed of projection pursuit index functions were examined. The one property that is interesting to us is rotation invariance. The rotational invariance is examined by computing projection pursuit index for different rotations within 2D plane. It is established that the dcor2d, splines2d and TIC index are not rotationally invariant. Splines2D index measures nonlinear association between variable by fitting spline model. It compares the variance of residuals and the functional dependence is stronger if the index value is larger.
+The properties of several projection pursuit index functions were investigated in Laa and Cook (2020). The smoothness, squintability, flexibility, rotation invariance, and speed of projection pursuit index functions were examined. The one property that is interesting to us is rotation invariance. The rotational invariance is examined by computing projection pursuit index for different rotations within 2D plane. It is established that the dcor2d, splines2d and TIC index are not rotationally invariant. Splines2D index measures nonlinear association between variable by fitting spline model. It compares the variance of residuals and the functional dependence is stronger if the index value is larger.
 
 \hypertarget{implementation}{%
 \section{Implementation}\label{implementation}}
@@ -382,15 +382,6 @@ In case of 2D projections, we can plot the interpolated path between 2 frames on
 In this section, we used simulated data for comparing geodesic and Givens interpolation paths. The data has 6 variables and 500 observations. The variable 5 and 6 has sine structure and the remaining variables are randomly generated from normal distribution. The sine is non-linear structure and can be detected using splines2d index.
 
 Figure \ref{fig:compare-interpolations-static} shows the Geodesic and Givens interpolation to target frame where the two variables forms sine curve.
-
-\begin{figure}
-
-{\centering \includegraphics[width=0.5\linewidth]{given_sine} \includegraphics[width=0.5\linewidth]{geodesic_sine} 
-
-}
-
-\caption{Givens interpolation path (left) and Geodesic interpolation path (right) to target frame. Givens interpolation goes to exact frame that has the correct orientation while Geodesic interpolation goes to rotation of the target plane.}\label{fig:compare-interpolations-static}
-\end{figure}
 
 \hypertarget{data-application}{%
 \section{Data application}\label{data-application}}
