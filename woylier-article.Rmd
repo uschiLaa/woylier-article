@@ -401,31 +401,46 @@ path_2d_geo <- as.data.frame(t(apply(int_geo, 3, c))) %>%
 base2_rot_1 <- matrix(ncol = 6, nrow = 41)
 base2_rot_2 <- matrix(ncol = 6, nrow = 41)
 i <- 1
+base2_2 <- base2
+base2_2[,2] <- -base2_2[,2]
+flip_connect <- matrix(ncol = 7, nrow = 0) # don't know how many entries we will need, so will use rbind
 for (a in seq(0,2*pi, pi/20)){
     rotM <- matrix(c(cos(a), sin(a), -sin(a), cos(a)), ncol = 2)
-    dprj <- base2 %*% rotM
-    base2_rot_1[i,] <- as.vector(dprj)
-    dprj <- base2[,c(2,1)] %*% rotM
-    base2_rot_2[i,] <- as.vector(dprj)
+    dprj_1 <- base2 %*% rotM
+    base2_rot_1[i,] <- as.vector(dprj_1)
+    dprj_2 <- base2_2 %*% rotM
+    base2_rot_2[i,] <- as.vector(dprj_2)
+    flip_connect <- rbind(flip_connect, (t(c(as.vector(dprj_1),i))),
+                 cbind(t(apply(
+                   givens_full_path(dprj_1, dprj_2, 30),
+                   3, c)),
+                   i))
     i <- i+1
 }
+
+connect_flipped <- as.data.frame(flip_connect) %>% 
+  filter(!is.nan(V1)) %>%
+  mutate(type="connect")
 rot_base2 <- as.data.frame(rbind(base2_rot_1, base2_rot_2)) %>% 
   mutate(type="target")
 # starting base as tibble
 start_2d <- as.tibble(t(as.vector(base1))) %>%
   mutate(type = "start")
 # putting everything together
-proj_path <- bind_rows(proj_2d, rot_base2, path_2d, path_2d_geo, start_2d)
+proj_path <- bind_rows(proj_2d, rot_base2, connect_flipped,
+                       path_2d, path_2d_geo, start_2d)
 
 
 # Colours from
 # paletteer::scale_colour_paletteer_d("rcartocolor::TealRose")
-clrs <- c("#F1EAC8FF", "#B1C7B3FF", "#72AAA1FF", "#009392FF", "#E5B9ADFF", "#D98994FF", "#D0587EFF")
+clrs <- c("#F1EAC8FF", "#B1C7B3FF", "#72AAA1FF", "#009392FF", "#E5B9ADFF", "#D98994FF", "#D0587EFF",
+          "lightgrey")
 proj_path$typecol <- case_when(proj_path$type=="torus" ~ clrs[1],
                              proj_path$type=="start" ~ clrs[2],
                              proj_path$type=="givens" ~ clrs[3],
                              proj_path$type=="target" ~ clrs[4],
-                             proj_path$type=="geodesic" ~ clrs[6])
+                             proj_path$type=="geodesic" ~ clrs[6],
+                             proj_path$type=="connect" ~ clrs[8])
 edges <- matrix(c(which(proj_path$type=="target")[1:40], # starting nodes for target
                   which(proj_path$type=="target")[42:81], # starting nodes for flipped target
                   head(which(proj_path$type=="givens"),-1), # starting nodes for givens
