@@ -816,11 +816,18 @@ tourr::render_gif(rates_pca_sd[,1:4],
 
 ```
 
-```{r compare-rates-guided, echo=FALSE, out.width="33%", fig.align = "center", fig.show='hold', include=knitr::is_html_output(), eval=knitr::is_html_output(), fig.cap="Optimisation in the guided tour using geodesic optimization (left), simulated annealing with geodesic interpolation (middle) and simulated annealing with givens interpolation (right). (Refresh page to re-start the animation.)"}
+```{r rates-tour-animated, echo=FALSE, out.width="33%", fig.align = "center", fig.show='hold', include=knitr::is_html_output(), eval=knitr::is_html_output(), fig.cap="Optimisation in the guided tour using geodesic optimization (left), simulated annealing with geodesic interpolation (middle) and simulated annealing with givens interpolation (right). (Refresh page to re-start the animation.)"}
 knitr::include_graphics(
   c("rates_tour_geodesic.gif",
     "rates_tour_better.gif",
     "rates_tour_givens.gif"))
+```
+
+
+```{r rates-tour-static, out.width="30%", fig.align="center", echo = FALSE, fig.show='hold', include=knitr::is_latex_output(), eval=knitr::is_latex_output(), fig.cap="Final view after optimisation in the guided tour using geodesic optimization (left), simulated annealing with geodesic interpolation (middle) and simulated annealing with givens interpolation (right)."}
+knitr::include_graphics(c("rates_tour_geodesic_final.png",
+    "rates_tour_better_final.png",
+    "rates_tour_givens_final.png"))
 ```
 
 ```{r echo=FALSE, eval=TRUE}
