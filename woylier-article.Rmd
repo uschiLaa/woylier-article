@@ -371,7 +371,10 @@ knitr::include_graphics(c("sphere_static.png", "torus_static.png"))
 
 **Interpolated paths of 2D projection**
 
-In case of 2D projections, we can plot the interpolated path between 2 frames on the surface of torus. Torus can be seen as crossing of 2 circles that are orthonormal. Figure `r knitr::asis_output(ifelse(knitr::is_html_output(), '\\@ref(fig:2d-path-dynamic)', '\\@ref(fig:2d-path-static)'))` shows the Givens interpolation steps in 2D projection of 6D data. 
+In case of 2D projections, we can plot the interpolated path between 2 frames on the surface of torus. Torus can be seen as crossing of 2 circles that are orthonormal. Figure `r knitr::asis_output(ifelse(knitr::is_html_output(), '\\@ref(fig:2d-path-dynamic)', '\\@ref(fig:2d-path-static)'))` shows the Givens interpolation steps in 2D projection of 6D data.
+
+For a 2D projection the same target plane is found when rotating the basis within the plane, or when reflecting across one of the two directions (the reflected basis can then also be rotating). This means the space of target bases is constrained to two circles in the high-dimensional space, and these are disconnected because the reflection corresponds to a jump along the torus surface. In the high-dimensional space we can imagine the reflection as flipping over the target plane, resulting in a reflection of the normal vector on the plan.
+While the Givens interpolation will reach the exact basis, a geodesic interpolation towards the same target plane can land anywhere along those two circles, depending on the starting basis in the interpolation.
 
 ```{r echo = FALSE, eval=FALSE}
 set.seed(319)
@@ -408,7 +411,8 @@ for (a in seq(0,2*pi, pi/20)){
     rotM <- matrix(c(cos(a), sin(a), -sin(a), cos(a)), ncol = 2)
     dprj_1 <- base2 %*% rotM
     base2_rot_1[i,] <- as.vector(dprj_1)
-    dprj_2 <- base2_2 %*% rotM
+    rot2 <- matrix(c(cos(a+pi/4), sin(a+pi/4), -sin(a+pi/4), cos(a+pi/4)), ncol = 2)
+    dprj_2 <- base2_2 %*% rot2
     base2_rot_2[i,] <- as.vector(dprj_2)
     flip_connect <- rbind(flip_connect, (t(c(as.vector(dprj_1),i))),
                  cbind(t(apply(
@@ -427,7 +431,7 @@ rot_base2 <- as.data.frame(rbind(base2_rot_1, base2_rot_2)) %>%
 start_2d <- as.tibble(t(as.vector(base1))) %>%
   mutate(type = "start")
 # putting everything together
-proj_path <- bind_rows(proj_2d, rot_base2, connect_flipped,
+proj_path <- bind_rows(proj_2d, rot_base2, #connect_flipped,
                        path_2d, path_2d_geo, start_2d)
 
 
