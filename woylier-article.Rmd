@@ -331,32 +331,35 @@ sp_path <- rbind(sp_path, point1, point2)
 
 # Colours from
 # paletteer::scale_colour_paletteer_d("rcartocolor::TealRose")
-clrs <- c("#F1EAC8FF", "#B1C7B3FF", "#72AAA1FF", "#009392FF", "#E5B9ADFF", "#D98994FF", "#D0587EFF")
+clrs <- c("#F1EAC8FF", "#B1C7B3FF", "#72AAA1FF", "#009392FF", "#E5B9ADFF", "#D98994FF", "#D0587EFF",
+          "lightgrey")
 sp_path$typecol <- case_when(sp_path$type=="proj_space" ~ clrs[1],
-                             sp_path$type=="point1" ~ clrs[2],
+                             sp_path$type=="point1" ~ clrs[8],
                              sp_path$type=="f_path" ~ clrs[3],
                              sp_path$type=="point2" ~ clrs[4],
                              sp_path$type=="p_path" ~ clrs[6])
 
-edges <- matrix(c(n+20+1, seq(n+1, n+10, 1), seq(n+11, n+19, 1), seq(n+1, n+10, 1), n+20+2, seq(n+12, n+20, 1)), ncol=2, byrow=FALSE)
-edges.col <- c(rep(clrs[3], 10), rep(clrs[6], 10)) #factor(rep("path", 10), levels=c("point1", "path", "proj_space", 
+edges <- matrix(c(n+20+1, seq(n+1, n+10, 1), seq(n+11, n+19, 1), nrow(sp_path), seq(n+1, n+10, 1), n+20+2, seq(n+12, n+20, 1), n+20), ncol=2, byrow=FALSE)
+edges.col <- c(rep(clrs[3], 10), rep(clrs[6], 10), clrs[1]) #factor(rep("path", 10), levels=c("point1", "path", "proj_space", 
                                   "point2"))
   
 cex <- c(rep(1, n), rep(3, nrow(sp_path)-n))
   
 animate_xy(as.matrix(sp_path[,1:p]), axes="off",
-                                       col=sp_path$typecol,
-                                       edges=edges,
-                                       edges.col=edges.col,
-                                       cex=cex)
+           col=sp_path$typecol,
+           edges=edges,
+           edges.col=edges.col,
+           edges.width=3,
+           cex=cex)
 
 tourr::render_gif(as.matrix(sp_path[,1:p]), 
                   tour_path = grand_tour(),
                   display = display_xy(axes="off",
-                                       col=sp_path$typecol,
-                                       edges=edges,
-                                       edges.col=edges.col,
-                                       cex=cex),
+                      col=sp_path$typecol,
+                      edges=edges,
+                      edges.col=edges.col,
+                      edges.width=3,
+                      cex=cex),
                   frames = 100,
                   "sphere.gif")
 ```
@@ -419,6 +422,7 @@ for (a in seq(0,2*pi, pi/20)){
                    givens_full_path(dprj_1, dprj_2, 30),
                    3, c)),
                    i))
+    cat(proj_dist(base2, dprj_1), proj_dist(base2_2, dprj_2), "\n")
     i <- i+1
 }
 
@@ -440,9 +444,9 @@ proj_path <- bind_rows(proj_2d, rot_base2, #connect_flipped,
 clrs <- c("#F1EAC8FF", "#B1C7B3FF", "#72AAA1FF", "#009392FF", "#E5B9ADFF", "#D98994FF", "#D0587EFF",
           "lightgrey")
 proj_path$typecol <- case_when(proj_path$type=="torus" ~ clrs[1],
-                             proj_path$type=="start" ~ clrs[2],
+                             proj_path$type=="start" ~ clrs[8],
                              proj_path$type=="givens" ~ clrs[3],
-                             proj_path$type=="target" ~ clrs[4],
+                             proj_path$type=="target" ~ clrs[8],
                              proj_path$type=="geodesic" ~ clrs[6],
                              proj_path$type=="connect" ~ clrs[8])
 edges <- matrix(c(which(proj_path$type=="target")[1:40], # starting nodes for target
@@ -454,24 +458,30 @@ edges <- matrix(c(which(proj_path$type=="target")[1:40], # starting nodes for ta
                   tail(which(proj_path$type=="givens"),-1), # ending nodes for givens
                   tail(which(proj_path$type=="geodesic"),-1)), # ending nodes for geodesic
                 ncol=2, byrow=FALSE)
-edges.col <- c(rep(clrs[4], sum(proj_path$type=="target")-1),
+edges.col <- c(rep(clrs[1], sum(proj_path$type=="target")-1),
                rep(clrs[3], sum(proj_path$type=="givens")-1),
                rep(clrs[6], sum(proj_path$type=="geodesic")-1)) 
 
 cex <- c(rep(0.5, n+41), rep(1, nrow(proj_path)-(n+41)))
+cex[which(proj_path$type == "start")] <- 2
+cex[which(proj_path$type == "target")] <- 0.1
 
-animate_xy(as.matrix(proj_path[,1:(2*p)]), axes="off",
-                                       col=proj_path$typecol,
-                                       edges=edges,
-                                       edges.col=edges.col,
-                                       cex=cex)
+animate_xy(as.matrix(proj_path[,1:(2*p)]), 
+           axes="off",
+           col=proj_path$typecol,
+           edges=edges,
+           edges.col=edges.col,
+           edges.width=3,
+           cex=cex)
 
 tourr::render_gif(as.matrix(proj_path[,1:(2*p)]), 
                   tour_path = grand_tour(),
                   display = display_xy(axes="off", 
-                                       col=proj_path$typecol,
-                                       edges=edges,
-                                       edges.col=edges.col),
+                    col=proj_path$typecol,
+                    edges=edges,
+                    edges.col=edges.col,
+                    edges.width=3,
+                    cex=cex),
                   frames = 100,
                   "torus.gif")
 ```
