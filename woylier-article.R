@@ -17,6 +17,7 @@ library(patchwork)
 library(gganimate)
 library(GGally)
 library(corrplot)
+library(kableExtra)
 
 
 ## ----splines2d-static, out.width = "100%", fig.width = 9, fig.height = 4.5, layout = "l-body", fig.cap="The impact of rotation on a spline index that is NOT rotation invariant. The index value for different within-plane rotations take very different values: (a) original projection has maximum index value of 1.00, (b) axes rotated 45$^o$ drops index value to 0.83, (c) axes rotated 60$^o$ drops index to a very low 0.26. Geodesic interpolation between planes will have difficulty finding the maximum of an index like this because it is focues only on the projection plane, not the frame defining the plane.", fig.alt = "Three side-by-side scatterplots. The left side plot shows two variables, V5, V6, with a sine curve. The index value is the maximum of 1. The middle plot shows the two variables rotated 45 degrees clock-wise, and the calculated index value is 0.83. The right-side plot is rotated 60 degrees, and the calculated index value is 0.26."----
@@ -88,6 +89,79 @@ p1+p2+p3
 knitr::include_graphics(
   c("plane.png",
     "frame.png"))
+
+
+## -----------------------------------------------------------------------------
+tbl <- tibble(name = c("`givens_full_path(Fa, Fz, nsteps)`",
+                    "`preprojection(Fa, Fz)`", 
+                    "`construct_preframe(Fa, B)`", 
+                    "`row_rot(a, i, k, theta)`",
+                    "`calculate_angles(Wa, Wz)`",
+                    "`construct_moving_frame(Wt, B)`"),
+              description = c("Construct full interpolated frames.",
+                              "Build a d-dimensional pre-projection space by orthonormalizing Fz with regard to Fa.", 
+                              "Construct preprojected frames.", 
+                              "Performs Givens rotation .",
+                              "Calculate angles of required rotations to map Wz to Wa.", 
+                              "Reconstruct interpolated frames using pre-projection. "), 
+              input = c("Starting and target frame (Fa, Fz) and number of steps", 
+                        "Starting and target frame (Fa, Fz) ", 
+                        "A frame and the pre-projection p x 2D matrix", "A frame and the pre-projection p x 2D matrix", 
+                        "Preprojected frames (Wa, Wz)",
+                        "Pre-projection matrix B, Each frame of givens path"),
+              output = c("An array with nsteps matrix. Each matrix is interpolated frame in between starting and target frames.", 
+                         "B pre-projection p x 2D matrix",
+                         "Pre-projected frame in pre-projection space", 
+                         "theta angle rotated matrix a", 
+                         "Names list of angles",
+                         "A frame of on a step of interpolation"))
+
+
+## ----fns-html, eval=knitr::is_html_output()-----------------------------------
+#> kbl(tbl, escape = FALSE) %>%
+#>   column_spec(1, width="30em") %>%
+#>   column_spec(2, width="25em") %>%
+#>   column_spec(3, width="20em") %>%
+#>   column_spec(4, width="30em") %>%
+#>   row_spec(2, extra_css = "vertical-align: left!important;") %>%
+#>   row_spec(3, extra_css = "vertical-align: left!important;") %>%
+#>   row_spec(4, extra_css = "vertical-align: left!important;") %>%
+#>   row_spec(5, extra_css = "vertical-align: left!important;") %>%
+#>   row_spec(6, extra_css = "vertical-align: left!important;")
+
+
+## ----fns-pdf, eval=knitr::is_latex_output(), results='asis'-------------------
+#library(xtable)
+#print(xtable(tbl, caption="Primary functions in the woylier package.", label="fns-pdf", caption.placement="top"))
+tbl <- tibble(name = c("givens_full_path(Fa, Fz, nsteps)",
+                    "preprojection(Fa, Fz)", 
+                    "construct_preframe(Fa, B)", 
+                    "row_rot(a, i, k, theta)",
+                    "calculate_angles(Wa, Wz)",
+                    "construct_moving_frame(Wt, B)"),
+              description = c("Construct full interpolated frames.",
+                              "Build a d-dimensional pre-projection space by orthonormalizing Fz with regard to Fa.", 
+                              "Construct preprojected frames.", 
+                              "Performs Givens rotation .",
+                              "Calculate angles of required rotations to map Wz to Wa.", 
+                              "Reconstruct interpolated frames using pre-projection. "), 
+              input = c("Starting and target frame (Fa, Fz) and number of steps", 
+                        "Starting and target frame (Fa, Fz) ", 
+                        "A frame and the pre-projection p x 2D matrix", "A frame and the pre-projection p x 2D matrix", 
+                        "Preprojected frames (Wa, Wz)",
+                        "Pre-projection matrix B, Each frame of givens path"),
+              output = c("An array with nsteps matrix. Each matrix is interpolated frame in between starting and target frames.", 
+                         "B pre-projection p x 2D matrix",
+                         "Pre-projected frame in pre-projection space", 
+                         "theta angle rotated matrix a", 
+                         "Names list of angles",
+                         "A frame of on a step of interpolation"))
+kbl(tbl) %>%
+  row_spec(0, bold=TRUE) %>%
+  column_spec(1, width="5cm", monospace=T) %>%
+  column_spec(2, width="3cm") %>%
+  column_spec(3, width="2cm") %>%
+  column_spec(4, width="2cm") 
 
 
 ## ----echo=TRUE----------------------------------------------------------------

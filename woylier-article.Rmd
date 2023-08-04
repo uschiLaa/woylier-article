@@ -53,6 +53,7 @@ library(patchwork)
 library(gganimate)
 library(GGally)
 library(corrplot)
+library(kableExtra)
 ```
 
 # Introduction
@@ -187,13 +188,13 @@ The interpolation problem is then reduced to the construction of paths of frames
 
 **Givens interpolation path algorithm**
 
-A rotation matrix is a transformation matrix used to perform a rotation in Euclidean space in a plane. A rotation matrix that transforms 2-D plane by an angle $\theta$ looks like this:
+A rotation matrix is a transformation matrix used to perform a rotation in Euclidean space in a plane. A rotation matrix that transforms 2D plane by an angle $\theta$ looks like this:
 
 $$ \begin{bmatrix}\cos \theta &-\sin \theta \\\sin \theta &\cos \theta \end{bmatrix} $$
 
 If the rotation is in the plane of selected 2 variables, it is called Givens rotation. Let's denote those 2 variables $i$ and $j$. The Givens rotation is useful for introducing zeros on a grand scale and used for computing the QR decomposition of matrix in linear algebra problems. One advantage over other transformation methods which is particularly useful in our case is the ability to zero elements more selectively.
 
-The interpolation methods in the **woylier** package is based on the fact that in any vector of a matrix, one can zero out the $i$-th coordinate with a Givens rotation in the $(i, j)$-plane for any $j\neq i$. This rotation affects only coordinate $i$ and $j$ and leave all other coordinates unchanged. 
+The interpolation methods in the **woylier** package is based on the fact that in any vector of a matrix, one can zero out the $i$-th coordinate with a Givens rotation [@matrix_computation] in the $(i, j)$-plane for any $j\neq i$. This rotation affects only coordinate $i$ and $j$ and leave all other coordinates unchanged. 
 
 Sequences of Givens rotations can map any orthonormal d-frame F in p-space to standard d-frame $E_d=((1, 0, 0, ...)^T, (0, 1, 0, ...)^T, ...)$. 
 
@@ -242,13 +243,86 @@ $$F_t = B  W_t$$
 
 **Projection pursuit index functions**
 
-The properties of several projection pursuit index functions were investigated in @pp. The smoothness, squintability, flexibility, rotation invariance, and speed of projection pursuit index functions were examined. The one property that is interesting to us is rotation invariance. The rotational invariance is examined by computing projection pursuit index for different rotations within 2D plane. It is established that the dcor2d, splines2d and TIC index are  not rotationally invariant. Splines2D index measures nonlinear association between variable by fitting spline model. It compares the variance of residuals and the functional dependence is stronger if the index value is larger.
+The properties of several projection pursuit index functions were investigated in @pp. The smoothness, squintability, flexibility, rotation invariance, and speed of projection pursuit index functions were examined. The one property that is interesting to us is rotation invariance. The rotational invariance is examined by computing projection pursuit index for different rotations within 2D plane. It is established that the `dcor2d`, `splines2d` and `TIC` index are not strictly rotationally invariant. The `splines2d` index measures nonlinear association between variable by fitting spline model. It compares the variance of residuals and the functional dependence is stronger when the index value is larger.
 
 # Implementation
 
-We implemented each steps mentioned in **Givens interpolation path algorithm** in separate functions and combined them in *givens_full_path()* function. Here is the input and output of each functions and it's descriptions.
+We implemented each steps in Givens interpolation path algorithm in separate functions and combined them in `givens_full_path()` function. Here is the input and output of each functions and it's descriptions.
 
+```{r}
+tbl <- tibble(name = c("`givens_full_path(Fa, Fz, nsteps)`",
+                    "`preprojection(Fa, Fz)`", 
+                    "`construct_preframe(Fa, B)`", 
+                    "`row_rot(a, i, k, theta)`",
+                    "`calculate_angles(Wa, Wz)`",
+                    "`construct_moving_frame(Wt, B)`"),
+              description = c("Construct full interpolated frames.",
+                              "Build a d-dimensional pre-projection space by orthonormalizing Fz with regard to Fa.", 
+                              "Construct preprojected frames.", 
+                              "Performs Givens rotation .",
+                              "Calculate angles of required rotations to map Wz to Wa.", 
+                              "Reconstruct interpolated frames using pre-projection. "), 
+              input = c("Starting and target frame (Fa, Fz) and number of steps", 
+                        "Starting and target frame (Fa, Fz) ", 
+                        "A frame and the pre-projection p x 2D matrix", "A frame and the pre-projection p x 2D matrix", 
+                        "Preprojected frames (Wa, Wz)",
+                        "Pre-projection matrix B, Each frame of givens path"),
+              output = c("An array with nsteps matrix. Each matrix is interpolated frame in between starting and target frames.", 
+                         "B pre-projection p x 2D matrix",
+                         "Pre-projected frame in pre-projection space", 
+                         "theta angle rotated matrix a", 
+                         "Names list of angles",
+                         "A frame of on a step of interpolation"))
+```
 
+```{r fns-html, eval=knitr::is_html_output()}
+kbl(tbl, escape = FALSE) %>%
+  column_spec(1, width="30em") %>%
+  column_spec(2, width="25em") %>%
+  column_spec(3, width="20em") %>%
+  column_spec(4, width="30em") %>%
+  row_spec(2, extra_css = "vertical-align: left!important;") %>%
+  row_spec(3, extra_css = "vertical-align: left!important;") %>%
+  row_spec(4, extra_css = "vertical-align: left!important;") %>%
+  row_spec(5, extra_css = "vertical-align: left!important;") %>%
+  row_spec(6, extra_css = "vertical-align: left!important;")
+```
+
+```{r fns-pdf, eval=knitr::is_latex_output(), results='asis'}
+#library(xtable)
+#print(xtable(tbl, caption="Primary functions in the woylier package.", label="fns-pdf", caption.placement="top"))
+tbl <- tibble(name = c("givens_full_path(Fa, Fz, nsteps)",
+                    "preprojection(Fa, Fz)", 
+                    "construct_preframe(Fa, B)", 
+                    "row_rot(a, i, k, theta)",
+                    "calculate_angles(Wa, Wz)",
+                    "construct_moving_frame(Wt, B)"),
+              description = c("Construct full interpolated frames.",
+                              "Build a d-dimensional pre-projection space by orthonormalizing Fz with regard to Fa.", 
+                              "Construct preprojected frames.", 
+                              "Performs Givens rotation .",
+                              "Calculate angles of required rotations to map Wz to Wa.", 
+                              "Reconstruct interpolated frames using pre-projection. "), 
+              input = c("Starting and target frame (Fa, Fz) and number of steps", 
+                        "Starting and target frame (Fa, Fz) ", 
+                        "A frame and the pre-projection p x 2D matrix", "A frame and the pre-projection p x 2D matrix", 
+                        "Preprojected frames (Wa, Wz)",
+                        "Pre-projection matrix B, Each frame of givens path"),
+              output = c("An array with nsteps matrix. Each matrix is interpolated frame in between starting and target frames.", 
+                         "B pre-projection p x 2D matrix",
+                         "Pre-projected frame in pre-projection space", 
+                         "theta angle rotated matrix a", 
+                         "Names list of angles",
+                         "A frame of on a step of interpolation"))
+kbl(tbl) %>%
+  row_spec(0, bold=TRUE) %>%
+  column_spec(1, width="5cm", monospace=T) %>%
+  column_spec(2, width="3cm") %>%
+  column_spec(3, width="2cm") %>%
+  column_spec(4, width="2cm") 
+```
+
+<!--
 - `givens_full_path(Fa, Fz, nsteps)`: Construct full interpolated frames.   
     - `input`: Starting and target frame (Fa, Fz) and number of steps 
     - `output`: An array with nsteps matrix. Each matrix is interpolated frame in between starting and target frames. 
@@ -270,10 +344,11 @@ We implemented each steps mentioned in **Givens interpolation path algorithm** i
 - `construct_moving_frame(Wt, B)`: Reconstruct interpolated frames using pre-projection. 
     - `input`: Pre-projection matrix B, Each frame of givens path
     - `output`: A frame of on a step of interpolation
+-->
 
 The interface of tour is that it renders one projection of data at a time. It displays one projection and asks for the next projection. Therefore, path of projections shown below is sequence of projections to be renders at tour display.
 
-The *givens_full_path()* function returns the intermediate interpolation step projections in given number of steps. The code chunk below demonstrates the interpolation between 2 random basis in 5 steps.
+The `givens_full_path()` function returns the intermediate interpolation step projections in given number of steps. The code chunk below demonstrates the interpolation between 2 random basis in 5 steps.
 
 ```{r echo=TRUE}
 set.seed(2022)

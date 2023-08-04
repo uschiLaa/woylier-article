@@ -92,13 +92,13 @@ The interpolation problem is then reduced to the construction of paths of frames
 
 \textbf{Givens interpolation path algorithm}
 
-A rotation matrix is a transformation matrix used to perform a rotation in Euclidean space in a plane. A rotation matrix that transforms 2-D plane by an angle \(\theta\) looks like this:
+A rotation matrix is a transformation matrix used to perform a rotation in Euclidean space in a plane. A rotation matrix that transforms 2D plane by an angle \(\theta\) looks like this:
 
 \[ \begin{bmatrix}\cos \theta &-\sin \theta \\\sin \theta &\cos \theta \end{bmatrix} \]
 
 If the rotation is in the plane of selected 2 variables, it is called Givens rotation. Let's denote those 2 variables \(i\) and \(j\). The Givens rotation is useful for introducing zeros on a grand scale and used for computing the QR decomposition of matrix in linear algebra problems. One advantage over other transformation methods which is particularly useful in our case is the ability to zero elements more selectively.
 
-The interpolation methods in the \textbf{woylier} package is based on the fact that in any vector of a matrix, one can zero out the \(i\)-th coordinate with a Givens rotation in the \((i, j)\)-plane for any \(j\neq i\). This rotation affects only coordinate \(i\) and \(j\) and leave all other coordinates unchanged.
+The interpolation methods in the \textbf{woylier} package is based on the fact that in any vector of a matrix, one can zero out the \(i\)-th coordinate with a Givens rotation (Golub and Loan 1989) in the \((i, j)\)-plane for any \(j\neq i\). This rotation affects only coordinate \(i\) and \(j\) and leave all other coordinates unchanged.
 
 Sequences of Givens rotations can map any orthonormal d-frame F in p-space to standard d-frame \(E_d=((1, 0, 0, ...)^T, (0, 1, 0, ...)^T, ...)\).
 
@@ -173,90 +173,34 @@ Performing these rotations would go from the starting frame to the target frame 
 
 \textbf{Projection pursuit index functions}
 
-The properties of several projection pursuit index functions were investigated in Laa and Cook (2020). The smoothness, squintability, flexibility, rotation invariance, and speed of projection pursuit index functions were examined. The one property that is interesting to us is rotation invariance. The rotational invariance is examined by computing projection pursuit index for different rotations within 2D plane. It is established that the dcor2d, splines2d and TIC index are not rotationally invariant. Splines2D index measures nonlinear association between variable by fitting spline model. It compares the variance of residuals and the functional dependence is stronger if the index value is larger.
+The properties of several projection pursuit index functions were investigated in Laa and Cook (2020). The smoothness, squintability, flexibility, rotation invariance, and speed of projection pursuit index functions were examined. The one property that is interesting to us is rotation invariance. The rotational invariance is examined by computing projection pursuit index for different rotations within 2D plane. It is established that the \texttt{dcor2d}, \texttt{splines2d} and \texttt{TIC} index are not strictly rotationally invariant. The \texttt{splines2d} index measures nonlinear association between variable by fitting spline model. It compares the variance of residuals and the functional dependence is stronger when the index value is larger.
 
 \hypertarget{implementation}{%
 \section{Implementation}\label{implementation}}
 
-We implemented each steps mentioned in \textbf{Givens interpolation path algorithm} in separate functions and combined them in \emph{givens\_full\_path()} function. Here is the input and output of each functions and it's descriptions.
+We implemented each steps in Givens interpolation path algorithm in separate functions and combined them in \texttt{givens\_full\_path()} function. Here is the input and output of each functions and it's descriptions.
 
-\begin{itemize}
-\tightlist
-\item
-  \texttt{givens\_full\_path(Fa,\ Fz,\ nsteps)}: Construct full interpolated frames.
-
-  \begin{itemize}
-  \tightlist
-  \item
-    \texttt{input}: Starting and target frame (Fa, Fz) and number of steps
-  \item
-    \texttt{output}: An array with nsteps matrix. Each matrix is interpolated frame in between starting and target frames.
-  \end{itemize}
-\item
-  \texttt{preprojection(Fa,\ Fz)}: Build a d-dimensional pre-projection space by orthonormalizing Fz with regard to Fa.
-
-  \begin{itemize}
-  \tightlist
-  \item
-    \texttt{input}: Starting and target frame (Fa, Fz)
-  \item
-    \texttt{output}: B pre-projection px2d matrix
-  \end{itemize}
-\item
-  \texttt{construct\_preframe(Fa,\ B)}: Construct preprojected frames.
-
-  \begin{itemize}
-  \tightlist
-  \item
-    \texttt{input}: A frame and the pre-projection px2d matrix
-  \item
-    \texttt{output}: Preprojected frame in preprojection space
-  \end{itemize}
-\item
-  \texttt{row\_rot(a,\ i,\ k,\ theta)}: Performs Givens rotation (Golub and Loan 1989).
-
-  \begin{itemize}
-  \tightlist
-  \item
-    \texttt{input}: a-matrix, i-row, k-row that we want to zero the element, theta-angle between i, k rows
-  \item
-    \texttt{output}: theta angle rotated matrix a
-  \end{itemize}
-\item
-  \texttt{calculate\_angles(Wa,\ Wz)}: Calculate angles of required rotations to map Wz to Wa.
-
-  \begin{itemize}
-  \tightlist
-  \item
-    \texttt{input}: Preprojected frames (Wa, Wz)
-  \item
-    \texttt{output}: Names list of angles
-  \end{itemize}
-\item
-  \texttt{givens\_rotation(Wa,\ angles,\ stepfraction)}: It implements series of Givens rotations that maps Wa to Wz
-
-  \begin{itemize}
-  \tightlist
-  \item
-    \texttt{input}: Wa starting preprojected frame, list of angles of required rotations to map Wz to Wa, stepfraction.
-  \item
-    \texttt{output}: Givens path
-  \end{itemize}
-\item
-  \texttt{construct\_moving\_frame(Wt,\ B)}: Reconstruct interpolated frames using pre-projection.
-
-  \begin{itemize}
-  \tightlist
-  \item
-    \texttt{input}: Pre-projection matrix B, Each frame of givens path
-  \item
-    \texttt{output}: A frame of on a step of interpolation
-  \end{itemize}
-\end{itemize}
+\begin{tabular}[t]{>{\raggedright\arraybackslash}p{5cm}|>{\raggedright\arraybackslash}p{3cm}|>{\raggedright\arraybackslash}p{2cm}|>{\raggedright\arraybackslash}p{2cm}}
+\hline
+\textbf{name} & \textbf{description} & \textbf{input} & \textbf{output}\\
+\hline
+\ttfamily{givens\_full\_path(Fa, Fz, nsteps)} & Construct full interpolated frames. & Starting and target frame (Fa, Fz) and number of steps & An array with nsteps matrix. Each matrix is interpolated frame in between starting and target frames.\\
+\hline
+\ttfamily{preprojection(Fa, Fz)} & Build a d-dimensional pre-projection space by orthonormalizing Fz with regard to Fa. & Starting and target frame (Fa, Fz) & B pre-projection p x 2D matrix\\
+\hline
+\ttfamily{construct\_preframe(Fa, B)} & Construct preprojected frames. & A frame and the pre-projection p x 2D matrix & Pre-projected frame in pre-projection space\\
+\hline
+\ttfamily{row\_rot(a, i, k, theta)} & Performs Givens rotation . & A frame and the pre-projection p x 2D matrix & theta angle rotated matrix a\\
+\hline
+\ttfamily{calculate\_angles(Wa, Wz)} & Calculate angles of required rotations to map Wz to Wa. & Preprojected frames (Wa, Wz) & Names list of angles\\
+\hline
+\ttfamily{construct\_moving\_frame(Wt, B)} & Reconstruct interpolated frames using pre-projection. & Pre-projection matrix B, Each frame of givens path & A frame of on a step of interpolation\\
+\hline
+\end{tabular}
 
 The interface of tour is that it renders one projection of data at a time. It displays one projection and asks for the next projection. Therefore, path of projections shown below is sequence of projections to be renders at tour display.
 
-The \emph{givens\_full\_path()} function returns the intermediate interpolation step projections in given number of steps. The code chunk below demonstrates the interpolation between 2 random basis in 5 steps.
+The \texttt{givens\_full\_path()} function returns the intermediate interpolation step projections in given number of steps. The code chunk below demonstrates the interpolation between 2 random basis in 5 steps.
 
 \begin{verbatim}
 set.seed(2022)
@@ -420,7 +364,7 @@ We now use the splines index to identify a projection with functional dependence
 \caption{Final view after optimisation in the guided tour using geodesic optimisation (left), simulated annealing with geodesic interpolation (middle) and simulated annealing with givens interpolation (right).}\label{fig:rates-tour-static}
 \end{figure}
 
-\includegraphics{woylier-article_files/figure-latex/unnamed-chunk-11-1.pdf}
+\includegraphics{woylier-article_files/figure-latex/unnamed-chunk-12-1.pdf}
 
 What do we learn from looking at the traces?
 

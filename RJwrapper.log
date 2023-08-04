@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.7.19)  4 AUG 2023 12:14
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.7.19)  4 AUG 2023 16:57
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -768,79 +768,84 @@ Package pdftex.def Info: frame.png  used on input line 51.
 LaTeX Font Info:    Trying to load font information for TS1+ppl on input line 62.
 (/Users/cookd/Library/TinyTeX/texmf-dist/tex/latex/psnfss/ts1ppl.fd
 File: ts1ppl.fd 2001/06/04 font definitions for TS1/ppl.
-) [2 <./woylier-article_files/figure-latex/splines2d-static-1.pdf>] [3 <./plane.png> <./frame.png>] [4]
-LaTeX Font Info:    Trying to load font information for T1+zi4 on input line 186.
+) [2 <./woylier-article_files/figure-latex/splines2d-static-1.pdf>] [3 <./plane.png> <./frame.png>]
+LaTeX Font Info:    Trying to load font information for T1+zi4 on input line 176.
 (/Users/cookd/Library/TinyTeX/texmf-dist/tex/latex/inconsolata/t1zi4.fd
 File: t1zi4.fd 2018/01/14 T1/zi4 (Inconsolata)
 )
 LaTeX Font Info:    Font shape `T1/zi4/m/n' will be
-(Font)              scaled to size 9.18004pt on input line 186.
+(Font)              scaled to size 9.18004pt on input line 176.
 Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             `zi4' (encoding: T1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
-[5{/Users/cookd/Library/TinyTeX/texmf-dist/fonts/enc/dvips/inconsolata/i4-t1-0.enc}] [6]
+[4{/Users/cookd/Library/TinyTeX/texmf-dist/fonts/enc/dvips/inconsolata/i4-t1-0.enc}]
+Overfull \hbox (7.29445pt too wide) in paragraph at lines 183--200
+[][] 
+ []
+
+[5] [6]
 <sphere_static.png, id=109, 476.27937pt x 480.29437pt>
 File: sphere_static.png Graphic file (type png)
 <use sphere_static.png>
-Package pdftex.def Info: sphere_static.png  used on input line 363.
+Package pdftex.def Info: sphere_static.png  used on input line 307.
 (pdftex.def)             Requested size: 199.16928pt x 200.85013pt.
 <torus_static.png, id=110, 476.78125pt x 477.28313pt>
 File: torus_static.png Graphic file (type png)
 <use torus_static.png>
-Package pdftex.def Info: torus_static.png  used on input line 363.
+Package pdftex.def Info: torus_static.png  used on input line 307.
 (pdftex.def)             Requested size: 199.16928pt x 199.37968pt.
 
-LaTeX Warning: Reference `fig:2d-path-static' on page 7 undefined on input line 372.
+LaTeX Warning: Reference `fig:2d-path-static' on page 7 undefined on input line 316.
 
 [7 <./sphere_static.png> <./torus_static.png>]
 
-LaTeX Warning: Reference `fig:compare-interpolations-static' on page 8 undefined on input line 379.
+LaTeX Warning: Reference `fig:compare-interpolations-static' on page 8 undefined on input line 323.
 
 <woylier-article_files/figure-latex/currency-1.pdf, id=121, 640.3925pt x 256.96pt>
 File: woylier-article_files/figure-latex/currency-1.pdf Graphic file (type pdf)
 <use woylier-article_files/figure-latex/currency-1.pdf>
-Package pdftex.def Info: woylier-article_files/figure-latex/currency-1.pdf  used on input line 391.
+Package pdftex.def Info: woylier-article_files/figure-latex/currency-1.pdf  used on input line 335.
 (pdftex.def)             Requested size: 398.33858pt x 159.83502pt.
 <woylier-article_files/figure-latex/pca-result-static-1.pdf, id=122, 555.07375pt x 544.0325pt>
 File: woylier-article_files/figure-latex/pca-result-static-1.pdf Graphic file (type pdf)
 <use woylier-article_files/figure-latex/pca-result-static-1.pdf>
-Package pdftex.def Info: woylier-article_files/figure-latex/pca-result-static-1.pdf  used on input line 403.
+Package pdftex.def Info: woylier-article_files/figure-latex/pca-result-static-1.pdf  used on input line 347.
 (pdftex.def)             Requested size: 318.67207pt x 312.33478pt.
 <rates_tour_geodesic_final.png, id=123, 200.75pt x 200.75pt>
 File: rates_tour_geodesic_final.png Graphic file (type png)
 <use rates_tour_geodesic_final.png>
-Package pdftex.def Info: rates_tour_geodesic_final.png  used on input line 416.
+Package pdftex.def Info: rates_tour_geodesic_final.png  used on input line 360.
 (pdftex.def)             Requested size: 119.50278pt x 119.5044pt.
 <rates_tour_better_final.png, id=124, 200.75pt x 200.75pt>
 File: rates_tour_better_final.png Graphic file (type png)
 <use rates_tour_better_final.png>
-Package pdftex.def Info: rates_tour_better_final.png  used on input line 416.
+Package pdftex.def Info: rates_tour_better_final.png  used on input line 360.
 (pdftex.def)             Requested size: 119.50278pt x 119.5044pt.
 <rates_tour_givens_final.png, id=125, 200.75pt x 200.75pt>
 File: rates_tour_givens_final.png Graphic file (type png)
 <use rates_tour_givens_final.png>
-Package pdftex.def Info: rates_tour_givens_final.png  used on input line 416.
+Package pdftex.def Info: rates_tour_givens_final.png  used on input line 360.
 (pdftex.def)             Requested size: 119.50278pt x 119.5044pt.
 [8 <./woylier-article_files/figure-latex/currency-1.pdf>]
-<woylier-article_files/figure-latex/unnamed-chunk-11-1.pdf, id=139, 463.7325pt x 316.18124pt>
-File: woylier-article_files/figure-latex/unnamed-chunk-11-1.pdf Graphic file (type pdf)
-<use woylier-article_files/figure-latex/unnamed-chunk-11-1.pdf>
-Package pdftex.def Info: woylier-article_files/figure-latex/unnamed-chunk-11-1.pdf  used on input line 423.
+<woylier-article_files/figure-latex/unnamed-chunk-12-1.pdf, id=139, 463.7325pt x 316.18124pt>
+File: woylier-article_files/figure-latex/unnamed-chunk-12-1.pdf Graphic file (type pdf)
+<use woylier-article_files/figure-latex/unnamed-chunk-12-1.pdf>
+Package pdftex.def Info: woylier-article_files/figure-latex/unnamed-chunk-12-1.pdf  used on input line 367.
 (pdftex.def)             Requested size: 463.73135pt x 316.18047pt.
 
-Overfull \hbox (80.39278pt too wide) in paragraph at lines 423--424
+Overfull \hbox (80.39278pt too wide) in paragraph at lines 367--368
 [][] 
  []
 
-[9 <./woylier-article_files/figure-latex/pca-result-static-1.pdf> <./rates_tour_geodesic_final.png> <./rates_tour_better_final.png> <./rates_tour_givens_final.png>] [10 <./woylier-article_files/figure-latex/unnamed-chunk-11-1.pdf>]
+[9 <./woylier-article_files/figure-latex/pca-result-static-1.pdf> <./rates_tour_geodesic_final.png> <./rates_tour_better_final.png> <./rates_tour_givens_final.png>] [10 <./woylier-article_files/figure-latex/unnamed-chunk-12-1.pdf>]
 No file RJwrapper.bbl.
 
 LaTeX Font Warning: Font shape `T1/zi4/m/it' undefined
-(Font)              using `T1/zi4/m/n' instead on input line 491.
+(Font)              using `T1/zi4/m/n' instead on input line 435.
 
 LaTeX Font Info:    Font shape `T1/zi4/m/it' will be
-(Font)              scaled to size 9.18004pt on input line 491.
+(Font)              scaled to size 9.18004pt on input line 435.
 ) [11] (./RJwrapper.aux)
  ***********
 LaTeX2e <2023-06-01> patch level 1
@@ -856,15 +861,15 @@ Package rerunfilecheck Info: File `RJwrapper.out' has not changed.
 (rerunfilecheck)             Checksum: 53AA12D5F560C4BFB5EC197B96EBDD90;1618.
  ) 
 Here is how much of TeX's memory you used:
- 26654 strings out of 477197
- 485835 string characters out of 5813095
+ 26650 strings out of 477197
+ 485842 string characters out of 5813095
  1935244 words of memory out of 5000000
- 46864 multiletter control sequences out of 15000+600000
- 596405 words of font info for 248 fonts, out of 8000000 for 9000
+ 46866 multiletter control sequences out of 15000+600000
+ 596155 words of font info for 244 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  117i,12n,131p,1006b,851s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </Users/cookd/Library/TinyTeX/texmf-dist/fonts/type1/public/inconsolata/Inconsolata-zi4r.pfb></Users/cookd/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></Users/cookd/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></Users/cookd/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></Users/cookd/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></Users/cookd/Library/TinyTeX/texmf-dist/fonts/type1/public/mathpazo/fplmri.pfb></Users/cookd/Library/TinyTeX/texmf-dist/fonts/type1/urw/palatino/uplb8a.pfb></Users/cookd/Library/TinyTeX/texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb></Users/cookd/Library/TinyTeX/texmf-dist/fonts/type1/urw/palatino/uplri8a.pfb>
-Output written on RJwrapper.pdf (11 pages, 672204 bytes).
+Output written on RJwrapper.pdf (11 pages, 672267 bytes).
 PDF statistics:
  257 PDF objects out of 1000 (max. 8388607)
  198 compressed objects within 2 object streams
