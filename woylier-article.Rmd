@@ -1,8 +1,8 @@
 ---
 title: "Frame to frame interpolation for high-dimensional data visualisation using the woylier package"
-date: "2022-11-18"
+date: "2023-09-15"
 abstract: >
-  The woylier package implements alternative method for interpolation path between tour frames using Givens rotation.
+  The woylier package implements tour interpolation path between frames using Givens rotation. This provides an alternative to the geodesic interpolation between planes currently available in the tourr package. Tours are used to visualise high-dimensional data and models, to detect clustering, anomalies and non-linear relationships. Frame-to-frame can be useful for projection pursuit guided tours when the index is not rotationally invariant. It also provides a way to specifically reach a given target frame. We demonstrate the method for exploring non-linear relationships between currency cross-rates.
 author:  
   # see ?rjournal_article for more information
   - name: Zoljargal Batsaikhan
