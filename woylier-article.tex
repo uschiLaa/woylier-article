@@ -1,117 +1,254 @@
 % !TeX root = RJwrapper.tex
-\title{Frame to frame interpolation for high-dimensional data visualisation using the woylier package}
-
-
+\title{Frame to frame interpolation for high-dimensional data
+visualisation using the woylier package}
 \author{by Zoljargal Batsaikhan, Dianne Cook, and Ursula Laa}
 
 \maketitle
 
 \abstract{%
-The woylier package implements tour interpolation path between frames using Givens rotation. This provides an alternative to the geodesic interpolation between planes currently available in the tourr package. Tours are used to visualise high-dimensional data and models, to detect clustering, anomalies and non-linear relationships. Frame-to-frame can be useful for projection pursuit guided tours when the index is not rotationally invariant. It also provides a way to specifically reach a given target frame. We demonstrate the method for exploring non-linear relationships between currency cross-rates.
+The woylier package implements tour interpolation paths between frames
+using Givens rotations. This provides an alternative to the geodesic
+interpolation between planes currently available in the tourr package.
+Tours are used to visualise high-dimensional data and models, to detect
+clustering, anomalies and non-linear relationships. Frame-to-frame
+interpolation can be useful for projection pursuit guided tours when the
+index is not rotationally invariant. It also provides a way to
+specifically reach a given target frame. We demonstrate the method for
+exploring non-linear relationships between currency cross-rates.
 }
 
 \hypertarget{introduction}{%
 \section{Introduction}\label{introduction}}
 
-When data has up to three variables, visualization is relatively intuitive, while with more than three variables, we face the challenge of visualizing high dimensions on 2D displays. This issue was tackled by grand tour Asimov (1985) which can be used to view data in more than three dimensions using linear projections. It is based on the idea of rotations of a lower-dimensional projection in high-dimensional space. The grand tour allows users to see dynamic 2D projections of higher dimensional space. Originally, Asimov's grand tour presents the viewer with an automatic movie of projections with no user control. Since then new work has added interactivity to the tour giving more control to users (Buja et al. 2005)and new variations include the manual or radial tour, little tour, guided tour, local tour, and planned tour. These are different ways of selecting the sequence of projection bases for the tour.
+When data has up to three variables, visualization is relatively
+intuitive, while with more than three variables, we face the challenge
+of visualizing high dimensions on 2D displays. This issue was tackled by
+the \emph{grand tour} \citep{asimov_1985} which can be used to view data
+in more than three dimensions using linear projections. It is based on
+the idea of rotations of a lower-dimensional projection in
+high-dimensional space. The grand tour allows users to see dynamic
+low-dimensional (typically 2D) projections of higher dimensional space.
+Originally, Asimov's grand tour presents the viewer with an automatic
+movie of projections with no user control. Since then new work has added
+interactivity to the tour, giving more control to users
+\citep{buja_cook_asimov_hurley_2005}. New variations include the manual
+\citep{cook_manual_1997} or radial tour \citep{mmtour}, little tour,
+guided tour \citep{grandtour1995}, local tour, and planned tour. These
+are different ways of selecting the sequence of projection bases for the
+tour, for an overview see \citet{tourrev}.
 
-The guided tour combines projection pursuit with the tour (Cook et al. 1995) and it is implemented in the \CRANpkg{tourr} package. The idea of projection pursuit is a procedure used to locate the projection of high-to-low dimensional space that exposes the most interesting feature of data originally proposed by Kruskal (1969). It involves defining a criterion of interest, a numerical objective function, that indicates the interestingness of each projection and selecting planes with increasing values of the function. In the literature, a number of such criteria have been developed based on clustering, spread, and outliers.
+The guided tour combines projection pursuit with the grand tour and it
+is implemented in the \CRANpkg{tourr} package \citep{tourr}. Projection
+pursuit is a procedure used to locate the projection of high-to-low
+dimensional space that should expose the most interesting feature of
+data, originally proposed in \citet{kruskal_1969}. It involves defining
+a criterion of interest, a numerical objective function that indicates
+the interestingness of each projection, and an optimization for
+selecting planes with increasing values of the function. In the
+literature, a number of such criteria have been developed based on
+clustering, spread, and outliers.
 
-A tour path is a sequence of projections and we use an interpolation to produce small steps simulating a smooth movement. The current implementation of tour in \CRANpkg{tourr} package uses geodesic interpolation between planes. The geodesic interpolation path is the locally shortest path between planes with no within-plane spin (see Buja et al. (2004) for more details). As a result of this method, the rendered target plane could be a within-plane rotation of the target plane originally specified. This is not a problem when the structure we are looking can be identified from any rotation. However, even simple associations in 2D such as the calculated correlation between variables is very different when the axes are rotated.
+A tour path is a sequence of projections and we use an interpolation to
+produce small steps simulating a smooth movement. The current
+implementation of tour in \CRANpkg{tourr} package uses geodesic
+interpolation between planes. The geodesic interpolation path is the
+locally shortest path between planes with no within-plane spin (see
+\citet{Buja2004TheoryOD} for more details). As a result, the rendered
+target plane could be a within-plane rotation of the target plane
+originally specified. This is not a problem when the structure we are
+looking for can be identified from any rotation. However, even simple
+associations in 2D, such as the calculated correlation between
+variables, can be very different when the basis is rotated.
 
-Most projection pursuit indexes, particularly those provided by the \CRANpkg{tourr} are rotationally invariant. However, there are some projection pursuit index where the orientation of frames does matter. One example is the splines index proposed by Grimm (2016). The splines index computes a spline model for the two variables in a projection, in order to measure non-linear association. It can be useful to detect non-linear relationships in high-dimensional data. However, its value will change substantially if the projection is rotated within the plane (Laa and Cook 2020). Grimm (2016) made it a little less affected by the orientation by using the maximum value of the index for a couple of different rotations.
+Most projection pursuit indexes, particularly those provided by the
+\CRANpkg{tourr} are rotationally invariant. However, there are some
+projection pursuit index where the orientation of frames does matter.
+One example is the splines index proposed by \citet{Grimm2016}. The
+splines index computes a spline model for the two variables in a
+projection, in order to measure non-linear association. It can be useful
+to detect non-linear relationships in high-dimensional data. However,
+its value will change substantially if the projection is rotated within
+the plane \citep{pp}. The procedure in \citet{Grimm2016} was less
+affected by the orientation because it considered only pairs of
+variables, and it selects the maximum value found when exchanging which
+variable is considered as predictor and response variable.
 
-Figure \ref{fig:splines2d-static} illustrates the rotational invariance problem for a modified spline2D index. The original implementation for the splines index makes a couple of additional calculations to reduce (but not remove) the rotational invariance. Our modified index computes the splines on one orientation, exaggerating the rotational variability. The example data was simulated to follow a sine curve and the modified splines index is calculated on different within-plane rotations of the data. Although they have the same structure, the index values vary greatly.
+Figure \ref{fig:splines2d-static} illustrates the rotational invariance
+problem for a modified spline2D index, where we always consider the
+horizontal direction as the predictor variable, and the vertical
+direction as the response. Thus, our modified index computes the splines
+on one orientation, exaggerating the rotational variability. The example
+data was simulated to follow a sine curve and the modified splines index
+is calculated on different within-plane rotations of the data. Although
+they have the same structure, the index values vary greatly.
 
-The lack of rotation invariance of the splines index raises complications in the optimisation process in the projection-pursuit guided tour as available in the \CRANpkg{tourr}. Fixing this is the motivation of this work. The goal with the frame-to-frame interpolation is that optimisation would find the best within-plane rotation, and thus appropriately optimize the index.
+The lack of rotation invariance of the splines index raises
+complications in the optimisation process in the projection-pursuit
+guided tour as available in the \CRANpkg{tourr}. Fixing this is the
+motivation of this work. The goal with the frame-to-frame interpolation
+is that optimisation would find the best within-plane rotation, and thus
+appropriately optimize the index.
 
+\begin{Schunk}
 \begin{figure}
-\includegraphics[width=1\linewidth]{woylier-article_files/figure-latex/splines2d-static-1} \caption{The impact of rotation on a spline index that is NOT rotation invariant. The index value for different within-plane rotations take very different values: (a) original projection has maximum index value of 1.00, (b) axes rotated 45$^o$ drops index value to 0.83, (c) axes rotated 60$^o$ drops index to a very low 0.26. Geodesic interpolation between planes will have difficulty finding the maximum of an index like this because it is focues only on the projection plane, not the frame defining the plane.}\label{fig:splines2d-static}
+\includegraphics[width=1\linewidth]{woylier-article_files/figure-latex/splines2d-static-1} \caption[The impact of rotation on a spline index that is NOT rotation invariant]{The impact of rotation on a spline index that is NOT rotation invariant. The index value for different within-plane rotations take very different values: (a) original projection has maximum index value of 1.00, (b) axes rotated 45$^o$ drops index value to 0.83, (c) axes rotated 60$^o$ drops index to a very low 0.26. Geodesic interpolation between planes will have difficulty finding the maximum of an index like this because it is focused only on the projection plane, not the frame defining the plane.}\label{fig:splines2d-static}
 \end{figure}
+\end{Schunk}
 
-A few alternatives to geodesic interpolation were proposed by Buja et al. (2005) including the decomposition of orthogonal matrices, Givens decomposition, and Householder decomposition. The purpose of the \textbf{woylier} package is to implement the Givens paths method in R. This algorithm adapts Given's matrix decomposition technique which allows the interpolation to be between frames rather than planes.
+A few alternatives to geodesic interpolation were proposed by
+\citet{buja_cook_asimov_hurley_2005} including the decomposition of
+orthogonal matrices, Givens decomposition, and Householder
+decomposition. The purpose of the \textbf{woylier} package is to
+implement the Givens paths method in R. This algorithm adapts the
+Given's matrix decomposition technique which allows the interpolation to
+be between frames rather than planes.
 
-This article is structured as follows. The next section provided the theoretical framework of the Givens interpolation method followed by a section about the implementation Givens path in R. The method is applied to search for nonlinear associations between currency cross-rates.
+This article is structured as follows. The next section provides the
+theoretical framework of the Givens interpolation method followed by a
+section about the implementation in R. The method is applied to search
+for nonlinear associations between currency cross-rates.
 
 \hypertarget{background}{%
 \section{Background}\label{background}}
 
-The tour method of visualization is animated high-to-low dimensional data rotation that is a movie, one-parameter (time) family of static projections. Algorithms for such dynamic projections Buja et al. (2005) are based on the idea of smoothly interpolating a discrete sequence of projections.
+The tour method of visualization is animated high-to-low dimensional
+data rotation that is a movie, one-parameter (time) family of static
+projections. Algorithms for such dynamic projections
+\citet{buja_cook_asimov_hurley_2005} are based on the idea of smoothly
+interpolating a discrete sequence of projections.
 
-The topic of this article is the construction of paths of projections. Interpolation of paths of projection can be compared to connecting line segments that interpolate points in Euclidean space. Interpolation acts as a bridge between continuous animation and discrete choice of sequences of projections.
+The topic of this article is the construction of paths of projections.
+Interpolation of paths of projection can be compared to connecting line
+segments that interpolate points in Euclidean space. Interpolation acts
+as a bridge between continuous animation and discrete choice of
+sequences of projections.
 
 \textbf{The interpolating paths of plane versus frames}
 
-Current implementation of \CRANpkg{tourr} package is locally shortest (geodesic) interpolation of planes. The pitfall of this interpolation method is that it does not account for rotation variability. Therefore, the interpolation of frames is required when the orientation of projection matters. If the rendering on a frame and on the rotated version of the frame yields the same visual scenes, it means the orientation does not matter.
+Current implementation of \CRANpkg{tourr} package is locally shortest
+(geodesic) interpolation of planes. The pitfall of this interpolation
+method is that it does not account for rotation variability. Therefore,
+the interpolation of frames is required when the orientation of
+projection matters. If the rendering on a frame and on the rotated
+version of the frame yields the same visual scenes, it means the
+orientation does not matter.
 
-The orientation of frames could be important when non-linear projection pursuit function is used in guided tour. An illustration of such cases are shown in Figure \ref{fig:dogs}.
+The orientation of frames could be important when non-linear projection
+pursuit function is used in guided tour. An illustration of such cases
+are shown in Figure \ref{fig:dogs}.
 
+\begin{Schunk}
 \begin{figure}
 
 {\centering \includegraphics[width=0.45\linewidth]{plane} \includegraphics[width=0.45\linewidth]{frame} 
 
 }
 
-\caption{Plane to plane interpolation (left) and Frame to frame interpolation (right). We used dog index for illustration purposes. For some non-linear index orientation of data could affect the index.}\label{fig:dogs}
+\caption[Plane to plane interpolation (left) and Frame to frame interpolation (right)]{Plane to plane interpolation (left) and Frame to frame interpolation (right). We used dog index for illustration purposes. For some non-linear index orientation of data could affect the index.}\label{fig:dogs}
 \end{figure}
+\end{Schunk}
 
-Before continuing with the interpolation algorithms, we need to define the notations.
+Before continuing with the interpolation algorithms, we need to define
+the notations.
 
 \begin{itemize}
 \item
-  Let the \(p\) be the dimension of original data and \(d\) be the dimension onto which the data is being projected.
+  Let the \(p\) be the dimension of original data and \(d\) be the
+  dimension onto which the data is being projected.
 \item
-  A frame \(F\) is defined as \(p\times d\) matrix with pairwise orthogonal columns of unit length that satisfies, where \(I_d\) is the identity matrix in d dimensions.
+  A frame \(F\) is defined as \(p\times d\) matrix with pairwise
+  orthogonal columns of unit length that satisfies, where \(I_d\) is the
+  identity matrix in d dimensions.
 \end{itemize}
 
 \[F^TF = I_d\]
 
 \begin{itemize}
 \item
-  Paths of projections are given by continuous one-parameter families \(F(t)\) where \(t\in [a, z]\) interval representing time. We denote the starting frame by \(F_a = F(a)\) and target frame by \(F_z = F(z)\). Usually, \(F_z\) is selected target basis that has chosen via various methods. While grand tour chooses target frames randomly, guided tour chooses the target plane by optimizing the projection pursuit index. Interpolation methods are used to move from \(F_a\) to \(F_z\).
+  Paths of projections are given by continuous one-parameter families
+  \(F(t)\) where \(t\in [a, z]\) interval representing time. We denote
+  the starting frame by \(F_a = F(a)\) and target frame by
+  \(F_z = F(z)\). Usually, \(F_z\) is selected target basis that has
+  chosen via various methods. While grand tour chooses target frames
+  randomly, guided tour chooses the target plane by optimizing the
+  projection pursuit index. Interpolation methods are used to move from
+  \(F_a\) to \(F_z\).
 \item
   \(B\) is preprojection basis of \(F_a\) and \(F_z\).
 \end{itemize}
 
 \textbf{Preprojection algorithm}
 
-In order to make the interpolation algorithm simple, we need to carry out ``preprojection'' step.
-The purpose of preprojection is to limit data subspace that the interpolation path, \(F(t)\), is traversing. In other words, preprojection step make sure the interpolation path between two frames \(F_a\) and \(F_z\) is not going to the data space that is not related to \(F_a\) and \(F_z\). Simply, prepojection algorithm is defining the joint subspace of \(F_a\) and \(F_z\).
+In order to make the interpolation algorithm simple, we need to carry
+out ``preprojection'' step. The purpose of preprojection is to limit
+data subspace that the interpolation path, \(F(t)\), is traversing. In
+other words, preprojection step make sure the interpolation path between
+two frames \(F_a\) and \(F_z\) is not going to the data space that is
+not related to \(F_a\) and \(F_z\). Simply, prepojection algorithm is
+defining the joint subspace of \(F_a\) and \(F_z\).
 
-The procedure starts with forming an orthonormal basis by applying Gram-Schmidt to \(F_z\) with regard to \(F_a\). We denote this orthonormal basis by \(F_\star\). Then build preprojection basis \(B\) by combining \(F_a\) and \(F_\star\) as follows:
+The procedure starts with forming an orthonormal basis by applying
+Gram-Schmidt to \(F_z\) with regard to \(F_a\). We denote this
+orthonormal basis by \(F_\star\). Then build preprojection basis \(B\)
+by combining \(F_a\) and \(F_\star\) as follows:
 
 \[B = (F_a, F_{\star})\]
 
-The dimension of the resulting orthonormal basis, \(B\), is \(p\times 2d\).
+The dimension of the resulting orthonormal basis, \(B\), is
+\(p\times 2d\).
 
 Then, we can express the original frames in terms of this basis:
 
 \[F_a = B^TW_a, F_z = B^TW_z\]
 
-The interpolation problem is then reduced to the construction of paths of frames \(W(t)\) that interpolate the preprojected frames \(W_a\) and \(W_z\). Because \(B\) is orthonormalized basis of \(F_z\) with regard to \(F_a\), \(W_a\) is \(2d\times d\) matrix of 1, 0s. This is an important character for our interpolation algorithm of choice, Givens interpolation.
+The interpolation problem is then reduced to the construction of paths
+of frames \(W(t)\) that interpolate the preprojected frames \(W_a\) and
+\(W_z\). Because \(B\) is orthonormalized basis of \(F_z\) with regard
+to \(F_a\), \(W_a\) is \(2d\times d\) matrix of 1, 0s. This is an
+important character for our interpolation algorithm of choice, Givens
+interpolation.
 
 \textbf{Givens interpolation path algorithm}
 
-A rotation matrix is a transformation matrix used to perform a rotation in Euclidean space in a plane. A rotation matrix that transforms 2D plane by an angle \(\theta\) looks like this:
+A rotation matrix is a transformation matrix used to perform a rotation
+in Euclidean space in a plane. A rotation matrix that transforms 2D
+plane by an angle \(\theta\) looks like this:
 
 \[ \begin{bmatrix}\cos \theta &-\sin \theta \\\sin \theta &\cos \theta \end{bmatrix} \]
 
-If the rotation is in the plane of selected 2 variables, it is called Givens rotation. Let's denote those 2 variables \(i\) and \(j\). The Givens rotation is useful for introducing zeros on a grand scale and used for computing the QR decomposition of matrix in linear algebra problems. One advantage over other transformation methods which is particularly useful in our case is the ability to zero elements more selectively.
+If the rotation is in the plane of selected 2 variables, it is called
+Givens rotation. Let's denote those 2 variables \(i\) and \(j\). The
+Givens rotation is useful for introducing zeros on a grand scale and
+used for computing the QR decomposition of matrix in linear algebra
+problems. One advantage over other transformation methods which is
+particularly useful in our case is the ability to zero elements more
+selectively.
 
-The interpolation methods in the \textbf{woylier} package is based on the fact that in any vector of a matrix, one can zero out the \(i\)-th coordinate with a Givens rotation (Golub and Loan 1989) in the \((i, j)\)-plane for any \(j\neq i\). This rotation affects only coordinate \(i\) and \(j\) and leave all other coordinates unchanged.
+The interpolation methods in the \textbf{woylier} package is based on
+the fact that in any vector of a matrix, one can zero out the \(i\)-th
+coordinate with a Givens rotation \citep{matrix_computation} in the
+\((i, j)\)-plane for any \(j\neq i\). This rotation affects only
+coordinate \(i\) and \(j\) and leave all other coordinates unchanged.
 
-Sequences of Givens rotations can map any orthonormal d-frame F in p-space to standard d-frame \(E_d=((1, 0, 0, ...)^T, (0, 1, 0, ...)^T, ...)\).
+Sequences of Givens rotations can map any orthonormal d-frame F in
+p-space to standard d-frame
+\(E_d=((1, 0, 0, ...)^T, (0, 1, 0, ...)^T, ...)\).
 
-The interpolation path construction algorithm from starting frame \(F_a\) to target frame \(F_z\) is illustrated below. The example is 2D path construction process of original 6D data frame.
+The interpolation path construction algorithm from starting frame
+\(F_a\) to target frame \(F_z\) is illustrated below. The example is 2D
+path construction process of original 6D data frame.
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
 \tightlist
 \item
-  Construct preprojection basis \(B\) by orthonormalizing \(F_z\) with regards tp \(F_a\) with Gram-Schmidt.
+  Construct preprojection basis \(B\) by orthonormalizing \(F_z\) with
+  regards tp \(F_a\) with Gram-Schmidt.
 \end{enumerate}
 
-In our example, \(F_a\) and \(F_z\) are \(p\times d\) or \(6\times2\) matrices that are orthonormal. The preprojection basis \(B\) is \(p\times 2d\) matrix that is \(6\times 4\).
+In our example, \(F_a\) and \(F_z\) are \(p\times d\) or \(6\times2\)
+matrices that are orthonormal. The preprojection basis \(B\) is
+\(p\times 2d\) matrix that is \(6\times 4\).
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
@@ -135,50 +272,82 @@ In our example, \(W_a\) looks like:
 \setcounter{enumi}{2}
 \tightlist
 \item
-  Then, we can construct a sequence of Givens rotations that maps \(W_z\) to \(W_a\) with such angles that makes one element zero at a time:
+  Then, we can construct a sequence of Givens rotations that maps
+  \(W_z\) to \(W_a\) with such angles that makes one element zero at a
+  time:
 \end{enumerate}
 
 \[ W_a = R_m(\theta_m) ... R_2(\theta_2)R_1(\theta_1)W_z\]
 
-At each rotation, the angle \(\theta_i\) that zero out the second coordinate of a plane is calculated.
+At each rotation, the angle \(\theta_i\) that zero out the second
+coordinate of a plane is calculated.
 
-When \(d = 2\), there are 5 rotations involved with 5 different angles that makes each elements 0. For example, the first rotation angle \(\theta_1\) is an angle in radian between \((1, 0)\) and \((a_{11}, a_{21})\). This rotation matrix would make element \(a_{21}\) zero:
+When \(d = 2\), there are 5 rotations involved with 5 different angles
+that makes each elements 0. For example, the first rotation angle
+\(\theta_1\) is an angle in radian between \((1, 0)\) and
+\((a_{11}, a_{21})\). This rotation matrix would make element \(a_{21}\)
+zero:
 
 \[R_1(\theta_1) = G(1, 2, \theta_1) = \begin{bmatrix} cos\theta_1 & -sin\theta_1 & 0 & 0 \\sin\theta_1  &cos\theta_1 & 0 &0 \\ 0&0&1&0 \\0&0&0&1\end{bmatrix}\]
 
-6th rotation is not necessary due to orthonormality of columns. If we make one element of a column 1 that means all other elements must be 0.
+6th rotation is not necessary due to orthonormality of columns. If we
+make one element of a column 1 that means all other elements must be 0.
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
 \setcounter{enumi}{3}
 \tightlist
 \item
-  The inverse mapping is obtained by reversing the sequence of rotations with the negative of the angles, we starts from the starting basis and end at the target basis.
+  The inverse mapping is obtained by reversing the sequence of rotations
+  with the negative of the angles, we starts from the starting basis and
+  end at the target basis.
 \end{enumerate}
 
 \[R(\theta) = R_1(-\theta_1) ... R_m(-\theta_m), \    W_z = R(\theta)W_a\]
 
-Performing these rotations would go from the starting frame to the target frame in one step. But we want to do it sequentially in a number of steps so interpolation between frames looks dynamic.
+Performing these rotations would go from the starting frame to the
+target frame in one step. But we want to do it sequentially in a number
+of steps so interpolation between frames looks dynamic.
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
 \setcounter{enumi}{4}
 \item
-  Next step should include the time parameter, \(t\), so that it shows the interpolation process rendered in the movie-like sequence. We break \(\theta_i\) into the number of steps, \(n-step\), that we want to go from starting frame to the target frame, which means it moves by equal angle in each step.
+  Next step should include the time parameter, \(t\), so that it shows
+  the interpolation process rendered in the movie-like sequence. We
+  break \(\theta_i\) into the number of steps, \(n-step\), that we want
+  to go from starting frame to the target frame, which means it moves by
+  equal angle in each step.
 \item
-  Finally, we reconstruct our original frames using \(B\). This reconstruction is done at each step of interpolation so that we have interpolated path as result. We use \(F_t\) to project the orignal data into lower dimensions.
+  Finally, we reconstruct our original frames using \(B\). This
+  reconstruction is done at each step of interpolation so that we have
+  interpolated path as result. We use \(F_t\) to project the orignal
+  data into lower dimensions.
 \end{enumerate}
 
 \[F_t = B  W_t\]
 
 \textbf{Projection pursuit index functions}
 
-The properties of several projection pursuit index functions were investigated in Laa and Cook (2020). The smoothness, squintability, flexibility, rotation invariance, and speed of projection pursuit index functions were examined. The one property that is interesting to us is rotation invariance. The rotational invariance is examined by computing projection pursuit index for different rotations within 2D plane. It is established that the \texttt{dcor2d}, \texttt{splines2d} and \texttt{TIC} index are not strictly rotationally invariant. The \texttt{splines2d} index measures nonlinear association between variable by fitting spline model. It compares the variance of residuals and the functional dependence is stronger when the index value is larger.
+The properties of several projection pursuit index functions were
+investigated in \citet{pp}. The smoothness, squintability, flexibility,
+rotation invariance, and speed of projection pursuit index functions
+were examined. The one property that is interesting to us is rotation
+invariance. The rotational invariance is examined by computing
+projection pursuit index for different rotations within 2D plane. It is
+established that the \texttt{dcor2d}, \texttt{splines2d} and
+\texttt{TIC} index are not strictly rotationally invariant. The
+\texttt{splines2d} index measures nonlinear association between variable
+by fitting spline model. It compares the variance of residuals and the
+functional dependence is stronger when the index value is larger.
 
 \hypertarget{implementation}{%
 \section{Implementation}\label{implementation}}
 
-We implemented each steps in Givens interpolation path algorithm in separate functions and combined them in \texttt{givens\_full\_path()} function. Here is the input and output of each functions and it's descriptions.
+We implemented each steps in Givens interpolation path algorithm in
+separate functions and combined them in \texttt{givens\_full\_path()}
+function. Here is the input and output of each functions and it's
+descriptions.
 
 \begin{tabular}[t]{>{\raggedright\arraybackslash}p{5cm}|>{\raggedright\arraybackslash}p{3cm}|>{\raggedright\arraybackslash}p{2cm}|>{\raggedright\arraybackslash}p{2cm}}
 \hline
@@ -198,20 +367,25 @@ We implemented each steps in Givens interpolation path algorithm in separate fun
 \hline
 \end{tabular}
 
-The interface of tour is that it renders one projection of data at a time. It displays one projection and asks for the next projection. Therefore, path of projections shown below is sequence of projections to be renders at tour display.
+The interface of tour is that it renders one projection of data at a
+time. It displays one projection and asks for the next projection.
+Therefore, path of projections shown below is sequence of projections to
+be renders at tour display.
 
-The \texttt{givens\_full\_path()} function returns the intermediate interpolation step projections in given number of steps. The code chunk below demonstrates the interpolation between 2 random basis in 5 steps.
+The \texttt{givens\_full\_path()} function returns the intermediate
+interpolation step projections in given number of steps. The code chunk
+below demonstrates the interpolation between 2 random basis in 5 steps.
 
-\begin{verbatim}
+\begin{Schunk}
+\begin{Sinput}
 set.seed(2022)
 p <- 6
 base1 <- tourr::basis_random(p, d=2)
 base2 <- tourr::basis_random(p, d=2)
 
 base1
-\end{verbatim}
-
-\begin{verbatim}
+\end{Sinput}
+\begin{Soutput}
 #>             [,1]        [,2]
 #> [1,]  0.24406482 -0.57724655
 #> [2,] -0.31814139  0.06085804
@@ -219,13 +393,11 @@ base1
 #> [4,] -0.39166263  0.01182949
 #> [5,] -0.08975114  0.59899558
 #> [6,] -0.78647758 -0.39657839
-\end{verbatim}
-
-\begin{verbatim}
+\end{Soutput}
+\begin{Sinput}
 base2
-\end{verbatim}
-
-\begin{verbatim}
+\end{Sinput}
+\begin{Soutput}
 #>             [,1]        [,2]
 #> [1,] -0.64550501 -0.17034478
 #> [2,]  0.06108262  0.87051018
@@ -233,13 +405,14 @@ base2
 #> [4,] -0.05281183  0.25452167
 #> [5,] -0.43004248  0.27472455
 #> [6,] -0.62502981  0.03560765
-\end{verbatim}
+\end{Soutput}
+\end{Schunk}
 
-\begin{verbatim}
+\begin{Schunk}
+\begin{Sinput}
 givens_full_path(base1, base2, nsteps = 5)
-\end{verbatim}
-
-\begin{verbatim}
+\end{Sinput}
+\begin{Soutput}
 #> , , 1
 #> 
 #>             [,1]        [,2]
@@ -289,145 +462,212 @@ givens_full_path(base1, base2, nsteps = 5)
 #> [4,] -0.05281183  0.25487107
 #> [5,] -0.43004248  0.27511042
 #> [6,] -0.62502981  0.03766958
-\end{verbatim}
+\end{Soutput}
+\end{Schunk}
 
 \hypertarget{comparison-of-geodesic-interpolation-and-givens-interpolation}{%
-\section{Comparison of geodesic interpolation and Givens interpolation}\label{comparison-of-geodesic-interpolation-and-givens-interpolation}}
+\section{Comparison of geodesic interpolation and Givens
+interpolation}\label{comparison-of-geodesic-interpolation-and-givens-interpolation}}
 
-In this section, we illustrate the use of \emph{givens\_full\_path()} function by plotting the interpolated path between 2 frames. This also a way of checking if interpolated path is moving in equal size at each step.
+In this section, we illustrate the use of \emph{givens\_full\_path()}
+function by plotting the interpolated path between 2 frames. This also a
+way of checking if interpolated path is moving in equal size at each
+step.
 
-For plotting the interpolated path of projections, we used \CRANpkg{geozoo} package (Schloerke 2016). 1D projection is plotted on unit sphere, while 2D projection is visualized on torus. The points on the surface of sphere and torus shape are randomly generated by functions from the \CRANpkg{geozoo} package.
+For plotting the interpolated path of projections, we used
+\CRANpkg{geozoo} package \citep{geozoo}. 1D projection is plotted on
+unit sphere, while 2D projection is visualized on torus. The points on
+the surface of sphere and torus shape are randomly generated by
+functions from the \CRANpkg{geozoo} package.
 
 \textbf{Interpolated paths of 1D projection}
 
-1D projection of data in high dimension linear combination of data that is normalized. Therefore, we can plot the point on the surface of a hypersphere. Figure \ref{fig:1d-path-static} shows the Givens interpolation steps between 2 points, 1D projection of 6D data that is.
+1D projection of data in high dimension linear combination of data that
+is normalized. Therefore, we can plot the point on the surface of a
+hypersphere. Figure \ref{fig:1d-path-static} shows the Givens
+interpolation steps between 2 points, 1D projection of 6D data that is.
 
+\begin{Schunk}
 \begin{figure}
 
 {\centering \includegraphics[width=0.5\linewidth]{sphere_static} \includegraphics[width=0.5\linewidth]{torus_static} 
 
 }
 
-\caption{Interpolation steps of 1D projections of 6D data}\label{fig:1d-path-static}
+\caption[Interpolation steps of 1D projections of 6D data]{Interpolation steps of 1D projections of 6D data}\label{fig:1d-path-static}
 \end{figure}
+\end{Schunk}
 
 \textbf{Interpolated paths of 2D projection}
 
-In case of 2D projections, we can plot the interpolated path between 2 frames on the surface of torus. Torus can be seen as crossing of 2 circles that are orthonormal. Figure \ref{fig:2d-path-static} shows the Givens interpolation steps in 2D projection of 6D data.
+In case of 2D projections, we can plot the interpolated path between 2
+frames on the surface of torus. Torus can be seen as crossing of 2
+circles that are orthonormal. Figure \ref{fig:2d-path-static} shows the
+Givens interpolation steps in 2D projection of 6D data.
 
-For a 2D projection the same target plane is found when rotating the basis within the plane, or when reflecting across one of the two directions (the reflected basis can then also be rotating). This means the space of target bases is constrained to two circles in the high-dimensional space, and these are disconnected because the reflection corresponds to a jump along the torus surface. In the high-dimensional space we can imagine the reflection as flipping over the target plane, resulting in a reflection of the normal vector on the plan.
-While the Givens interpolation will reach the exact basis, a geodesic interpolation towards the same target plane can land anywhere along those two circles, depending on the starting basis in the interpolation.
+For a 2D projection the same target plane is found when rotating the
+basis within the plane, or when reflecting across one of the two
+directions (the reflected basis can then also be rotating). This means
+the space of target bases is constrained to two circles in the
+high-dimensional space, and these are disconnected because the
+reflection corresponds to a jump along the torus surface. In the
+high-dimensional space we can imagine the reflection as flipping over
+the target plane, resulting in a reflection of the normal vector on the
+plan. While the Givens interpolation will reach the exact basis, a
+geodesic interpolation towards the same target plane can land anywhere
+along those two circles, depending on the starting basis in the
+interpolation.
 
-In this section, we used simulated data for comparing geodesic and Givens interpolation paths. The data has 6 variables and 500 observations. The variable 5 and 6 has sine structure and the remaining variables are randomly generated from normal distribution. The sine is non-linear structure and can be detected using splines2d index.
+In this section, we used simulated data for comparing geodesic and
+Givens interpolation paths. The data has 6 variables and 500
+observations. The variable 5 and 6 has sine structure and the remaining
+variables are randomly generated from normal distribution. The sine is
+non-linear structure and can be detected using splines2d index.
 
-Figure \ref{fig:compare-interpolations-static} shows the Geodesic and Givens interpolation to target frame where the two variables forms sine curve.
+Figure \ref{fig:compare-interpolations-static} shows the Geodesic and
+Givens interpolation to target frame where the two variables forms sine
+curve.
 
 \hypertarget{data-application}{%
 \section{Data application}\label{data-application}}
 
-This section describes the application of Givens interpolation path with guided tour to explore non-linear association in multivariate data.
+This section describes the application of Givens interpolation path with
+guided tour to explore non-linear association in multivariate data.
 
-We have cross-rates for currencies relative to the US dollar. A cross-rate is an exchange rate between two currencies computed by reference to a third currency, usually the US dollar.
+We have cross-rates for currencies relative to the US dollar. A
+cross-rate is an exchange rate between two currencies computed by
+reference to a third currency, usually the US dollar.
 
-The data was extracted from \href{https://openexchangerates.org}{openexchangerates} and contains cross-rate for ARS, AUD, EUR, JPY, KRW, MYR between 2019-11-1 to 2020-03-31. Figure \ref{fig:currency} shows how the currencies changed relative to USD over the time period. We see some collective behavior in March of 2020 with EUR and JPY increasing in a similar manner, and smaller currencies decreasing in value. This could be understood as a consequence of flight-to-quality at this uncertain times.
+The data was extracted from
+\href{https://openexchangerates.org}{openexchangerates} and contains
+cross-rate for ARS, AUD, EUR, JPY, KRW, MYR between 2019-11-1 to
+2020-03-31. Figure \ref{fig:currency} shows how the currencies changed
+relative to USD over the time period. We see some collective behavior in
+March of 2020 with EUR and JPY increasing in a similar manner, and
+smaller currencies decreasing in value. This could be understood as a
+consequence of flight-to-quality at this uncertain times.
 
+\begin{Schunk}
 \begin{figure}
-\includegraphics[width=1\linewidth]{woylier-article_files/figure-latex/currency-1} \caption{All the currencies are standardised and the sign is flipped. The high value means the currency strengthened against the USD, and low means that it weakened.}\label{fig:currency}
+\includegraphics[width=1\linewidth]{woylier-article_files/figure-latex/currency-1} \caption[All the currencies are standardised and the sign is flipped]{All the currencies are standardised and the sign is flipped. The high value means the currency strengthened against the USD, and low means that it weakened.}\label{fig:currency}
 \end{figure}
+\end{Schunk}
 
-We are interested in capturing this relations over time, and from the time series visualization we expect that we can capture the main dynamics in a two-dimensional projection from the six-dimensional space of currencies. Thus we start from \(p=6\) (the different currencies) and \(n=152\) the number of days in our sample. We expect that a projection onto \(d=2\) dimensions should capture the relation between the two groups of currencies mentioned above, and this should be identified within the noise of the random fluctuations.
+We are interested in capturing this relations over time, and from the
+time series visualization we expect that we can capture the main
+dynamics in a two-dimensional projection from the six-dimensional space
+of currencies. Thus we start from \(p=6\) (the different currencies) and
+\(n=152\) the number of days in our sample. We expect that a projection
+onto \(d=2\) dimensions should capture the relation between the two
+groups of currencies mentioned above, and this should be identified
+within the noise of the random fluctuations.
 
 \textbf{PCA result}
 
-Since the collective behavior observed in March 2020 clearly stands out in the time series display, we may expect that we can capture the dependence between the two groups using principal components analysis. Figure @re(pca-result-static)
-shows a scatter plot matrix of the PCs of our dataset. Indeed we find strong non-linear association between the first two PCs. Investigation of the rotation shows that the first principal component is primarily a balanced combination between ARS, AUD, KRW and MYR (and a smaller contribution of EUR), and the second contribution is dominated by EUR and JPY contrasted with smaller contributions from ARS and MYR. Our next step is thus to use projection pursuit to identify the best projection matrix that captures the non-linear functional dependence.
+Since the collective behavior observed in March 2020 clearly stands out
+in the time series display, we may expect that we can capture the
+dependence between the two groups using principal components analysis.
+Figure @re(pca-result-static) shows a scatter plot matrix of the PCs of
+our dataset. Indeed we find strong non-linear association between the
+first two PCs. Investigation of the rotation shows that the first
+principal component is primarily a balanced combination between ARS,
+AUD, KRW and MYR (and a smaller contribution of EUR), and the second
+contribution is dominated by EUR and JPY contrasted with smaller
+contributions from ARS and MYR. Our next step is thus to use projection
+pursuit to identify the best projection matrix that captures the
+non-linear functional dependence.
 
+\begin{Schunk}
 \begin{figure}
 
 {\centering \includegraphics[width=0.8\linewidth]{woylier-article_files/figure-latex/pca-result-static-1} 
 
 }
 
-\caption{There is a strong non-linear dependence between PC1 and PC2. Observations in March 2020 are highlighted in dark blue, all other months are shown in grey.}\label{fig:pca-result-static}
+\caption[There is a strong non-linear dependence between PC1 and PC2]{There is a strong non-linear dependence between PC1 and PC2. Observations in March 2020 are highlighted in dark blue, all other months are shown in grey.}\label{fig:pca-result-static}
 \end{figure}
+\end{Schunk}
 
 \textbf{New splines2d index}
 
-We now use the splines index to identify a projection with functional dependence between the first and second direction of the projection. Note here that because of strong linear correlations between the currencies, we start from the first four principal components, explaining over 99\% of the variance in the data. To avoid starting from the view already identified in the first two principal components we start from a projections onto the third and forth principal components. The PCA display in \texttt{tourr} to show the projection in terms of the original variables while only touring within the smaller space spanned by the first four principal components.
+We now use the splines index to identify a projection with functional
+dependence between the first and second direction of the projection.
+Note here that because of strong linear correlations between the
+currencies, we start from the first four principal components,
+explaining over 99\% of the variance in the data. To avoid starting from
+the view already identified in the first two principal components we
+start from a projections onto the third and forth principal components.
+The PCA display in \texttt{tourr} to show the projection in terms of the
+original variables while only touring within the smaller space spanned
+by the first four principal components.
 
+\begin{Schunk}
 \begin{figure}
 
 {\centering \includegraphics[width=0.3\linewidth]{rates_tour_geodesic_final} \includegraphics[width=0.3\linewidth]{rates_tour_better_final} \includegraphics[width=0.3\linewidth]{rates_tour_givens_final} 
 
 }
 
-\caption{Final view after optimisation in the guided tour using geodesic optimisation (left), simulated annealing with geodesic interpolation (middle) and simulated annealing with givens interpolation (right).}\label{fig:rates-tour-static}
+\caption[Final view after optimisation in the guided tour using geodesic optimisation (left), simulated annealing with geodesic interpolation (middle) and simulated annealing with givens interpolation (right)]{Final view after optimisation in the guided tour using geodesic optimisation (left), simulated annealing with geodesic interpolation (middle) and simulated annealing with givens interpolation (right).}\label{fig:rates-tour-static}
 \end{figure}
+\end{Schunk}
 
-\includegraphics{woylier-article_files/figure-latex/unnamed-chunk-12-1.pdf}
+\begin{Schunk}
+
+\includegraphics{woylier-article_files/figure-latex/unnamed-chunk-12-1} \end{Schunk}
 
 What do we learn from looking at the traces?
 
 \begin{itemize}
 \tightlist
 \item
-  geodesic search does not have problem from rotation dependent index because it is searching along geodesic path, so everything is consistent, but it can get stuck and cannot jump to better solutions
+  geodesic search does not have problem from rotation dependent index
+  because it is searching along geodesic path, so everything is
+  consistent, but it can get stuck and cannot jump to better solutions
 \item
-  instead we might want to use random search (simulated annealing), but here we have huge problems from the rotation dependence of the index - even though this search should only accept target planes with higher index values we get big drops just because of the change in index value after rotation, the search path is very long and cannot find a good optimum
+  instead we might want to use random search (simulated annealing), but
+  here we have huge problems from the rotation dependence of the index -
+  even though this search should only accept target planes with higher
+  index values we get big drops just because of the change in index
+  value after rotation, the search path is very long and cannot find a
+  good optimum
 \item
-  using givens interpolation with the random search can fix these issues, we can step across valleys with lower index values but each target plane is increasing the index value, we do not need to restart the search - even with longer interpolations from the within-plane rotation this search is much more efficient (shorter path), the final index value in our run is above what the random search with geodesic interpolation has found, the final view is certainly more interesting
+  using givens interpolation with the random search can fix these
+  issues, we can step across valleys with lower index values but each
+  target plane is increasing the index value, we do not need to restart
+  the search - even with longer interpolations from the within-plane
+  rotation this search is much more efficient (shorter path), the final
+  index value in our run is above what the random search with geodesic
+  interpolation has found, the final view is certainly more interesting
 \end{itemize}
 
 \hypertarget{conclusion}{%
 \section{Conclusion}\label{conclusion}}
 
-The R package \textbf{woylier} provides implementation of Givens interpolation path algorithm that can be used as an alternative interpolation method for tour. The algorithm implemented in the \textbf{woylier} package comes from Buja et al. (2005). We illustrate the use of the functions provided in the package for R users.
+The R package \textbf{woylier} provides implementation of Givens
+interpolation path algorithm that can be used as an alternative
+interpolation method for tour. The algorithm implemented in the
+\textbf{woylier} package comes from
+\citet{buja_cook_asimov_hurley_2005}. We illustrate the use of the
+functions provided in the package for R users.
 
-The motivation to develop this package comes from rotational invariance problem of current geodesic interpolation algorithm implemeneted in \CRANpkg{tourr} package. The package gives users the ability to detect non-linear association between variables more precisely.
+The motivation to develop this package comes from rotational invariance
+problem of current geodesic interpolation algorithm implemeneted in
+\CRANpkg{tourr} package. The package gives users the ability to detect
+non-linear association between variables more precisely.
 
-It is important to mention that \textbf{woylier} package should be integrated with \CRANpkg{tourr} package. The future improvements that needs to be done in the package is to generalize the interpolation for more than 2d projections of data.
-
-\hypertarget{references}{%
-\section*{References}\label{references}}
-\addcontentsline{toc}{section}{References}
-
-\hypertarget{refs}{}
-\begin{CSLReferences}{1}{0}
-\leavevmode\vadjust pre{\hypertarget{ref-asimov_1985}{}}%
-Asimov, D. 1985. {``The Grand Tour: A Tool for Viewing Multidimensional Data.''} \emph{SIAM J Sci Stat Comput 6(1)}, 128--43.
-
-\leavevmode\vadjust pre{\hypertarget{ref-buja_cook_asimov_hurley_2005}{}}%
-Buja, Andreas, Dianne Cook, Daniel Asimov, and Catherine Hurley. 2005. {``Computational Methods for High-Dimensional Rotations in Data Visualization.''} \emph{Handbook of Statistics}, 391--413. \url{https://doi.org/10.1016/s0169-7161(04)24014-7}.
-
-\leavevmode\vadjust pre{\hypertarget{ref-Buja2004TheoryOD}{}}%
-Buja, Andreas, Dianne Cook, Daniel Asimov, and Catherine B. Hurley. 2004. {``Theory of Dynamic Projections in High-Dimensional Data Visualization.''} In.
-
-\leavevmode\vadjust pre{\hypertarget{ref-grandtour1995}{}}%
-Cook, Dianne, Andreas Buja, Javier Cabrera, and Catherine Hurley. 1995. {``Grand Tour and Projection Pursuit.''} \emph{Journal of Computational and Graphical Statistics} 4 (3): 155--72. \url{http://www.jstor.org/stable/1390844}.
-
-\leavevmode\vadjust pre{\hypertarget{ref-matrix_computation}{}}%
-Golub, Gene H., and Charles F Van Loan. 1989. \emph{Matrix Computations}. Johns Hopkins University Press.
-
-\leavevmode\vadjust pre{\hypertarget{ref-Grimm2016}{}}%
-Grimm, Katrin. 2016. {``Kennzahlenbasierte Grafikauswahl.''} Doctoral thesis, Universit{ä}t Augsburg.
-
-\leavevmode\vadjust pre{\hypertarget{ref-kruskal_1969}{}}%
-Kruskal, JB. 1969. {``Toward a Practical Method Which Helps Uncover the Structure of a Set of Observations by Finding the Line Transformation Which Optimizes a New ``Index of Condensation.''} \emph{Statistical Computation; New York, Academic Press}, 427--40.
-
-\leavevmode\vadjust pre{\hypertarget{ref-pp}{}}%
-Laa, Ursula, and Dianne Cook. 2020. {``Using Tours to Visually Investigate Properties of New Projection Pursuit Indexes with Application to Problems in Physics.''} \emph{Comput Stat 35}, 1171--1205. https://doi.org/\url{https://doi.org/10.1007/s00180-020-00954-8}.
-
-\leavevmode\vadjust pre{\hypertarget{ref-geozoo}{}}%
-Schloerke, Barret. 2016. \emph{Geozoo: Zoo of Geometric Objects}. \url{https://CRAN.R-project.org/package=geozoo}.
-
-\end{CSLReferences}
+It is important to mention that \textbf{woylier} package should be
+integrated with \CRANpkg{tourr} package. The future improvements that
+needs to be done in the package is to generalize the interpolation for
+more than 2d projections of data.
 
 \bibliography{woylier-article.bib}
 
 \address{%
 Zoljargal Batsaikhan\\
 Monash University\\%
-Department of Econometrics and Business Statistics\\ Clayton, VIC, Australia\\
+Department of Econometrics and Business Statistics\\ Clayton, VIC,
+Australia\\
 %
 \url{https://github.com/zolabat}\\%
 \textit{ORCiD: \href{https://orcid.org/0009-0005-0055-1448}{0009-0005-0055-1448}}\\%
@@ -437,7 +677,8 @@ Department of Econometrics and Business Statistics\\ Clayton, VIC, Australia\\
 \address{%
 Dianne Cook\\
 Monash University\\%
-Department of Econometrics and Business Statistics\\ Clayton, VIC, Australia\\
+Department of Econometrics and Business Statistics\\ Clayton, VIC,
+Australia\\
 %
 \url{http://www.dicook.org}\\%
 \textit{ORCiD: \href{https://orcid.org/0000-0002-3813-7155}{0000-0002-3813-7155}}\\%
