@@ -111,31 +111,34 @@ for nonlinear associations between currency cross-rates.
 \hypertarget{background}{%
 \section{Background}\label{background}}
 
-The tour method of visualization is animated high-to-low dimensional
-data rotation that is a movie, one-parameter (time) family of static
-projections. Algorithms for such dynamic projections
-\citet{buja_cook_asimov_hurley_2005} are based on the idea of smoothly
-interpolating a discrete sequence of projections.
+The tour method of visualization shows a movie that is an animated
+high-to-low dimensional data rotation. It is a one-parameter (time)
+family of static projections. Algorithms for such dynamic projections
+are based on the idea of smoothly interpolating a discrete sequence of
+projections \citep{buja_cook_asimov_hurley_2005}.
 
-The topic of this article is the construction of paths of projections.
-Interpolation of paths of projection can be compared to connecting line
-segments that interpolate points in Euclidean space. Interpolation acts
-as a bridge between continuous animation and discrete choice of
-sequences of projections.
+The topic of this article is the construction of the paths of
+projections. The interpolation of these paths can be compared to
+connecting line segments that interpolate points in Euclidean space.
+Interpolation acts as a bridge between a continuous animation and the
+discrete choice of sequences of projections.
 
 \textbf{The interpolating paths of plane versus frames}
 
-Current implementation of \CRANpkg{tourr} package is locally shortest
-(geodesic) interpolation of planes. The pitfall of this interpolation
-method is that it does not account for rotation variability. Therefore,
-the interpolation of frames is required when the orientation of
-projection matters. If the rendering on a frame and on the rotated
-version of the frame yields the same visual scenes, it means the
-orientation does not matter.
+The \CRANpkg{tourr} package implements the locally shortest (geodesic)
+interpolation of planes. The pitfall of this interpolation method is
+that it does not account for rotation variability within the plane.
+Therefore, the interpolation of frames is required when the the
+orientation of projections matters. If the rendering on a frame and on
+the rotated version of the frame yields the same visual scenes, it means
+the orientation does not matter. Figure \ref{fig:dogs} shows an example
+where this is not the case.
 
-The orientation of frames could be important when non-linear projection
-pursuit function is used in guided tour. An illustration of such cases
-are shown in Figure \ref{fig:dogs}.
+The orientation of the frames could be important when a non-linear
+projection pursuit index function is used in the guided tour. This is
+illustrated by the different index values shown in Figure
+\ref{fig:dogs}, as well as the spline index for the sine curve in Figure
+\ref{fig:splines2d-static}.
 
 \begin{Schunk}
 \begin{figure}
@@ -156,41 +159,36 @@ the notations.
   Let the \(p\) be the dimension of original data and \(d\) be the
   dimension onto which the data is being projected.
 \item
-  A frame \(F\) is defined as \(p\times d\) matrix with pairwise
-  orthogonal columns of unit length that satisfies, where \(I_d\) is the
-  identity matrix in d dimensions.
-\end{itemize}
-
-\[F^TF = I_d\]
-
-\begin{itemize}
+  A frame \(F\) is defined as a \(p\times d\) matrix with pairwise
+  orthogonal columns of unit length that satisfies \[F^TF = I_d,\] where
+  \(I_d\) is the identity matrix in d dimensions.
 \item
   Paths of projections are given by continuous one-parameter families
-  \(F(t)\) where \(t\in [a, z]\) interval representing time. We denote
-  the starting frame by \(F_a = F(a)\) and target frame by
-  \(F_z = F(z)\). Usually, \(F_z\) is selected target basis that has
-  chosen via various methods. While grand tour chooses target frames
-  randomly, guided tour chooses the target plane by optimizing the
-  projection pursuit index. Interpolation methods are used to move from
-  \(F_a\) to \(F_z\).
-\item
-  \(B\) is preprojection basis of \(F_a\) and \(F_z\).
+  \(F(t)\) where \(t\in [a, z]\) represents time. We denote the starting
+  frame (at time \(a\)) by \(F_a = F(a)\) and target frame (at time
+  \(z\)) by \(F_z = F(z)\). Usually, \(F_z\) is the target frame that
+  has been chosen according to the selected tour method. While a grand
+  tour chooses target frames randomly, the guided tour chooses the
+  target frame by optimizing the projection pursuit index. Interpolation
+  methods are used to find the path that moves from \(F_a\) to \(F_z\).
 \end{itemize}
 
 \textbf{Preprojection algorithm}
 
-In order to make the interpolation algorithm simple, we need to carry
-out ``preprojection'' step. The purpose of preprojection is to limit
-data subspace that the interpolation path, \(F(t)\), is traversing. In
-other words, preprojection step make sure the interpolation path between
-two frames \(F_a\) and \(F_z\) is not going to the data space that is
-not related to \(F_a\) and \(F_z\). Simply, prepojection algorithm is
+In order to make the interpolation algorithm simple, we carry out a
+``preprojection'' step. The purpose of preprojection is to find the
+subspace that the interpolation path, \(F(t)\), is traversing. In other
+words, the preprojection step makes sure the interpolation path between
+two frames \(F_a\) and \(F_z\) is limited to the part of the space
+related to \(F_a\) and \(F_z\). Simply, a prepojection algorithm is
 defining the joint subspace of \(F_a\) and \(F_z\).
 
 The procedure starts with forming an orthonormal basis by applying
-Gram-Schmidt to \(F_z\) with regard to \(F_a\). We denote this
-orthonormal basis by \(F_\star\). Then build preprojection basis \(B\)
-by combining \(F_a\) and \(F_\star\) as follows:
+Gram-Schmidt to \(F_z\) with regards to \(F_a\), i.e.~we find the
+\(p\times d\) matrix that contains the component of \(F_z\) that is
+orthogonal to \(F_a\). We denote this orthonormal basis by \(F_\star\).
+Then we build the preprojection basis \(B\) by combining \(F_a\) and
+\(F_\star\) as follows:
 
 \[B = (F_a, F_{\star})\]
 
@@ -199,44 +197,39 @@ The dimension of the resulting orthonormal basis, \(B\), is
 
 Then, we can express the original frames in terms of this basis:
 
-\[F_a = B^TW_a, F_z = B^TW_z\]
+\[F_a = B W_a, F_z = B W_z\]
 
 The interpolation problem is then reduced to the construction of paths
-of frames \(W(t)\) that interpolate the preprojected frames \(W_a\) and
-\(W_z\). Because \(B\) is orthonormalized basis of \(F_z\) with regard
-to \(F_a\), \(W_a\) is \(2d\times d\) matrix of 1, 0s. This is an
-important character for our interpolation algorithm of choice, Givens
-interpolation.
+of frames \(W(t)\) that interpolate between the preprojected frames
+\(W_a\) and \(W_z\). By construction \(W_a\) is a \(2d\times d\) matrix
+of 1s and 0s. This is an important characteristic for our interpolation
+algorithm of choice, the Givens interpolation.
 
 \textbf{Givens interpolation path algorithm}
 
 A rotation matrix is a transformation matrix used to perform a rotation
-in Euclidean space in a plane. A rotation matrix that transforms 2D
-plane by an angle \(\theta\) looks like this:
+in Euclidean space. The matrix that rotates a 2D plane by an angle
+\(\theta\) looks like this:
 
 \[ \begin{bmatrix}\cos \theta &-\sin \theta \\\sin \theta &\cos \theta \end{bmatrix} \]
 
-If the rotation is in the plane of selected 2 variables, it is called
-Givens rotation. Let's denote those 2 variables \(i\) and \(j\). The
-Givens rotation is useful for introducing zeros on a grand scale and
-used for computing the QR decomposition of matrix in linear algebra
-problems. One advantage over other transformation methods which is
-particularly useful in our case is the ability to zero elements more
-selectively.
+If the rotation is in the plane of two selected variables, it is called
+a Givens rotation. Let's denote those 2 variables as \(i\) and \(j\).
+The Givens rotation is used for introducing zeros, for example when
+computing the QR decomposition of a matrix in linear algebra problems.
 
-The interpolation methods in the \textbf{woylier} package is based on
-the fact that in any vector of a matrix, one can zero out the \(i\)-th
+The interpolation method in the \textbf{woylier} package is based on the
+fact that in any vector of a matrix, one can zero out the \(i\)-th
 coordinate with a Givens rotation \citep{matrix_computation} in the
 \((i, j)\)-plane for any \(j\neq i\). This rotation affects only
-coordinate \(i\) and \(j\) and leave all other coordinates unchanged.
-
-Sequences of Givens rotations can map any orthonormal d-frame F in
-p-space to standard d-frame
-\(E_d=((1, 0, 0, ...)^T, (0, 1, 0, ...)^T, ...)\).
+coordinates \(i\) and \(j\) and leaves all other coordinates unchanged.
+Sequences of Givens rotations can map any orthonormal d-frame \(F\) in
+p-space to the standard d-frame
+\[E_d=((1, 0, 0, ...)^T, (0, 1, 0, ...)^T, ...).\]
 
 The interpolation path construction algorithm from starting frame
-\(F_a\) to target frame \(F_z\) is illustrated below. The example is 2D
-path construction process of original 6D data frame.
+\(F_a\) to target frame \(F_z\) is illustrated below. The example is for
+\(p=6\) and \(d=2\).
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
@@ -263,7 +256,7 @@ In our example, \(W_a\) looks like:
 
 \[ \begin{bmatrix}1 & 0 \\0  &1 \\ 0&0 \\0&0\end{bmatrix} \]
 
-\(W_z\) is orthonormal \(2d\times d\) matrix that looks like:
+\(W_z\) is an orthonormal \(2d\times d\) matrix that looks like:
 
 \[ \begin{bmatrix} a_{11} & a_{12} \\a_{21}  &a_{22} \\ a_{31}&a_{32} \\a_{41}&a_{42}\end{bmatrix} \]
 
@@ -279,19 +272,18 @@ In our example, \(W_a\) looks like:
 
 \[ W_a = R_m(\theta_m) ... R_2(\theta_2)R_1(\theta_1)W_z\]
 
-At each rotation, the angle \(\theta_i\) that zero out the second
-coordinate of a plane is calculated.
-
-When \(d = 2\), there are 5 rotations involved with 5 different angles
-that makes each elements 0. For example, the first rotation angle
-\(\theta_1\) is an angle in radian between \((1, 0)\) and
-\((a_{11}, a_{21})\). This rotation matrix would make element \(a_{21}\)
-zero:
+At each rotation, the angle \(\theta_i\) that zero out the next
+coordinate of a plane is calculated. Here \(m = \sum_{k=1}^d (2d - k)\),
+so when \(d=2\) we need \(m=5\) rotations with 5 different angles, each
+making one element 0. For example, the first rotation angle \(\theta_1\)
+is an angle in radiant between \((1, 0)\) and \((a_{11}, a_{21})\). This
+rotation matrix would make element \(a_{21}\) zero:
 
 \[R_1(\theta_1) = G(1, 2, \theta_1) = \begin{bmatrix} cos\theta_1 & -sin\theta_1 & 0 & 0 \\sin\theta_1  &cos\theta_1 & 0 &0 \\ 0&0&1&0 \\0&0&0&1\end{bmatrix}\]
-
-6th rotation is not necessary due to orthonormality of columns. If we
-make one element of a column 1 that means all other elements must be 0.
+In the same way we zero out the elements \(a_{31}\) and \(a_{41}\).
+Because of the orthonormality this means that now \(a_{11} = 1\) and
+that \(a_{12} = 0\). We thus need only two more rotations to zero out
+\(a_{32}\) and \(a_{42}\).
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
@@ -313,19 +305,22 @@ of steps so interpolation between frames looks dynamic.
 \def\labelenumi{\arabic{enumi}.}
 \setcounter{enumi}{4}
 \item
-  Next step should include the time parameter, \(t\), so that it shows
-  the interpolation process rendered in the movie-like sequence. We
-  break \(\theta_i\) into the number of steps, \(n-step\), that we want
-  to go from starting frame to the target frame, which means it moves by
-  equal angle in each step.
+  Next we include the time parameter, \(t\), so that the interpolation
+  process can be rendered in the movie-like sequence. We break each
+  \(\theta_i\) into the number of steps, \(n_{step}\), that we want to
+  take from the starting frame to the target frame, which means it moves
+  by equal angle in each step. Here \(n_{step}\) should vary based on
+  the angular distance between \(F_a\) and \(F_z\), such that when
+  watching a sequence of interpolations we have a fixed angular speed.
 \item
   Finally, we reconstruct our original frames using \(B\). This
   reconstruction is done at each step of interpolation so that we have
-  interpolated path as result. We use \(F_t\) to project the orignal
-  data into lower dimensions.
+  the interpolated path of frames as the result.
 \end{enumerate}
 
 \[F_t = B  W_t\]
+
+At each time \(t\) we can project the data using the frame \(F_t\).
 
 \textbf{Projection pursuit index functions}
 
