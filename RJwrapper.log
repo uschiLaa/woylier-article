@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.7.8)  7 AUG 2023 16:43
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.7.8)  8 AUG 2023 13:09
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -815,36 +815,36 @@ Package caption Info: End \AtBeginDocument code.
 dmap/pdftex.map}
 
 ]
-<woylier-article_files/figure-latex/splines2d-static-1.pdf, id=88, 633.36626pt 
+<woylier-article_files/figure-latex/splines2d-static-1.pdf, id=89, 633.36626pt 
 x 211.79124pt>
 File: woylier-article_files/figure-latex/splines2d-static-1.pdf Graphic file (t
 ype pdf)
 <use woylier-article_files/figure-latex/splines2d-static-1.pdf>
 Package pdftex.def Info: woylier-article_files/figure-latex/splines2d-static-1.
-pdf  used on input line 94.
+pdf  used on input line 96.
 (pdftex.def)             Requested size: 398.33858pt x 133.20297pt.
 LaTeX Font Info:    Trying to load font information for OT1+ppl on input line 9
-4.
+6.
 (/usr/local/texlive/2022/texmf-dist/tex/latex/psnfss/ot1ppl.fd
 File: ot1ppl.fd 2001/06/04 font definitions for OT1/ppl.
 )
 LaTeX Font Info:    Trying to load font information for OML+zplm on input line 
-94.
+96.
 (/usr/local/texlive/2022/texmf-dist/tex/latex/psnfss/omlzplm.fd
 File: omlzplm.fd 2002/09/08 Fontinst v1.914 font definitions for OML/zplm.
 )
 LaTeX Font Info:    Trying to load font information for OMS+zplm on input line 
-94.
+96.
 (/usr/local/texlive/2022/texmf-dist/tex/latex/psnfss/omszplm.fd
 File: omszplm.fd 2002/09/08 Fontinst v1.914 font definitions for OMS/zplm.
 )
 LaTeX Font Info:    Trying to load font information for OMX+zplm on input line 
-94.
+96.
 (/usr/local/texlive/2022/texmf-dist/tex/latex/psnfss/omxzplm.fd
 File: omxzplm.fd 2002/09/08 Fontinst v1.914 font definitions for OMX/zplm.
 )
 LaTeX Font Info:    Trying to load font information for OT1+zplm on input line 
-94.
+96.
 (/usr/local/texlive/2022/texmf-dist/tex/latex/psnfss/ot1zplm.fd
 File: ot1zplm.fd 2002/09/08 Fontinst v1.914 font definitions for OT1/zplm.
 )
@@ -853,123 +853,123 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
 LaTeX Font Info:    Font shape `U/msa/m/n' will be
-(Font)              scaled to size 9.37807pt on input line 94.
+(Font)              scaled to size 9.37807pt on input line 96.
 (/usr/local/texlive/2022/texmf-dist/tex/latex/microtype/mt-msa.cfg
 File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 )
 LaTeX Font Info:    Font shape `U/msa/m/n' will be
-(Font)              scaled to size 7.29405pt on input line 94.
+(Font)              scaled to size 7.29405pt on input line 96.
 LaTeX Font Info:    Font shape `U/msa/m/n' will be
-(Font)              scaled to size 5.21004pt on input line 94.
+(Font)              scaled to size 5.21004pt on input line 96.
 LaTeX Font Info:    Font shape `U/msb/m/n' will be
-(Font)              scaled to size 9.37807pt on input line 94.
+(Font)              scaled to size 9.37807pt on input line 96.
 (/usr/local/texlive/2022/texmf-dist/tex/latex/microtype/mt-msb.cfg
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 )
 LaTeX Font Info:    Font shape `U/msb/m/n' will be
-(Font)              scaled to size 7.29405pt on input line 94.
+(Font)              scaled to size 7.29405pt on input line 96.
 LaTeX Font Info:    Font shape `U/msb/m/n' will be
-(Font)              scaled to size 5.21004pt on input line 94.
-<plane.png, id=97, 425.08812pt x 348.80313pt>
+(Font)              scaled to size 5.21004pt on input line 96.
+<plane.png, id=98, 425.08812pt x 348.80313pt>
 File: plane.png Graphic file (type png)
 <use plane.png>
-Package pdftex.def Info: plane.png  used on input line 146.
+Package pdftex.def Info: plane.png  used on input line 148.
 (pdftex.def)             Requested size: 179.25113pt x 147.08176pt.
-<frame.png, id=99, 407.02063pt x 329.23pt>
+<frame.png, id=100, 407.02063pt x 329.23pt>
 File: frame.png Graphic file (type png)
 <use frame.png>
-Package pdftex.def Info: frame.png  used on input line 146.
+Package pdftex.def Info: frame.png  used on input line 148.
 (pdftex.def)             Requested size: 179.25113pt x 144.99225pt.
 LaTeX Font Info:    Trying to load font information for TS1+ppl on input line 1
-59.
+61.
 (/usr/local/texlive/2022/texmf-dist/tex/latex/psnfss/ts1ppl.fd
 File: ts1ppl.fd 2001/06/04 font definitions for TS1/ppl.
 ) [2 <./woylier-article_files/figure-latex/splines2d-static-1.pdf>] [3 <./plane
 .png> <./frame.png>]
 LaTeX Font Info:    Trying to load font information for T1+zi4 on input line 33
-3.
+2.
 (/usr/local/texlive/2022/texmf-dist/tex/latex/inconsolata/t1zi4.fd
 File: t1zi4.fd 2018/01/14 T1/zi4 (Inconsolata)
 )
 LaTeX Font Info:    Font shape `T1/zi4/m/n' will be
-(Font)              scaled to size 9.18004pt on input line 333.
+(Font)              scaled to size 9.18004pt on input line 332.
 Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             `zi4' (encoding: T1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
 [4]
-Overfull \hbox (7.29445pt too wide) in paragraph at lines 347--364
+Overfull \hbox (7.29445pt too wide) in paragraph at lines 339--356
 [][] 
  []
 
 [5] [6]
-<sphere_static.png, id=158, 476.27937pt x 480.29437pt>
+<sphere_static.png, id=163, 476.27937pt x 480.29437pt>
 File: sphere_static.png Graphic file (type png)
 <use sphere_static.png>
-Package pdftex.def Info: sphere_static.png  used on input line 488.
+Package pdftex.def Info: sphere_static.png  used on input line 498.
 (pdftex.def)             Requested size: 199.16928pt x 200.85013pt.
-<torus_static.png, id=159, 476.78125pt x 477.28313pt>
+<torus_static.png, id=164, 476.78125pt x 477.28313pt>
 File: torus_static.png Graphic file (type png)
 <use torus_static.png>
-Package pdftex.def Info: torus_static.png  used on input line 488.
+Package pdftex.def Info: torus_static.png  used on input line 498.
 (pdftex.def)             Requested size: 199.16928pt x 199.37968pt.
 
 LaTeX Warning: Reference `fig:2d-path-static' on page 7 undefined on input line
- 500.
+ 510.
 
 [7 <./sphere_static.png> <./torus_static.png>]
 
 LaTeX Warning: Reference `fig:compare-interpolations-static' on page 8 undefine
-d on input line 522.
+d on input line 532.
 
-<woylier-article_files/figure-latex/currency-1.pdf, id=171, 640.3925pt x 256.96
+<woylier-article_files/figure-latex/currency-1.pdf, id=176, 640.3925pt x 256.96
 pt>
 File: woylier-article_files/figure-latex/currency-1.pdf Graphic file (type pdf)
 
 <use woylier-article_files/figure-latex/currency-1.pdf>
 Package pdftex.def Info: woylier-article_files/figure-latex/currency-1.pdf  use
-d on input line 547.
+d on input line 557.
 (pdftex.def)             Requested size: 398.33858pt x 159.83502pt.
-<woylier-article_files/figure-latex/pca-result-static-1.pdf, id=172, 555.07375p
+<woylier-article_files/figure-latex/pca-result-static-1.pdf, id=177, 555.07375p
 t x 544.0325pt>
 File: woylier-article_files/figure-latex/pca-result-static-1.pdf Graphic file (
 type pdf)
 <use woylier-article_files/figure-latex/pca-result-static-1.pdf>
 Package pdftex.def Info: woylier-article_files/figure-latex/pca-result-static-1
-.pdf  used on input line 578.
+.pdf  used on input line 588.
 (pdftex.def)             Requested size: 318.67207pt x 312.33478pt.
-<rates_tour_geodesic_final.png, id=173, 200.75pt x 200.75pt>
+[8 <./woylier-article_files/figure-latex/currency-1.pdf>]
+<rates_tour_geodesic_final.png, id=191, 200.75pt x 200.75pt>
 File: rates_tour_geodesic_final.png Graphic file (type png)
 <use rates_tour_geodesic_final.png>
-Package pdftex.def Info: rates_tour_geodesic_final.png  used on input line 602.
+Package pdftex.def Info: rates_tour_geodesic_final.png  used on input line 612.
 
 (pdftex.def)             Requested size: 119.50278pt x 119.5044pt.
-<rates_tour_better_final.png, id=174, 200.75pt x 200.75pt>
+<rates_tour_better_final.png, id=192, 200.75pt x 200.75pt>
 File: rates_tour_better_final.png Graphic file (type png)
 <use rates_tour_better_final.png>
-Package pdftex.def Info: rates_tour_better_final.png  used on input line 602.
+Package pdftex.def Info: rates_tour_better_final.png  used on input line 612.
 (pdftex.def)             Requested size: 119.50278pt x 119.5044pt.
-<rates_tour_givens_final.png, id=175, 200.75pt x 200.75pt>
+<rates_tour_givens_final.png, id=193, 200.75pt x 200.75pt>
 File: rates_tour_givens_final.png Graphic file (type png)
 <use rates_tour_givens_final.png>
-Package pdftex.def Info: rates_tour_givens_final.png  used on input line 602.
+Package pdftex.def Info: rates_tour_givens_final.png  used on input line 612.
 (pdftex.def)             Requested size: 119.50278pt x 119.5044pt.
-[8 <./woylier-article_files/figure-latex/currency-1.pdf>]
-<woylier-article_files/figure-latex/unnamed-chunk-12-1.pdf, id=189, 463.7325pt 
+<woylier-article_files/figure-latex/unnamed-chunk-13-1.pdf, id=194, 463.7325pt 
 x 316.18124pt>
-File: woylier-article_files/figure-latex/unnamed-chunk-12-1.pdf Graphic file (t
+File: woylier-article_files/figure-latex/unnamed-chunk-13-1.pdf Graphic file (t
 ype pdf)
-<use woylier-article_files/figure-latex/unnamed-chunk-12-1.pdf>
-Package pdftex.def Info: woylier-article_files/figure-latex/unnamed-chunk-12-1.
-pdf  used on input line 612.
+<use woylier-article_files/figure-latex/unnamed-chunk-13-1.pdf>
+Package pdftex.def Info: woylier-article_files/figure-latex/unnamed-chunk-13-1.
+pdf  used on input line 622.
 (pdftex.def)             Requested size: 463.73135pt x 316.18047pt.
 
-Overfull \hbox (80.39278pt too wide) in paragraph at lines 612--613
+Overfull \hbox (80.39278pt too wide) in paragraph at lines 622--623
 [][]
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 612--613
+Underfull \hbox (badness 10000) in paragraph at lines 622--623
 
  []
 
@@ -979,13 +979,13 @@ _geodesic_final.png> <./rates_tour_better_final.png> <./rates_tour_givens_final
 \tf@brf=\write6
 \openout6 = `RJwrapper.brf'.
 
-[10 <./woylier-article_files/figure-latex/unnamed-chunk-12-1.pdf>])
+[10 <./woylier-article_files/figure-latex/unnamed-chunk-13-1.pdf>])
 
 LaTeX Font Warning: Font shape `T1/zi4/m/it' undefined
-(Font)              using `T1/zi4/m/n' instead on input line 670.
+(Font)              using `T1/zi4/m/n' instead on input line 680.
 
 LaTeX Font Info:    Font shape `T1/zi4/m/it' will be
-(Font)              scaled to size 9.18004pt on input line 670.
+(Font)              scaled to size 9.18004pt on input line 680.
 ) [11] [12] (./RJwrapper.aux)
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
@@ -996,16 +996,16 @@ LaTeX Warning: There were undefined references.
 Package rerunfilecheck Info: File `RJwrapper.out' has not changed.
 (rerunfilecheck)             Checksum: 1E4E428651776FC9DE8CC5352CA96408;1513.
 Package rerunfilecheck Info: File `RJwrapper.brf' has not changed.
-(rerunfilecheck)             Checksum: BCC6B52E54D52B4975BD3AB55DD63CDC;898.
+(rerunfilecheck)             Checksum: 4440A5BF2E6B82800387AF82A4E47BEC;906.
  ) 
 Here is how much of TeX's memory you used:
- 26849 strings out of 478268
- 491812 string characters out of 5846348
- 788610 words of memory out of 5000000
+ 26855 strings out of 478268
+ 491869 string characters out of 5846348
+ 789610 words of memory out of 5000000
  44239 multiletter control sequences out of 15000+600000
- 508756 words of font info for 251 fonts, out of 8000000 for 9000
+ 508996 words of font info for 255 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 115i,12n,131p,1006b,694s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 115i,11n,131p,1006b,694s stack positions out of 10000i,1000n,20000p,200000b,200000s
 {/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/inconsolata/i4-t1-0.enc}{
 /usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/texl
 ive/2022/texmf-dist/fonts/type1/public/inconsolata/Inconsolata-zi4r.pfb></usr/l
@@ -1018,10 +1018,10 @@ ve/2022/texmf-dist/fonts/type1/public/mathpazo/fplmri.pfb></usr/local/texlive/2
 022/texmf-dist/fonts/type1/urw/palatino/uplb8a.pfb></usr/local/texlive/2022/tex
 mf-dist/fonts/type1/urw/palatino/uplr8a.pfb></usr/local/texlive/2022/texmf-dist
 /fonts/type1/urw/palatino/uplri8a.pfb>
-Output written on RJwrapper.pdf (12 pages, 682114 bytes).
+Output written on RJwrapper.pdf (12 pages, 682721 bytes).
 PDF statistics:
- 326 PDF objects out of 1000 (max. 8388607)
- 263 compressed objects within 3 object streams
+ 331 PDF objects out of 1000 (max. 8388607)
+ 268 compressed objects within 3 object streams
  53 named destinations out of 1000 (max. 500000)
  51324 words of extra memory for PDF output out of 51595 (max. 10000000)
 

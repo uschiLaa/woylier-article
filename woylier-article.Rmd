@@ -64,7 +64,8 @@ The guided tour combines projection pursuit with the grand tour and it is implem
 
 A tour path is a sequence of projections and we use an interpolation to produce small steps simulating a smooth movement. The current implementation of tour in \CRANpkg{tourr} package uses geodesic interpolation between planes. The geodesic interpolation path is the locally shortest path between planes with no within-plane spin (see @Buja2004TheoryOD for more details). As a result, the rendered target plane could be a within-plane rotation of the target plane originally specified. This is not a problem when the structure we are looking for can be identified from any rotation. However, even simple associations in 2D, such as the calculated correlation between variables, can be very different when the basis is rotated.
 
-Most projection pursuit indexes, particularly those provided by the \CRANpkg{tourr} are rotationally invariant. However, there are some projection pursuit index where the orientation of frames does matter. One example is the splines index proposed by @Grimm2016. The splines index computes a spline model for the two variables in a projection, in order to measure non-linear association. It can be useful to detect non-linear relationships in high-dimensional data. However, its value will change substantially if the projection is rotated within the plane [@pp]. The procedure in @Grimm2016 was less affected by the orientation because it considered only pairs of variables, and it selects the maximum value found when exchanging which variable is considered as predictor and response variable.
+Most projection pursuit indexes, particularly those provided by the \CRANpkg{tourr} are rotationally invariant. However, there are some projection pursuit index where the orientation of frames does matter. One example is the splines index proposed by @Grimm2016. The splines index computes a spline model for the two variables in a projection, in order to measure non-linear association. It compares the variance of the response variable to the variance of residuals, and the functional dependence is stronger when the index value is larger. It can be useful to detect non-linear relationships in high-dimensional data. However, its value will change substantially if the projection is rotated within the plane [@pp]. The procedure in @Grimm2016 was less affected by the orientation because it considered only pairs of variables, and it selects the maximum value found when exchanging which variable is considered as predictor and response variable.
+
 
 Figure `r knitr::asis_output(ifelse(knitr::is_html_output(), '\\@ref(fig:splines2d-static)', '\\@ref(fig:splines2d-static)'))` illustrates the rotational invariance problem for a modified spline2D index, where we always consider the horizontal direction as the predictor variable, and the vertical direction as the response. Thus, our modified index computes the splines on one orientation, exaggerating the rotational variability. The example data was simulated to follow a sine curve and the modified splines index is calculated on different within-plane rotations of the data. Although they have the same structure, the index values vary greatly. 
 
@@ -239,13 +240,9 @@ $$F_t = B  W_t$$
 
 At each time $t$ we can project the data using the frame $F_t$.
 
-**Projection pursuit index functions**
-
-The properties of several projection pursuit index functions were investigated in @pp. The smoothness, squintability, flexibility, rotation invariance, and speed of projection pursuit index functions were examined. The one property that is interesting to us is rotation invariance. The rotational invariance is examined by computing projection pursuit index for different rotations within 2D plane. It is established that the `dcor2d`, `splines2d` and `TIC` index are not strictly rotationally invariant. The `splines2d` index measures nonlinear association between variable by fitting spline model. It compares the variance of residuals and the functional dependence is stronger when the index value is larger.
-
 # Implementation
 
-We implemented each steps in Givens interpolation path algorithm in separate functions and combined them in `givens_full_path()` function. Here is the input and output of each functions and it's descriptions.
+We implemented each steps in the Givens interpolation path algorithm in separate functions and combined them in the `givens_full_path()` function for deriving the full set of $F_t$. The same functions are used to integrate the Givens interpolation with the `animate()` functions of the \CRANpkg{tourr} package. Here is the input and output of each functions and it's descriptions, functions to use with `animate()` are described separately below.
 
 ```{r}
 tbl <- tibble(name = c("`givens_full_path(Fa, Fz, nsteps)`",
@@ -254,7 +251,7 @@ tbl <- tibble(name = c("`givens_full_path(Fa, Fz, nsteps)`",
                     "`row_rot(a, i, k, theta)`",
                     "`calculate_angles(Wa, Wz)`",
                     "`construct_moving_frame(Wt, B)`"),
-              description = c("Construct full interpolated frames.",
+              description = c("Construct full set of interpolated frames.",
                               "Build a d-dimensional pre-projection space by orthonormalizing Fz with regard to Fa.", 
                               "Construct preprojected frames.", 
                               "Performs Givens rotation .",
@@ -262,14 +259,14 @@ tbl <- tibble(name = c("`givens_full_path(Fa, Fz, nsteps)`",
                               "Reconstruct interpolated frames using pre-projection. "), 
               input = c("Starting and target frame (Fa, Fz) and number of steps", 
                         "Starting and target frame (Fa, Fz) ", 
-                        "A frame and the pre-projection p x 2D matrix", "A frame and the pre-projection p x 2D matrix", 
+                        "A preprojected frame, the two components used in the rotation and the rotation angle theta", "A frame and the pre-projection p x 2d matrix", 
                         "Preprojected frames (Wa, Wz)",
-                        "Pre-projection matrix B, Each frame of givens path"),
-              output = c("An array with nsteps matrix. Each matrix is interpolated frame in between starting and target frames.", 
-                         "B pre-projection p x 2D matrix",
+                        "Pre-projection matrix B, frame of givens path"),
+              output = c("An array with nsteps matrices. Each matrix is interpolated frame in between starting and target frames.", 
+                         "B pre-projection p x 2d matrix",
                          "Pre-projected frame in pre-projection space", 
-                         "theta angle rotated matrix a", 
-                         "Names list of angles",
+                         "Input matrix after Givens rotation", 
+                         "Named list of angles",
                          "A frame of on a step of interpolation"))
 ```
 
@@ -320,31 +317,16 @@ kbl(tbl) %>%
   column_spec(4, width="2cm") 
 ```
 
-<!--
-- `givens_full_path(Fa, Fz, nsteps)`: Construct full interpolated frames.   
-    - `input`: Starting and target frame (Fa, Fz) and number of steps 
-    - `output`: An array with nsteps matrix. Each matrix is interpolated frame in between starting and target frames. 
-- `preprojection(Fa, Fz)`: Build a d-dimensional pre-projection space by orthonormalizing Fz with regard to Fa.
-    - `input`:  Starting and target frame (Fa, Fz) 
-    - `output`: B pre-projection px2d matrix 
-- `construct_preframe(Fa, B)`: Construct preprojected frames.
-    - `input`: A frame and the pre-projection px2d matrix
-    - `output`: Preprojected frame in preprojection space
-- `row_rot(a, i, k, theta)`: Performs Givens rotation [@matrix_computation].
-    - `input`: a-matrix, i-row, k-row that we want to zero the element, theta-angle between i, k rows
-    - `output`: theta angle rotated matrix a 
-- `calculate_angles(Wa, Wz)`: Calculate angles of required rotations to map Wz to Wa.
-    - `input`:  Preprojected frames (Wa, Wz)
-    - `output`: Names list of angles
-- `givens_rotation(Wa, angles, stepfraction)`: It implements series of Givens rotations that maps Wa to Wz
-    - `input`: Wa starting preprojected frame, list of angles of required rotations to map Wz to Wa, stepfraction.
-    - `output`: Givens path 
-- `construct_moving_frame(Wt, B)`: Reconstruct interpolated frames using pre-projection. 
-    - `input`: Pre-projection matrix B, Each frame of givens path
-    - `output`: A frame of on a step of interpolation
--->
 
-The interface of tour is that it renders one projection of data at a time. It displays one projection and asks for the next projection. Therefore, path of projections shown below is sequence of projections to be renders at tour display.
+When using \CRANpkg{tourr} we typically want to run a tour live, such that target selection and interpolation are interleaved, and the display will show the data for each frame $F_t$ in the interpolation path. The implementation in \CRANpkg{tourr} was described in @tourr, and with the \CRANpkg{woylier} we provide functions to use the Givens interpolation with the grand tour, guided tour and planned tour. To do this we rely primarily on the woylier function `givens_info()` which calls the functions listed in the Table above and collects all necessary information for interpolating between a given starting and target frame. The function `givens_path()` then defines the interpolation and can be used instead of `tourr::geodesic_path()`. Wrapper functions for the different tour types are available to use this interpolation, since in the `tourr::grand_tour()` and other path functions this is fixed to use the geodesic interpolation. Calling a grand tour with Givens interpolation for direct animation will then use:
+
+```{r echo=TRUE, eval=FALSE}
+tourr::animate_xy(<data>, tour_path = woylier::grand_tour_givens())
+```
+
+
+
+# Comparison of geodesic interpolation and Givens interpolation
 
 The `givens_full_path()` function returns the intermediate interpolation step projections in given number of steps. The code chunk below demonstrates the interpolation between 2 random basis in 5 steps.
 
@@ -362,8 +344,6 @@ base2
 givens_full_path(base1, base2, nsteps = 5)
 ```
 
-
-# Comparison of geodesic interpolation and Givens interpolation
 
 In this section, we illustrate the use of *givens_full_path()* function by plotting the interpolated path between 2 frames. This also a way of checking if interpolated path is moving in equal size at each step.
 
