@@ -1,3 +1,4 @@
+#devtools::install_github("numbats/woylier")
 library(cowplot)
 library(tourr)
 library(woylier)
@@ -32,9 +33,11 @@ d <- as.matrix(sine_curve[,3:6])
 pg <- givens_full_path(base1, base2, nsteps = 4)
 
 # givens_full_path begins with one step beyond the first base
-path_givens <- array(dim=c(4, 2, 5))
-path_givens[,,1] <- as.array(base1)
-path_givens[,,2:5] <- pg
+#path_givens <- array(dim=c(4, 2, 5))
+#path_givens[,,1] <- as.array(base1)
+#path_givens[,,2:5] <- pg
+# fixed in github version
+path_givens <- pg
 
 # no such function for geodesic path, so need to use workaround
 pt_geo <- save_history(d, planned_tour(list(base1, base2)))[,,1:2]
