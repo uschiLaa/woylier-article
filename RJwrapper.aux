@@ -2,10 +2,13 @@
 \providecommand\hyper@newdestlabel[2]{}
 \providecommand\HyperFirstAtBeginDocument{\AtBeginDocument}
 \HyperFirstAtBeginDocument{\ifx\hyper@anchor\@undefined
+\global\let\oldcontentsline\contentsline
+\gdef\contentsline#1#2#3#4{\oldcontentsline{#1}{#2}{#3}}
 \global\let\oldnewlabel\newlabel
 \gdef\newlabel#1#2{\newlabelxx{#1}#2}
 \gdef\newlabelxx#1#2#3#4#5#6{\oldnewlabel{#1}{{#2}{#3}}}
 \AtEndDocument{\ifx\hyper@anchor\@undefined
+\let\contentsline\oldcontentsline
 \let\newlabel\oldnewlabel
 \fi}
 \fi}
@@ -14,34 +17,81 @@
 \providecommand\HyField@AuxAddToFields[1]{}
 \providecommand\HyField@AuxAddToCoFields[2]{}
 \bibstyle{abbrvnat}
+\citation{asimov_1985}
+\citation{buja_cook_asimov_hurley_2005}
+\citation{cook_manual_1997}
+\citation{mmtour}
+\citation{grandtour1995}
+\citation{tourrev}
+\citation{tourr}
+\citation{kruskal_1969}
+\citation{Buja2004TheoryOD}
+\citation{Grimm2016}
+\citation{pp}
+\citation{Grimm2016}
 \@writefile{toc}{\contentsline {chapter}{\numberline {1}Frame to frame interpolation for high-dimensional data visualisation using the woylier package}{1}{section*.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {2.1}Introduction}{1}{section.2.1}\protected@file@percent }
 \newlabel{introduction}{{2.1}{1}{Introduction}{section.2.1}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces The impact of rotation on a spline index that is NOT rotation invariant. The index value for different within-plane rotations take very different values: (a) original projection has maximum index value of 1.00, (b) axes rotated 45$^o$ drops index value to 0.83, (c) axes rotated 60$^o$ drops index to a very low 0.26. Geodesic interpolation between planes will have difficulty finding the maximum of an index like this because it is focused only on the projection plane, not the frame defining the plane.}}{2}{figure.caption.2}\protected@file@percent }
+\@writefile{brf}{\backcite{asimov_1985}{{1}{2.1}{section.2.1}}}
+\@writefile{brf}{\backcite{buja_cook_asimov_hurley_2005}{{1}{2.1}{section.2.1}}}
+\@writefile{brf}{\backcite{cook_manual_1997}{{1}{2.1}{section.2.1}}}
+\@writefile{brf}{\backcite{mmtour}{{1}{2.1}{section.2.1}}}
+\@writefile{brf}{\backcite{grandtour1995}{{1}{2.1}{section.2.1}}}
+\@writefile{brf}{\backcite{tourrev}{{1}{2.1}{section.2.1}}}
+\@writefile{brf}{\backcite{tourr}{{1}{2.1}{section.2.1}}}
+\@writefile{brf}{\backcite{kruskal_1969}{{1}{2.1}{section.2.1}}}
+\@writefile{brf}{\backcite{Buja2004TheoryOD}{{1}{2.1}{section.2.1}}}
+\@writefile{brf}{\backcite{Grimm2016}{{1}{2.1}{section.2.1}}}
+\@writefile{brf}{\backcite{pp}{{1}{2.1}{section.2.1}}}
+\@writefile{brf}{\backcite{Grimm2016}{{1}{2.1}{section.2.1}}}
+\citation{buja_cook_asimov_hurley_2005}
+\citation{buja_cook_asimov_hurley_2005}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces The impact of rotation on a spline index that is NOT rotation invariant}}{2}{figure.caption.2}\protected@file@percent }
 \providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
-\newlabel{fig:splines2d-static}{{1}{2}{The impact of rotation on a spline index that is NOT rotation invariant. The index value for different within-plane rotations take very different values: (a) original projection has maximum index value of 1.00, (b) axes rotated 45$^o$ drops index value to 0.83, (c) axes rotated 60$^o$ drops index to a very low 0.26. Geodesic interpolation between planes will have difficulty finding the maximum of an index like this because it is focused only on the projection plane, not the frame defining the plane}{figure.caption.2}{}}
+\newlabel{fig:splines2d-static}{{1}{2}{The impact of rotation on a spline index that is NOT rotation invariant}{figure.caption.2}{}}
+\@writefile{brf}{\backcite{buja_cook_asimov_hurley_2005}{{2}{2.1}{figure.caption.2}}}
 \@writefile{toc}{\contentsline {section}{\numberline {2.2}Background}{2}{section.2.2}\protected@file@percent }
 \newlabel{background}{{2.2}{2}{Background}{section.2.2}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Plane to plane interpolation (left) and Frame to frame interpolation (right). We used dog index for illustration purposes. For some non-linear index orientation of data could affect the index.}}{3}{figure.caption.3}\protected@file@percent }
-\newlabel{fig:dogs}{{2}{3}{Plane to plane interpolation (left) and Frame to frame interpolation (right). We used dog index for illustration purposes. For some non-linear index orientation of data could affect the index}{figure.caption.3}{}}
+\@writefile{brf}{\backcite{buja_cook_asimov_hurley_2005}{{2}{2.2}{section.2.2}}}
+\citation{matrix_computation}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Plane to plane interpolation (left) and Frame to frame interpolation (right)}}{3}{figure.caption.3}\protected@file@percent }
+\newlabel{fig:dogs}{{2}{3}{Plane to plane interpolation (left) and Frame to frame interpolation (right)}{figure.caption.3}{}}
+\@writefile{brf}{\backcite{matrix_computation}{{3}{2.2}{figure.caption.3}}}
+\citation{tourr}
 \@writefile{toc}{\contentsline {section}{\numberline {2.3}Implementation}{5}{section.2.3}\protected@file@percent }
 \newlabel{implementation}{{2.3}{5}{Implementation}{section.2.3}{}}
+\@writefile{brf}{\backcite{tourr}{{5}{2.3}{section.2.3}}}
 \@writefile{toc}{\contentsline {section}{\numberline {2.4}Comparison of geodesic interpolation and Givens interpolation}{5}{section.2.4}\protected@file@percent }
 \newlabel{comparison-of-geodesic-interpolation-and-givens-interpolation}{{2.4}{5}{Comparison of geodesic interpolation and Givens interpolation}{section.2.4}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Interpolation steps of 1D projections of 6D data}}{7}{figure.caption.4}\protected@file@percent }
-\newlabel{fig:1d-path-static}{{3}{7}{Interpolation steps of 1D projections of 6D data}{figure.caption.4}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces All the currencies are standardised and the sign is flipped. The high value means the currency strengthened against the USD, and low means that it weakened.}}{8}{figure.caption.5}\protected@file@percent }
-\newlabel{fig:currency}{{4}{8}{All the currencies are standardised and the sign is flipped. The high value means the currency strengthened against the USD, and low means that it weakened}{figure.caption.5}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {2.5}Data application}{8}{section.2.5}\protected@file@percent }
-\newlabel{data-application}{{2.5}{8}{Data application}{section.2.5}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces There is a strong non-linear dependence between PC1 and PC2. Observations in March 2020 are highlighted in dark blue, all other months are shown in grey.}}{9}{figure.caption.6}\protected@file@percent }
-\newlabel{fig:pca-result-static}{{5}{9}{There is a strong non-linear dependence between PC1 and PC2. Observations in March 2020 are highlighted in dark blue, all other months are shown in grey}{figure.caption.6}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Final view after optimisation in the guided tour using geodesic optimisation (left), simulated annealing with geodesic interpolation (middle) and simulated annealing with givens interpolation (right).}}{9}{figure.caption.7}\protected@file@percent }
-\newlabel{fig:rates-tour-static}{{6}{9}{Final view after optimisation in the guided tour using geodesic optimisation (left), simulated annealing with geodesic interpolation (middle) and simulated annealing with givens interpolation (right)}{figure.caption.7}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {2.6}Conclusion}{10}{section.2.6}\protected@file@percent }
-\newlabel{conclusion}{{2.6}{10}{Conclusion}{section.2.6}{}}
-\newlabel{references}{{2.6}{10}{}{section.2.6}{}}
-\@writefile{toc}{\contentsline {section}{References}{10}{section.2.6}\protected@file@percent }
+\citation{geozoo}
+\@writefile{brf}{\backcite{geozoo}{{7}{2.4}{section.2.4}}}
+\@writefile{toc}{\contentsline {section}{\numberline {2.5}Data application}{7}{section.2.5}\protected@file@percent }
+\newlabel{data-application}{{2.5}{7}{Data application}{section.2.5}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Interpolation steps of 1D projections of 6D data}}{8}{figure.caption.4}\protected@file@percent }
+\newlabel{fig:1d-path-static}{{3}{8}{Interpolation steps of 1D projections of 6D data}{figure.caption.4}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces All the currencies are standardised and the sign is flipped}}{8}{figure.caption.5}\protected@file@percent }
+\newlabel{fig:currency}{{4}{8}{All the currencies are standardised and the sign is flipped}{figure.caption.5}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces There is a strong non-linear dependence between PC1 and PC2}}{9}{figure.caption.6}\protected@file@percent }
+\newlabel{fig:pca-result-static}{{5}{9}{There is a strong non-linear dependence between PC1 and PC2}{figure.caption.6}{}}
+\citation{buja_cook_asimov_hurley_2005}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Final view after optimisation in the guided tour using geodesic optimisation (left), simulated annealing with geodesic interpolation (middle) and simulated annealing with givens interpolation (right)}}{10}{figure.caption.7}\protected@file@percent }
+\newlabel{fig:rates-tour-static}{{6}{10}{Final view after optimisation in the guided tour using geodesic optimisation (left), simulated annealing with geodesic interpolation (middle) and simulated annealing with givens interpolation (right)}{figure.caption.7}{}}
 \bibdata{woylier-article.bib}
+\bibcite{asimov_1985}{{1}{1985}{{Asimov}}{{}}}
+\bibcite{Buja2004TheoryOD}{{2}{2004}{{Buja et~al.}}{{Buja, Cook, Asimov, and Hurley}}}
+\bibcite{buja_cook_asimov_hurley_2005}{{3}{2005}{{Buja et~al.}}{{Buja, Cook, Asimov, and Hurley}}}
+\bibcite{cook_manual_1997}{{4}{1997}{{Cook and Buja}}{{}}}
+\bibcite{grandtour1995}{{5}{1995}{{Cook et~al.}}{{Cook, Buja, Cabrera, and Hurley}}}
+\bibcite{matrix_computation}{{6}{1989}{{Golub and Loan}}{{}}}
+\bibcite{Grimm2016}{{7}{2016}{{Grimm}}{{}}}
+\bibcite{kruskal_1969}{{8}{1969}{{Kruskal}}{{}}}
+\bibcite{pp}{{9}{2020}{{Laa and Cook}}{{}}}
+\bibcite{mmtour}{{10}{2023}{{Laa et~al.}}{{Laa, Aumann, Cook, and Valencia}}}
+\bibcite{tourrev}{{11}{2022}{{Lee et~al.}}{{Lee, Cook, da~Silva, Laa, Spyrison, Wang, and Zhang}}}
+\bibcite{geozoo}{{12}{2016}{{Schloerke}}{{}}}
+\bibcite{tourr}{{13}{2011}{{Wickham et~al.}}{{Wickham, Cook, Hofmann, and Buja}}}
+\@writefile{toc}{\contentsline {section}{\numberline {2.6}Conclusion}{11}{section.2.6}\protected@file@percent }
+\newlabel{conclusion}{{2.6}{11}{Conclusion}{section.2.6}{}}
+\@writefile{brf}{\backcite{buja_cook_asimov_hurley_2005}{{11}{2.6}{section.2.6}}}
 \ttl@finishall
-\gdef \@abspage@last{11}
+\gdef \@abspage@last{12}
