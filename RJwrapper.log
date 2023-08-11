@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.8.7)  11 AUG 2023 11:18
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.8.7)  12 AUG 2023 08:10
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -783,68 +783,74 @@ Overfull \hbox (7.29445pt too wide) in paragraph at lines 173--190
 [][] 
  []
 
-[5{/Users/cookd/Library/TinyTeX/texmf-dist/fonts/enc/dvips/inconsolata/i4-t1-0.enc}] [6]
-<sphere_static.png, id=116, 476.27937pt x 480.29437pt>
+[5{/Users/cookd/Library/TinyTeX/texmf-dist/fonts/enc/dvips/inconsolata/i4-t1-0.enc}]
+<compare-paths.png, id=111, 546.843pt x 748.7172pt>
+File: compare-paths.png Graphic file (type png)
+<use compare-paths.png>
+Package pdftex.def Info: compare-paths.png  used on input line 222.
+(pdftex.def)             Requested size: 318.67207pt x 436.33553pt.
+<sphere_static.png, id=113, 476.27937pt x 480.29437pt>
 File: sphere_static.png Graphic file (type png)
 <use sphere_static.png>
-Package pdftex.def Info: sphere_static.png  used on input line 311.
+Package pdftex.def Info: sphere_static.png  used on input line 235.
 (pdftex.def)             Requested size: 199.16928pt x 200.85013pt.
-<torus_static.png, id=117, 476.78125pt x 477.28313pt>
+<torus_static.png, id=114, 476.78125pt x 477.28313pt>
 File: torus_static.png Graphic file (type png)
 <use torus_static.png>
-Package pdftex.def Info: torus_static.png  used on input line 311.
+Package pdftex.def Info: torus_static.png  used on input line 235.
 (pdftex.def)             Requested size: 199.16928pt x 199.37968pt.
 
-LaTeX Warning: Reference `fig:2d-path-static' on page 7 undefined on input line 320.
+LaTeX Warning: Reference `fig:2d-path-static' on page 6 undefined on input line 244.
 
+[6 <./compare-paths.png>] [7 <./sphere_static.png> <./torus_static.png>]
 
-LaTeX Warning: Reference `fig:compare-interpolations-static' on page 7 undefined on input line 327.
+LaTeX Warning: Reference `fig:compare-interpolations-static' on page 8 undefined on input line 251.
 
-<woylier-article_files/figure-latex/currency-1.pdf, id=120, 640.3925pt x 256.96pt>
+<woylier-article_files/figure-latex/currency-1.pdf, id=131, 640.3925pt x 256.96pt>
 File: woylier-article_files/figure-latex/currency-1.pdf Graphic file (type pdf)
 <use woylier-article_files/figure-latex/currency-1.pdf>
-Package pdftex.def Info: woylier-article_files/figure-latex/currency-1.pdf  used on input line 339.
+Package pdftex.def Info: woylier-article_files/figure-latex/currency-1.pdf  used on input line 263.
 (pdftex.def)             Requested size: 398.33858pt x 159.83502pt.
-[7] [8 <./sphere_static.png> <./torus_static.png> <./woylier-article_files/figure-latex/currency-1.pdf>]
-<woylier-article_files/figure-latex/pca-result-static-1.pdf, id=142, 555.07375pt x 544.0325pt>
+<woylier-article_files/figure-latex/pca-result-static-1.pdf, id=132, 555.07375pt x 544.0325pt>
 File: woylier-article_files/figure-latex/pca-result-static-1.pdf Graphic file (type pdf)
 <use woylier-article_files/figure-latex/pca-result-static-1.pdf>
-Package pdftex.def Info: woylier-article_files/figure-latex/pca-result-static-1.pdf  used on input line 351.
+Package pdftex.def Info: woylier-article_files/figure-latex/pca-result-static-1.pdf  used on input line 275.
 (pdftex.def)             Requested size: 318.67207pt x 312.33478pt.
-<rates_tour_geodesic_final.png, id=143, 200.75pt x 200.75pt>
+[8 <./woylier-article_files/figure-latex/currency-1.pdf>]
+<rates_tour_geodesic_final.png, id=146, 200.75pt x 200.75pt>
 File: rates_tour_geodesic_final.png Graphic file (type png)
 <use rates_tour_geodesic_final.png>
-Package pdftex.def Info: rates_tour_geodesic_final.png  used on input line 364.
+Package pdftex.def Info: rates_tour_geodesic_final.png  used on input line 288.
 (pdftex.def)             Requested size: 119.50278pt x 119.5044pt.
-<rates_tour_better_final.png, id=144, 200.75pt x 200.75pt>
+<rates_tour_better_final.png, id=147, 200.75pt x 200.75pt>
 File: rates_tour_better_final.png Graphic file (type png)
 <use rates_tour_better_final.png>
-Package pdftex.def Info: rates_tour_better_final.png  used on input line 364.
+Package pdftex.def Info: rates_tour_better_final.png  used on input line 288.
 (pdftex.def)             Requested size: 119.50278pt x 119.5044pt.
-<rates_tour_givens_final.png, id=145, 200.75pt x 200.75pt>
+<rates_tour_givens_final.png, id=148, 200.75pt x 200.75pt>
 File: rates_tour_givens_final.png Graphic file (type png)
 <use rates_tour_givens_final.png>
-Package pdftex.def Info: rates_tour_givens_final.png  used on input line 364.
+Package pdftex.def Info: rates_tour_givens_final.png  used on input line 288.
 (pdftex.def)             Requested size: 119.50278pt x 119.5044pt.
-<woylier-article_files/figure-latex/unnamed-chunk-13-1.pdf, id=146, 463.7325pt x 316.18124pt>
+<woylier-article_files/figure-latex/unnamed-chunk-13-1.pdf, id=149, 463.7325pt x 316.18124pt>
 File: woylier-article_files/figure-latex/unnamed-chunk-13-1.pdf Graphic file (type pdf)
 <use woylier-article_files/figure-latex/unnamed-chunk-13-1.pdf>
-Package pdftex.def Info: woylier-article_files/figure-latex/unnamed-chunk-13-1.pdf  used on input line 371.
+Package pdftex.def Info: woylier-article_files/figure-latex/unnamed-chunk-13-1.pdf  used on input line 295.
 (pdftex.def)             Requested size: 463.73135pt x 316.18047pt.
 
-Overfull \hbox (80.39278pt too wide) in paragraph at lines 371--372
+Overfull \hbox (80.39278pt too wide) in paragraph at lines 295--296
 [][] 
  []
 
-[9 <./woylier-article_files/figure-latex/pca-result-static-1.pdf>] [10 <./rates_tour_geodesic_final.png> <./rates_tour_better_final.png> <./rates_tour_givens_final.png> <./woylier-article_files/figure-latex/unnamed-chunk-13-1.pdf>]
+[9 <./woylier-article_files/figure-latex/pca-result-static-1.pdf> <./rates_tour_geodesic_final.png> <./rates_tour_better_final.png> <./rates_tour_givens_final.png>] [10 <./woylier-article_files/figure-latex/unnamed-chunk-13-1.pdf>]
 No file RJwrapper.bbl.
 
 LaTeX Font Warning: Font shape `T1/zi4/m/it' undefined
-(Font)              using `T1/zi4/m/n' instead on input line 451.
+(Font)              using `T1/zi4/m/n' instead on input line 375.
 
 LaTeX Font Info:    Font shape `T1/zi4/m/it' will be
-(Font)              scaled to size 9.18004pt on input line 451.
-[11]) [12] (./RJwrapper.aux)
+(Font)              scaled to size 9.18004pt on input line 375.
+) [11] (./RJwrapper.aux)
  ***********
 LaTeX2e <2023-06-01> patch level 1
 L3 programming layer <2023-08-03>
@@ -859,18 +865,18 @@ Package rerunfilecheck Info: File `RJwrapper.out' has not changed.
 (rerunfilecheck)             Checksum: 53AA12D5F560C4BFB5EC197B96EBDD90;1618.
  ) 
 Here is how much of TeX's memory you used:
- 26672 strings out of 477148
- 486044 string characters out of 5812345
+ 26687 strings out of 477148
+ 486347 string characters out of 5812345
  1935254 words of memory out of 5000000
- 46915 multiletter control sequences out of 15000+600000
- 597321 words of font info for 256 fonts, out of 8000000 for 9000
+ 46927 multiletter control sequences out of 15000+600000
+ 597480 words of font info for 258 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 117i,12n,131p,1139b,855s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 117i,12n,131p,1139b,867s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </Users/cookd/Library/TinyTeX/texmf-dist/fonts/type1/public/inconsolata/Inconsolata-zi4r.pfb></Users/cookd/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></Users/cookd/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></Users/cookd/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></Users/cookd/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></Users/cookd/Library/TinyTeX/texmf-dist/fonts/type1/public/mathpazo/fplmr.pfb></Users/cookd/Library/TinyTeX/texmf-dist/fonts/type1/public/mathpazo/fplmri.pfb></Users/cookd/Library/TinyTeX/texmf-dist/fonts/type1/urw/palatino/uplb8a.pfb></Users/cookd/Library/TinyTeX/texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb></Users/cookd/Library/TinyTeX/texmf-dist/fonts/type1/urw/palatino/uplri8a.pfb>
-Output written on RJwrapper.pdf (12 pages, 681811 bytes).
+Output written on RJwrapper.pdf (11 pages, 928283 bytes).
 PDF statistics:
- 284 PDF objects out of 1000 (max. 8388607)
- 221 compressed objects within 3 object streams
+ 283 PDF objects out of 1000 (max. 8388607)
+ 219 compressed objects within 3 object streams
  55 named destinations out of 1000 (max. 500000)
- 51332 words of extra memory for PDF output out of 51595 (max. 10000000)
+ 51337 words of extra memory for PDF output out of 51595 (max. 10000000)
 
