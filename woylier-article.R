@@ -662,7 +662,7 @@ rates_pca_sd <-  apply(rates_pca$x, 2, function(x) (x-mean(x))/sd(x))
 #>                   display = display_pca(col = col_rates,
 #>                                         pc_coefs = rates_pca$rotation[,1:4]),
 #>                   tour_path = planned_tour_givens(path_givens),
-#>                   "rates_tour_givens.gif", frames = 500,
+#>                   "rates_tour_givens.gif", frames = 700,
 #>                   loop = FALSE, width=200, height=200)
 #> 
 #> tourr::render_gif(rates_pca_sd[,1:4],
@@ -722,7 +722,8 @@ p3 <- get_interp(record_search_givens) %>%
   ylab(NULL) +
   theme_bw() 
 
-gridExtra::grid.arrange(p1, p2, p3, ncol = 1)
+cowplot::plot_grid(p1, p2, p3, ncol = 1, align = "hv" )
+
 
 
 ## ----guided-geo-dynamic, out.width="50%", fig.align="center", echo = FALSE, fig.height = 3, fig.cap="Guided tour optimisation of splines index using geodesic interpolation.", include=knitr::is_html_output(), eval=knitr::is_html_output()----

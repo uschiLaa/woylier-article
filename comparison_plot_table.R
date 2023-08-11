@@ -3,6 +3,7 @@ library(cowplot)
 library(tourr)
 library(woylier)
 library(tidyverse)
+data("sine_curve")
 
 # this is tailored for this specific matrix format!
 draw_text_matrix <- function(m){
