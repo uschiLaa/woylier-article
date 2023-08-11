@@ -3,6 +3,7 @@ library(cowplot)
 library(tourr)
 library(woylier)
 library(tidyverse)
+data("sine_curve")
 
 # this is tailored for this specific matrix format!
 draw_text_matrix <- function(m){
@@ -55,7 +56,7 @@ for(i in 1:5){
   attributes(a_geo) <- attributes(a_givens)
   p_givens <- d %*% a_givens
   p_geo <- d %*% a_geo
-  gg_givens <- ggplot(as.tibble(p_givens), aes(V1, V2)) +
+  gg_givens <- ggplot(as_tibble(p_givens), aes(V1, V2)) +
     geom_point() +
     theme_void() +
     theme(panel.border = element_rect(fill = NA, colour = "black"))
