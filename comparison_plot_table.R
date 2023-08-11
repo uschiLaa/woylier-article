@@ -42,9 +42,8 @@ path_givens <- pg
 # no such function for geodesic path, so need to use workaround
 pt_geo <- save_history(d, planned_tour(list(base1, base2)))[,,1:2]
 # Last base is repeated, so only take 1 and 2
-path_geo <- interpolate(pt_geo, angle = proj_dist(base1, base2)/5)[,,1:5]
-                        #cycle=TRUE)#[,,1:5)]
-# Last base is repeated to give 6 steps, so remove
+path_geo <- interpolate(pt_geo, angle = proj_dist(base1, base2)/4)
+# This should work now - with updated tourr package
 
 all_plots <- NULL
 
@@ -55,12 +54,12 @@ for(i in 1:5){
   attributes(a_geo) <- attributes(a_givens)
   p_givens <- d %*% a_givens
   p_geo <- d %*% a_geo
-  gg_givens <- ggplot(as.tibble(p_givens), aes(V1, V2)) +
+  gg_givens <- ggplot(as_tibble(p_givens), aes(V1, V2)) +
     geom_point() +
     theme_void() +
     theme(panel.border = element_rect(fill = NA, colour = "black"))
   mat_givens <- ggdraw() + draw_text_matrix(a_givens)
-  gg_geo <- ggplot(as.tibble(p_geo), aes(V1, V2)) +
+  gg_geo <- ggplot(as_tibble(p_geo), aes(V1, V2)) +
     geom_point() +
     theme_void() +
     theme(panel.border = element_rect(fill = NA, colour = "black"))
@@ -74,5 +73,3 @@ for(i in 1:5){
 
 
 plot_grid(plotlist = all_plots, ncol = 4)
-
-
