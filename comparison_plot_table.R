@@ -48,9 +48,8 @@ path_givens <- pg
 # no such function for geodesic path, so need to use workaround
 pt_geo <- save_history(d, planned_tour(list(base1, base2)))[,,1:2]
 # Last base is repeated, so only take 1 and 2
-path_geo <- interpolate(pt_geo, angle = proj_dist(base1, base2)/4)[,,1:5]
-                        #cycle=TRUE)#[,,1:5)]
-# Last base is repeated to give 6 steps, so remove
+path_geo <- interpolate(pt_geo, angle = proj_dist(base1, base2)/4)
+# This should work now - with updated tourr package
 
 all_plots <- NULL
 
@@ -85,4 +84,3 @@ for(i in 1:5){
 
 plot_grid(plotlist = all_plots, ncol = 4)
 ggsave("compare-paths.png")
-

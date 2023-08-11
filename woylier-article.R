@@ -259,7 +259,7 @@ knitr::include_graphics("compare-paths.png")
 #> knitr::include_graphics(c("sphere.gif", "torus.gif"))
 
 
-## ----1d-path-static, out.width="50%", fig.align="center", echo = FALSE, fig.height = 3, fig.show='hold', fig.cap="Interpolation steps of 1D projections of 6D data", include=knitr::is_latex_output(), eval=knitr::is_latex_output(), fig.alt = "Two highlighted points on the surface of sphere connected by 10 interpolated steps, rotating."----
+## ----1d-path-static, out.width="45%", fig.align="center", echo = FALSE, fig.height = 3, fig.show='hold', fig.cap="Interpolation steps of 1D (left) and 2D (right) projections of 3D data made with a Givens path (forest green) and a geodesic path (deep red). The cream points represent the space of all projections, which is a sphere for 1D projections and a torus for 2D projections. In the 1D example, geodesic arrives at the opposite side of the sphere to Givens, indicating that it has flipped the direction of the vector in order to make the shortest path to the same plane. A similar thing happens for the 2D example, geosesic flips the sign of one basis vector, but it defines the same plane, as indicated by the cream circles.", include=knitr::is_latex_output(), eval=knitr::is_latex_output(), fig.alt = "Two highlighted points on the surface of sphere connected by 10 interpolated steps, rotating."----
 knitr::include_graphics(c("sphere_static.png", "torus_static.png"))
 
 

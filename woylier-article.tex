@@ -232,16 +232,16 @@ For plotting the interpolated path of projections, we used \CRANpkg{geozoo} pack
 
 \begin{figure}
 
-{\centering \includegraphics[width=0.5\linewidth]{sphere_static} \includegraphics[width=0.5\linewidth]{torus_static} 
+{\centering \includegraphics[width=0.45\linewidth]{sphere_static} \includegraphics[width=0.45\linewidth]{torus_static} 
 
 }
 
-\caption{Interpolation steps of 1D projections of 6D data}\label{fig:1d-path-static}
+\caption{Interpolation steps of 1D (left) and 2D (right) projections of 3D data made with a Givens path (forest green) and a geodesic path (deep red). The cream points represent the space of all projections, which is a sphere for 1D projections and a torus for 2D projections. In the 1D example, geodesic arrives at the opposite side of the sphere to Givens, indicating that it has flipped the direction of the vector in order to make the shortest path to the same plane. A similar thing happens for the 2D example, geosesic flips the sign of one basis vector, but it defines the same plane, as indicated by the cream circles.}\label{fig:1d-path-static}
 \end{figure}
 
 \textbf{Interpolated paths of 2D projection}
 
-In case of 2D projections, we can plot the interpolated path between 2 frames on the surface of torus. Torus can be seen as crossing of 2 circles that are orthonormal. Figure \ref{fig:2d-path-static} shows the Givens interpolation steps in 2D projection of 6D data.
+In case of 2D projections, we can plot the interpolated path between 2 frames on the surface of torus. Torus can be seen as crossing of 2 circles that are orthonormal. Figure \ref{fig:1d-path-static} shows the Givens interpolation steps in 2D projection of 6D data.
 
 For a 2D projection the same target plane is found when rotating the basis within the plane, or when reflecting across one of the two directions (the reflected basis can then also be rotating). This means the space of target bases is constrained to two circles in the high-dimensional space, and these are disconnected because the reflection corresponds to a jump along the torus surface. In the high-dimensional space we can imagine the reflection as flipping over the target plane, resulting in a reflection of the normal vector on the plan.
 While the Givens interpolation will reach the exact basis, a geodesic interpolation towards the same target plane can land anywhere along those two circles, depending on the starting basis in the interpolation.
