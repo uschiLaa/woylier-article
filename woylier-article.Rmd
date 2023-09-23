@@ -136,7 +136,7 @@ p3 <- ggplot(mat_rot2, aes(x=x, y=y)) +
 p1+p2+p3
 ```
 
-A few alternatives to geodesic interpolation were proposed by @buja_cook_asimov_hurley_2005 including the decomposition of orthogonal matrices, Givens decomposition, and Householder decomposition. The purpose of the **woylier** package is to implement the Givens paths method in R. This algorithm adapts the Given's matrix decomposition technique which allows the interpolation to be between frames rather than planes.
+A few alternatives to geodesic interpolation were proposed by @buja_cook_asimov_hurley_2005 including the decomposition of orthogonal matrices, Givens decomposition, and Householder decomposition. The purpose of the \CRANpkg{woylier} package is to implement the Givens paths method in R. This algorithm adapts the Given's matrix decomposition technique which allows the interpolation to be between frames rather than planes.
 
 This article is structured as follows. The next section provides the theoretical framework of the Givens interpolation method followed by a section about the implementation in R. The method is applied to search for nonlinear associations between currency cross-rates.  
 
@@ -193,7 +193,7 @@ $$ \begin{bmatrix}\cos \theta &-\sin \theta \\\sin \theta &\cos \theta \end{bmat
 
 If the rotation is in the plane of two selected variables, it is called a Givens rotation. Let's denote those 2 variables as $i$ and $j$. The Givens rotation is used for introducing zeros, for example when computing the QR decomposition of a matrix in linear algebra problems.
 
-The interpolation method in the **woylier** package is based on the fact that in any vector of a matrix, one can zero out the $i$-th coordinate with a Givens rotation in the $(i, j)$-plane for any $j\neq i$ [@matrix_computation]. This rotation affects only coordinates $i$ and $j$ and leaves all other coordinates unchanged. 
+The interpolation method in the \CRANpkg{woylier} package is based on the fact that in any vector of a matrix, one can zero out the $i$-th coordinate with a Givens rotation in the $(i, j)$-plane for any $j\neq i$ [@matrix_computation]. This rotation affects only coordinates $i$ and $j$ and leaves all other coordinates unchanged. 
 Sequences of Givens rotations can map any orthonormal d-frame $F$ in p-space to the standard d-frame
 $$E_d=((1, 0, 0, ...)^T, (0, 1, 0, ...)^T, ...).$$ 
 
@@ -244,7 +244,7 @@ At each time $t$ we can project the data using the frame $F_t$.
 
 # Implementation
 
-We implemented each steps in the Givens interpolation path algorithm in separate functions and combined them in the `givens_full_path()` function for deriving the full set of $F_t$. The same functions are used to integrate the Givens interpolation with the `animate()` functions of the \CRANpkg{tourr} package. Here is the input and output of each functions and it's descriptions, functions to use with `animate()` are described separately below.
+We implemented each of the steps in the Givens interpolation path algorithm in separate functions and combined them into a single function `givens_full_path()` to produce the full set of $F_t$. The same functions are used to integrate the Givens interpolation with the `animate()` functions of the \CRANpkg{tourr} package. Table \@ref(tab:`r ifelse(knitr::is_html_output(), 'fns-html','fns-pdf')`) lists the input and output of each functions and it's descriptions, functions to use with `animate()` are described separately below.
 
 ```{r}
 tbl <- tibble(name = c("`givens_full_path(Fa, Fz, nsteps)`",
@@ -274,7 +274,7 @@ tbl <- tibble(name = c("`givens_full_path(Fa, Fz, nsteps)`",
 ```
 
 ```{r fns-html, eval=knitr::is_html_output()}
-kbl(tbl, escape = FALSE) %>%
+kbl(tbl, escape = FALSE, caption="Primary functions in the woylier package.") %>%
   column_spec(1, width="30em") %>%
   column_spec(2, width="25em") %>%
   column_spec(3, width="20em") %>%
@@ -312,7 +312,7 @@ tbl <- tibble(name = c("givens_full_path(Fa, Fz, nsteps)",
                          "theta angle rotated matrix a", 
                          "Names list of angles",
                          "A frame of on a step of interpolation"))
-kbl(tbl) %>%
+kbl(tbl, caption="Primary functions in the woylier package.") %>%
   row_spec(0, bold=TRUE) %>%
   column_spec(1, width="5cm", monospace=T) %>%
   column_spec(2, width="3cm") %>%
@@ -987,8 +987,8 @@ cowplot::plot_grid(p1, p2, p3, ncol = 1, align = "hv" )
 
 # Conclusion
 
-The R package **woylier** provides implementation of Givens interpolation path algorithm that can be used as an alternative interpolation method for tour. The algorithm implemented in the **woylier** package comes from @buja_cook_asimov_hurley_2005. We illustrate the use of the functions provided in the package for R users.
+The R package \CRANpkg{woylier} provides implementation of Givens interpolation path algorithm that can be used as an alternative interpolation method for tour. The algorithm implemented in the \CRANpkg{woylier} package comes from @buja_cook_asimov_hurley_2005. We illustrate the use of the functions provided in the package for R users.
 
 The motivation to develop this package comes from rotational invariance problem of current geodesic interpolation algorithm implemeneted in \CRANpkg{tourr} package. The package gives users the ability to detect non-linear association between variables more precisely. 
 
-It is important to mention that **woylier** package should be integrated with \CRANpkg{tourr} package. The future improvements that needs to be done in the package is to generalize the interpolation for more than 2d projections of data.
+It is important to mention that \CRANpkg{woylier} package should be integrated with \CRANpkg{tourr} package. The future improvements that needs to be done in the package is to generalize the interpolation for more than 2d projections of data.

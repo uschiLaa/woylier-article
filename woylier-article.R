@@ -119,7 +119,7 @@ tbl <- tibble(name = c("`givens_full_path(Fa, Fz, nsteps)`",
 
 
 ## ----fns-html, eval=knitr::is_html_output()-----------------------------------
-#> kbl(tbl, escape = FALSE) %>%
+#> kbl(tbl, escape = FALSE, caption="Primary functions in the woylier package.") %>%
 #>   column_spec(1, width="30em") %>%
 #>   column_spec(2, width="25em") %>%
 #>   column_spec(3, width="20em") %>%
@@ -157,7 +157,7 @@ tbl <- tibble(name = c("givens_full_path(Fa, Fz, nsteps)",
                          "theta angle rotated matrix a", 
                          "Names list of angles",
                          "A frame of on a step of interpolation"))
-kbl(tbl) %>%
+kbl(tbl, caption="Primary functions in the woylier package.") %>%
   row_spec(0, bold=TRUE) %>%
   column_spec(1, width="5cm", monospace=T) %>%
   column_spec(2, width="3cm") %>%

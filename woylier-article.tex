@@ -29,7 +29,7 @@ The lack of rotation invariance of the splines index raises complications in the
 \includegraphics[width=1\linewidth]{woylier-article_files/figure-latex/splines2d-static-1} \caption{The impact of rotation on a spline index that is NOT rotation invariant. The index value for different within-plane rotations take very different values: (a) original projection has maximum index value of 1.00, (b) axes rotated 45$^o$ drops index value to 0.83, (c) axes rotated 60$^o$ drops index to a very low 0.26. Geodesic interpolation between planes will have difficulty finding the maximum of an index like this because it is focused only on the projection plane, not the frame defining the plane.}\label{fig:splines2d-static}
 \end{figure}
 
-A few alternatives to geodesic interpolation were proposed by Buja et al. (2005) including the decomposition of orthogonal matrices, Givens decomposition, and Householder decomposition. The purpose of the \textbf{woylier} package is to implement the Givens paths method in R. This algorithm adapts the Given's matrix decomposition technique which allows the interpolation to be between frames rather than planes.
+A few alternatives to geodesic interpolation were proposed by Buja et al. (2005) including the decomposition of orthogonal matrices, Givens decomposition, and Householder decomposition. The purpose of the \CRANpkg{woylier} package is to implement the Givens paths method in R. This algorithm adapts the Given's matrix decomposition technique which allows the interpolation to be between frames rather than planes.
 
 This article is structured as follows. The next section provides the theoretical framework of the Givens interpolation method followed by a section about the implementation in R. The method is applied to search for nonlinear associations between currency cross-rates.
 
@@ -92,7 +92,7 @@ A rotation matrix is a transformation matrix used to perform a rotation in Eucli
 
 If the rotation is in the plane of two selected variables, it is called a Givens rotation. Let's denote those 2 variables as \(i\) and \(j\). The Givens rotation is used for introducing zeros, for example when computing the QR decomposition of a matrix in linear algebra problems.
 
-The interpolation method in the \textbf{woylier} package is based on the fact that in any vector of a matrix, one can zero out the \(i\)-th coordinate with a Givens rotation in the \((i, j)\)-plane for any \(j\neq i\) (Golub and Loan 1989). This rotation affects only coordinates \(i\) and \(j\) and leaves all other coordinates unchanged.
+The interpolation method in the \CRANpkg{woylier} package is based on the fact that in any vector of a matrix, one can zero out the \(i\)-th coordinate with a Givens rotation in the \((i, j)\)-plane for any \(j\neq i\) (Golub and Loan 1989). This rotation affects only coordinates \(i\) and \(j\) and leaves all other coordinates unchanged.
 Sequences of Givens rotations can map any orthonormal d-frame \(F\) in p-space to the standard d-frame
 \[E_d=((1, 0, 0, ...)^T, (0, 1, 0, ...)^T, ...).\]
 
@@ -170,8 +170,12 @@ At each time \(t\) we can project the data using the frame \(F_t\).
 \hypertarget{implementation}{%
 \section{Implementation}\label{implementation}}
 
-We implemented each steps in the Givens interpolation path algorithm in separate functions and combined them in the \texttt{givens\_full\_path()} function for deriving the full set of \(F_t\). The same functions are used to integrate the Givens interpolation with the \texttt{animate()} functions of the \CRANpkg{tourr} package. Here is the input and output of each functions and it's descriptions, functions to use with \texttt{animate()} are described separately below.
+We implemented each of the steps in the Givens interpolation path algorithm in separate functions and combined them into a single function \texttt{givens\_full\_path()} to produce the full set of \(F_t\). The same functions are used to integrate the Givens interpolation with the \texttt{animate()} functions of the \CRANpkg{tourr} package. Table \ref{tab:fns-pdf} lists the input and output of each functions and it's descriptions, functions to use with \texttt{animate()} are described separately below.
 
+\begin{table}
+
+\caption{\label{tab:fns-pdf}Primary functions in the woylier package.}
+\centering
 \begin{tabular}[t]{>{\raggedright\arraybackslash}p{5cm}|>{\raggedright\arraybackslash}p{3cm}|>{\raggedright\arraybackslash}p{2cm}|>{\raggedright\arraybackslash}p{2cm}}
 \hline
 \textbf{name} & \textbf{description} & \textbf{input} & \textbf{output}\\
@@ -189,6 +193,7 @@ We implemented each steps in the Givens interpolation path algorithm in separate
 \ttfamily{construct\_moving\_frame(Wt, B)} & Reconstruct interpolated frames using pre-projection. & Pre-projection matrix B, Each frame of givens path & A frame of on a step of interpolation\\
 \hline
 \end{tabular}
+\end{table}
 
 When using \CRANpkg{tourr} we typically want to run a tour live, such that target selection and interpolation are interleaved, and the display will show the data for each frame \(F_t\) in the interpolation path. The implementation in \CRANpkg{tourr} was described in Wickham et al. (2011), and with \CRANpkg{woylier} we provide functions to use the Givens interpolation with the grand tour, guided tour and planned tour. To do this we rely primarily on the function \texttt{givens\_info()} which calls the functions listed in the Table above and collects all necessary information for interpolating between a given starting and target frame. The function \texttt{givens\_path()} then defines the interpolation and can be used instead of \texttt{tourr::geodesic\_path()}. Wrapper functions for the different tour types are available to use this interpolation, since in the \texttt{tourr::grand\_tour()} and other path functions this is fixed to use the geodesic interpolation. Calling a grand tour with Givens interpolation for direct animation will then use:
 
@@ -304,11 +309,11 @@ Finally in the bottom row we see the result of the random search with Givens int
 \hypertarget{conclusion}{%
 \section{Conclusion}\label{conclusion}}
 
-The R package \textbf{woylier} provides implementation of Givens interpolation path algorithm that can be used as an alternative interpolation method for tour. The algorithm implemented in the \textbf{woylier} package comes from Buja et al. (2005). We illustrate the use of the functions provided in the package for R users.
+The R package \CRANpkg{woylier} provides implementation of Givens interpolation path algorithm that can be used as an alternative interpolation method for tour. The algorithm implemented in the \CRANpkg{woylier} package comes from Buja et al. (2005). We illustrate the use of the functions provided in the package for R users.
 
 The motivation to develop this package comes from rotational invariance problem of current geodesic interpolation algorithm implemeneted in \CRANpkg{tourr} package. The package gives users the ability to detect non-linear association between variables more precisely.
 
-It is important to mention that \textbf{woylier} package should be integrated with \CRANpkg{tourr} package. The future improvements that needs to be done in the package is to generalize the interpolation for more than 2d projections of data.
+It is important to mention that \CRANpkg{woylier} package should be integrated with \CRANpkg{tourr} package. The future improvements that needs to be done in the package is to generalize the interpolation for more than 2d projections of data.
 
 \hypertarget{references}{%
 \section*{References}\label{references}}
