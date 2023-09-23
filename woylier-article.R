@@ -94,27 +94,28 @@ knitr::include_graphics(
 ## -----------------------------------------------------------------------------
 tbl <- tibble(name = c("`givens_full_path(Fa, Fz, nsteps)`",
                     "`preprojection(Fa, Fz)`", 
-                    "`construct_preframe(Fa, B)`", 
-                    "`row_rot(a, i, k, theta)`",
+                    "`construct_preframe(F, B)`", 
+                    "`row_rot(A, i, j, theta)`",
                     "`calculate_angles(Wa, Wz)`",
                     "`construct_moving_frame(Wt, B)`"),
               description = c("Construct full set of interpolated frames.",
-                              "Build a d-dimensional pre-projection space by orthonormalizing Fz with regard to Fa.", 
+                              "Build the pre-projection space by orthonormalizing Fz with regard to Fa.", 
                               "Construct preprojected frames.", 
-                              "Performs Givens rotation .",
+                              "Performs Givens rotation on the matrix A.",
                               "Calculate angles of required rotations to map Wz to Wa.", 
                               "Reconstruct interpolated frames using pre-projection. "), 
               input = c("Starting and target frame (Fa, Fz) and number of steps", 
                         "Starting and target frame (Fa, Fz) ", 
-                        "A preprojected frame, the two components used in the rotation and the rotation angle theta", "A frame and the pre-projection p x 2d matrix", 
-                        "Preprojected frames (Wa, Wz)",
+                        "An orthonormal frame F and the pre-projection matrix B",
+                        "Matrix A, components to rotate (i, j) and rotation angle theta", 
+                        "Pre-projected frames (Wa, Wz)",
                         "Pre-projection matrix B, frame of givens path"),
-              output = c("An array with nsteps matrices. Each matrix is interpolated frame in between starting and target frames.", 
+              output = c("An array with nsteps matrices. Each matrix is an interpolated frame in between starting and target frames.", 
                          "B pre-projection p x 2d matrix",
                          "Pre-projected frame in pre-projection space", 
                          "Input matrix after Givens rotation", 
                          "Named list of angles",
-                         "A frame of on a step of interpolation"))
+                         "A frame of a step in the interpolation"))
 
 
 ## ----fns-html, eval=knitr::is_html_output()-----------------------------------
@@ -692,7 +693,7 @@ knitr::include_graphics(c("rates_tour_geodesic_final.png",
     "rates_tour_givens_final.png"))
 
 
-## ----echo=FALSE, eval=TRUE----------------------------------------------------
+## ----rates-ferrn, echo=FALSE, eval=TRUE, fig.cap="Splines index value along the interpolated optimisation path in the guided tour using geodesic optimisation (top), simulated annealing with geodesic interpolation (middle) and simulated annealing with givens interpolation (bottom). Points indicate index values at target planes selected during the optimization, and we see that with geodesic interpolation these values can decrease, impeding the optimization."----
 load("rates_tour_records.RData")
 library(ferrn)
 p1 <- get_interp(record_search_geodesic) %>%
