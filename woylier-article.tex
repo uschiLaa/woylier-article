@@ -48,7 +48,7 @@ XXX I like the dog sketch but currently seems not really needed - what would be 
 
 \begin{figure}
 
-{\centering \includegraphics[width=0.45\linewidth]{plane} \includegraphics[width=0.45\linewidth]{frame} 
+{\centering \includegraphics[width=0.45\linewidth]{figures/plane} \includegraphics[width=0.45\linewidth]{figures/frame} 
 
 }
 
@@ -226,7 +226,7 @@ To compare the path generated with the Givens interpolation to that found with g
 
 \begin{figure}
 
-{\centering \includegraphics[width=0.8\linewidth]{compare-paths} 
+{\centering \includegraphics[width=0.8\linewidth]{figures/compare-paths} 
 
 }
 
@@ -241,7 +241,7 @@ A 1D projection of data in \(p\) dimensions corresponds to a linear combination 
 
 \begin{figure}
 
-{\centering \includegraphics[width=0.45\linewidth]{sphere_static} \includegraphics[width=0.45\linewidth]{torus_static} 
+{\centering \includegraphics[width=0.45\linewidth]{figures/sphere_static} \includegraphics[width=0.45\linewidth]{figures/torus_static} 
 
 }
 
@@ -253,8 +253,8 @@ In case of 2D projections, we can plot the interpolated path between 2 frames on
 For a 2D projection the same target plane is found when rotating the basis within the plane, or when reflecting across one of the two directions (the reflected basis can then also be rotated). This means the space of target bases is constrained to two circles on the torus, and these are disconnected because the reflection corresponds to a jump. In the high-dimensional space we can imagine the reflection as flipping over the target plane, resulting in a reflection of the normal vector on the plan.
 While the Givens interpolation will reach the exact basis, a geodesic interpolation towards the same target plane can land anywhere along those two circles, depending on the starting basis in the interpolation.
 
-\hypertarget{data-application}{%
-\section{Data application}\label{data-application}}
+\hypertarget{application}{%
+\section{Application}\label{application}}
 
 This section describes the application of Givens interpolation path with guided tour to explore non-linear association in multivariate data. We use cross-rates for currencies relative to the US dollar. A cross-rate is an exchange rate between two currencies computed by reference to a third currency, usually the US dollar.
 
@@ -285,7 +285,7 @@ The results are shown in Figure \ref{fig:rates-tour-static} and we see on the ri
 
 \begin{figure}
 
-{\centering \includegraphics[width=0.3\linewidth]{rates_tour_geodesic_final} \includegraphics[width=0.3\linewidth]{rates_tour_better_final} \includegraphics[width=0.3\linewidth]{rates_tour_givens_final} 
+{\centering \includegraphics[width=0.3\linewidth]{figures/rates_tour_geodesic_final} \includegraphics[width=0.3\linewidth]{figures/rates_tour_better_final} \includegraphics[width=0.3\linewidth]{figures/rates_tour_givens_final} 
 
 }
 
