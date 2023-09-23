@@ -69,7 +69,7 @@ Most projection pursuit indexes, particularly those provided by in \CRANpkg{tour
 
 Figure `r knitr::asis_output(ifelse(knitr::is_html_output(), '\\@ref(fig:splines2d-static)', '\\@ref(fig:splines2d-static)'))` illustrates the rotational invariance problem for a modified splines index, where we always consider the horizontal direction as the predictor variable, and the vertical direction as the response. Thus, our modified index computes the splines on one orientation, exaggerating the rotational variability. The example data was simulated to follow a sine curve and the modified splines index is calculated on different within-plane rotations of the data. Although they have the same structure, the index values vary greatly. 
 
-The lack of rotation invariance of the splines index raises complications in the optimisation process in the projection-pursuit guided tour as available in \CRANpkg{tourr}. Fixing this is the motivation of this work. The goal with the frame-to-frame interpolation is that optimisation would find the best within-plane rotation, and thus appropriately optimize the index. 
+The lack of rotation invariance of the splines index raises complications in the optimization process in the projection-pursuit guided tour as available in \CRANpkg{tourr}. Fixing this is the motivation of this work. The goal with the frame-to-frame interpolation is that optimization would find the best within-plane rotation, and thus appropriately optimize the index. 
 
 ```{r splines2d-static, out.width = "100%", fig.width = 9, fig.height = 4.5, layout = "l-body", fig.cap="The impact of rotation on a spline index that is NOT rotation invariant. The index value for different within-plane rotations take very different values: (a) original projection has maximum index value of 1.00, (b) axes rotated 45$^o$ drops index value to 0.83, (c) axes rotated 60$^o$ drops index to a very low 0.26. Geodesic interpolation between planes will have difficulty finding the maximum of an index like this because it is focused only on the projection plane, not the frame defining the plane.", fig.alt = "Three side-by-side scatterplots. The left side plot shows two variables, V5, V6, with a sine curve. The index value is the maximum of 1. The middle plot shows the two variables rotated 45 degrees clock-wise, and the calculated index value is 0.83. The right-side plot is rotated 60 degrees, and the calculated index value is 0.26."}
 data("sine_curve")
@@ -352,7 +352,7 @@ givens_full_path(base1, base2, nsteps = 5)
 To compare the path generated with the Givens interpolation to that found with geodesic interpolations we look at the rotation of the sine data shown in Figure `r knitr::asis_output(ifelse(knitr::is_html_output(), '\\@ref(fig:splines2d-static)', '\\@ref(fig:splines2d-static)'))`. We consider a subset in $p=4$ dimensions where the first two dimensions contain noise and the last two contain the sine curve. Starting from a random projection we want to interpolate towards the original sine curve. The path comparison is shown in  Figure `r knitr::asis_output(ifelse(knitr::is_html_output(), '\\@ref(fig:compare-paths)', '\\@ref(fig:compare-paths)'))`.
 
 
-```{r compare-paths, echo=FALSE, eval=TRUE, out.width="80%", fig.width=6, fig.height=10, fig.align="center", fig.cap="Comparison of Givens path and geodesic path between 2D projections. The Givens path preserves the frame ending at the provided basis (frame), while geodesic is agnostic to the particular basis. In general the geodesic is preferred because it removes within-plane spin, but occasionally it is helpful to very specifically arrive at the prescribed basis."}
+```{r compare-paths, echo=FALSE, eval=TRUE, out.width="80%", fig.width=6, fig.height=10, fig.align="center", fig.cap="Comparison of Givens path and geodesic path between 2D projections. The Givens path preserves the frame ending at the provided basis (frame), while geodesic is agnostic to the particular basis. In general the geodesic is preferred because it removes within-plane spin, but occasionally it is helpful to very specifically arrive at the prescribed basis.", fig.alt="Four columns and five rows: first column projection coefficients from the Givens path; second column has scatterplots showing the corresponding projected data; third column projection coefficients from the geodesic path; fourth column has scatterplots showing the  corresponding projected data. First row is the same starting projection, subsequent rows are the steps for each path. Final row is the ending projection, which can be seen that both are the same plane, but the Givens goes to the specified frame showing the sine curve, and geodesic goes to a rotated view of the sine curve."}
 # from code in comparison_plot_table.R
 knitr::include_graphics("compare-paths.png")
 ```
@@ -431,11 +431,11 @@ tourr::render_gif(as.matrix(sp_path[,1:p]),
                   "sphere.gif")
 ```
 
-```{r 1d-path-dynamic, out.width="45%", fig.align="center", echo = FALSE, fig.height = 3, fig.show='hold', fig.cap="Interpolation steps of 1D (left) and 2D (right) projections of 3D data made with a Givens path (forest green) and a geodesic path (deep red). The cream points represent the space of all projections, which is a sphere for 1D projections and a torus for 2D projections. In the 1D example, geodesic arrives at the opposite side of the sphere to Givens, indicating that it has flipped the direction of the vector in order to make the shortest path to the same plane. A similar thing happens for the 2D example, geosesic flips the sign of one basis vector, but it defines the same plane, as indicated by the cream circles.", include=knitr::is_html_output(), eval=knitr::is_html_output(), fig.alt = "Two highlighted points on the surface of sphere connected by 10 interpolated steps, rotating."}
+```{r 1d-path-dynamic, out.width="45%", fig.align="center", echo = FALSE, fig.height = 3, fig.show='hold', fig.cap="Interpolation steps of 1D (left) and 2D (right) projections of 3D data made with a Givens path (forest green) and a geodesic path (deep red). The cream points represent the space of all projections, which is a sphere for 1D projections and a torus for 2D projections. In the 1D example, geodesic arrives at the opposite side of the sphere to Givens, indicating that it has flipped the direction of the vector in order to make the shortest path to the same plane. A similar thing happens for the 2D example, geosesic flips the sign of one basis vector, but it defines the same plane, as indicated by the cream circles.", include=knitr::is_html_output(), eval=knitr::is_html_output(), fig.alt = "Two highlighted points on the surface of a 3D sphere (left) and 6D torus (right) connected by a path of points which are the interpolation steps, rotating."}
 knitr::include_graphics(c("sphere.gif", "torus.gif"))
 ```
 
-```{r 1d-path-static, out.width="45%", fig.align="center", echo = FALSE, fig.height = 3, fig.show='hold', fig.cap="Interpolation steps of 1D (left) and 2D (right) projections of 3D data made with a Givens path (forest green) and a geodesic path (deep red). The cream points represent the space of all projections, which is a sphere for 1D projections and a torus for 2D projections. In the 1D example, geodesic arrives at the opposite side of the sphere to Givens, indicating that it has flipped the direction of the vector in order to make the shortest path to the same plane. A similar thing happens for the 2D example, geosesic flips the sign of one basis vector, but it defines the same plane, as indicated by the cream circles.", include=knitr::is_latex_output(), eval=knitr::is_latex_output(), fig.alt = "Two highlighted points on the surface of sphere connected by 10 interpolated steps, rotating."}
+```{r 1d-path-static, out.width="45%", fig.align="center", echo = FALSE, fig.height = 3, fig.show='hold', fig.cap="Interpolation steps of 1D (left) and 2D (right) projections of 3D data made with a Givens path (forest green) and a geodesic path (deep red). The cream points represent the space of all projections, which is a sphere for 1D projections and a torus for 2D projections. In the 1D example, geodesic arrives at the opposite side of the sphere to Givens, indicating that it has flipped the direction of the vector in order to make the shortest path to the same plane. A similar thing happens for the 2D example, geosesic flips the sign of one basis vector, but it defines the same plane, as indicated by the cream circles.", include=knitr::is_latex_output(), eval=knitr::is_latex_output(), fig.alt = "Two highlighted points on the surface of a 3D sphere (left) and 6D torus (right) connected by a path of points which are the interpolation steps, static views."}
 knitr::include_graphics(c("sphere_static.png", "torus_static.png"))
 ```
 
@@ -552,17 +552,6 @@ tourr::render_gif(as.matrix(proj_path[,1:(2*p)]),
                   "torus.gif")
 ```
 
-<!--
-```{r 2d-path-dynamic, out.width="50%", fig.align="center", echo = FALSE, fig.height = 3, fig.cap="Interpolation steps of 2D projections of 6D data", include=knitr::is_html_output(), eval=knitr::is_html_output(), fig.alt = "2 highlighted points on the surface of torus connected by 10 interpolated steps, rotating."}
-
-knitr::include_graphics("torus.gif")
-```
-
-```{r 2d-path-static, out.width="50%", fig.align="center", echo = FALSE, fig.height = 3, fig.cap="Interpolation steps of 2D projections of 6D data", include=knitr::is_latex_output(), eval=knitr::is_latex_output(), fig.alt = "2 highlighted points on the surface of torus connected by 10 interpolated steps, rotating."}
-
-knitr::include_graphics("torus_static.png")
-```
--->
 
 ```{r echo = FALSE, eval=FALSE}
 # trying with more information in one animation
@@ -587,8 +576,6 @@ path_2d <- rbind(as.data.frame(t(as.vector(base1))),
                  as.data.frame(t(apply(frames_2d_2, 3, c))),
                  as.data.frame(t(as.vector(start3))),
                  as.data.frame(t(apply(frames_2d_3, 3, c)))) %>%
-#<- t(apply(frames_2d, 3, c)) %>% 
-  #as.data.frame() %>% 
   mutate(type="givens")
 proj_2d <- proj_2d %>% 
   mutate(type="torus")
@@ -732,19 +719,6 @@ animate(sine_anim, fps=8, renderer = gifski_renderer(loop = FALSE), width=400, h
 anim_save("sine_anim_geodesic.gif")
 ```
 
-<!--
-```{r compare-interpolations, echo=FALSE, out.width="50%", fig.align = "center", fig.show='hold', include=knitr::is_html_output(), eval=knitr::is_html_output(), fig.cap="Givens interpolation path (left) and Geodesic interpolation path (right) to target frame. Givens interpolation goes to exact frame that has the correct orientation while Geodesic interpolation goes to rotation of the target plane."}
-knitr::include_graphics(
-  c("sine_anim_givens.gif",
-    "sine_anim_geodesic.gif"))
-```
-
-```{r compare-interpolations-static, echo=FALSE, out.width="50%", fig.align = "center", fig.show='hold', include=knitr::is_latex_output(), eval=knitr::is_latex_output(), fig.cap="Givens interpolation path (left) and Geodesic interpolation path (right) to target frame. Givens interpolation goes to exact frame that has the correct orientation while Geodesic interpolation goes to rotation of the target plane."}
-knitr::include_graphics(
-  c("given_sine.png",
-    "geodesic_sine.png"))
-```
--->
 
 # Data application
 
@@ -752,7 +726,7 @@ This section describes the application of Givens interpolation path with guided 
 
 The data was extracted from [openexchangerates](https://openexchangerates.org) and contains cross-rate for ARS, AUD, EUR, JPY, KRW, MYR between 2019-11-1 to 2020-03-31. Figure `r knitr::asis_output(ifelse(knitr::is_html_output(), '\\@ref(fig:currency)', '\\@ref(fig:currency)'))` shows how the currencies changed relative to USD over the time period. We see some collective behavior in March of 2020 with EUR and JPY increasing in a similar manner, and smaller currencies decreasing in value. This could be understood as a consequence of flight-to-quality at this uncertain times.  
 
-```{r currency, out.width="100%", fig.width = 9, fig.height = 4.5, layout = "l-body", fig.cap="All the currencies are standardised and the sign is flipped. The high value means the currency strengthened against the USD, and low means that it weakened."}
+```{r currency, out.width="100%", fig.width = 9, fig.height = 4.5, layout = "l-body", fig.cap="Examining the behaviour of six cross-currency rates (ARS, EUR, KRW, AUD, JPY, MYR) prior to and in the first month of the pandemic. All the currencies are standardised and the sign is flipped. JPY and EUR strengthend against the USD (high values) in March, while the other currencies weakened (low values).", fig.alt="Six time series plots all very similar until March 2020 when JPY and EUR go up. All currencies go down in mid-March and JPY and EUR increase again at the end of March."}
 rates <- read_csv("rates_Nov19_Mar20.csv", show_col_types = FALSE) %>% 
   select(date, ARS, AUD, EUR, JPY, KRW, MYR) 
 rates_sub <- rates %>%
@@ -776,7 +750,7 @@ We are interested in capturing this relations over time, and from the time serie
 
 We may expect that we can capture the dependence between the two groups using principal components analysis. Figure `r knitr::asis_output(ifelse(knitr::is_html_output(), '\\@ref(fig:pca-result-static)', '\\@ref(fig:pca-result-static)'))` shows a scatter plot matrix of the PCs of our dataset. Indeed we find strong non-linear association between the first two PCs. Investigation of the rotation shows that the first principal component is primarily a balanced combination between ARS, AUD, KRW and MYR (and a smaller contribution of EUR), and the second contribution is dominated by EUR and JPY contrasted with smaller contributions from ARS and MYR. Our next step is thus to use projection pursuit to identify the best projection matrix that captures the non-linear functional dependence.
 
-```{r pca-result-static, echo=FALSE, out.width="80%", fig.width=8, fig.height=8, fig.align = "center", fig.show='hold', fig.cap="There is a strong non-linear dependence between PC1 and PC2. Observations in March 2020 are highlighted in dark blue, all other months are shown in grey."}
+```{r pca-result-static, echo=FALSE, out.width="80%", fig.width=8, fig.height=8, fig.align = "center", fig.show='hold', fig.cap="Scatterplot matrix of the six principal components. Observations in March 2020 are highlighted in dark blue, all other months are shown in grey. There is a strong non-linear dependence between PC1 and PC2.", fig.alt="PC1 and PC2 exihibt almost a sine wave, which starts with grey points and ends with blue. The other pairs of plots have little structure."}
 # Use PCA to remove linear dependence
 rates_pca <- prcomp(rates[,-1], scale. = TRUE)
 pca <- ggscatmat(cbind(tibble::as_tibble(rates_pca$x), rate_march),
@@ -798,7 +772,7 @@ pca
 ```
 -->
 
-**Guided tour optimisation**
+**Guided tour optimization**
 
 We now use the splines index to identify a projection with functional dependence between the first and second direction of the projection. Note here that because of strong linear correlations between the currencies, we start from the first four principal components, explaining over 97% of the variance in the data. To avoid starting from the view already identified in the first two principal components we start from a projections onto the third and forth principal components. The PCA display in `tourr` is used to show each projection axes display in terms of the original variables, while only touring within the smaller space spanned by the first four principal components.
 
@@ -889,7 +863,7 @@ tourr::render_gif(rates_pca_sd[,1:4],
 
 ```
 
-```{r rates-tour-animated, echo=FALSE, out.width="33%", fig.align = "center", fig.show='hold', include=knitr::is_html_output(), eval=knitr::is_html_output(), fig.cap="Optimisation in the guided tour using geodesic optimisation (left), simulated annealing with geodesic interpolation (middle) and simulated annealing with givens interpolation (right). (Refresh page to re-start the animation.)"}
+```{r rates-tour-animated, echo=FALSE, out.width="33%", fig.align = "center", fig.show='hold', include=knitr::is_html_output(), eval=knitr::is_html_output(), fig.cap="optimization in the guided tour using geodesic optimization (left), simulated annealing with geodesic interpolation (middle) and simulated annealing with Givens interpolation (right). (Refresh page to re-start the animation.)", fig.alt="Three animated plots showing biplot axes. The left and the middle scatterplot end at little structure, and the last scatterplot ends at a strong non-linear relationship."}
 knitr::include_graphics(
   c("rates_tour_geodesic.gif",
     "rates_tour_better.gif",
@@ -897,7 +871,7 @@ knitr::include_graphics(
 ```
 
 
-```{r rates-tour-static, out.width="30%", fig.align="center", echo = FALSE, fig.show='hold', include=knitr::is_latex_output(), eval=knitr::is_latex_output(), fig.cap="Final view after optimisation in the guided tour using geodesic optimisation (left), simulated annealing with geodesic interpolation (middle) and simulated annealing with givens interpolation (right)."}
+```{r rates-tour-static, out.width="30%", fig.align="center", echo = FALSE, fig.show='hold', include=knitr::is_latex_output(), eval=knitr::is_latex_output(), fig.cap="Final view after optimization in the guided tour using geodesic optimization (left), simulated annealing with geodesic interpolation (middle) and simulated annealing with Givens interpolation (right).", fig.alt="Three scatterplots with biplot axes. The left and the middle scatterplot have little structure, and the last scatterplot shows a strong non-linear relationship."}
 knitr::include_graphics(c("rates_tour_geodesic_final.png",
     "rates_tour_better_final.png",
     "rates_tour_givens_final.png"))
@@ -912,7 +886,7 @@ In the middle we are showing the path found when using a random search in combin
 Finally in the bottom row we see the result of the random search with Givens interpolation. While the index value can drop along an interpolation path, the value is strictly increasing for the target planes, as is required for the optimization. Note also that the search converged much faster (fewer target planes were selected). The length of the interpolated paths is similar, because for fixed angular step size the Givens interpolation will take more steps to interpolate between frames.
 
 
-```{r rates-ferrn, echo=FALSE, eval=TRUE, fig.cap="Splines index value along the interpolated optimisation path in the guided tour using geodesic optimisation (top), simulated annealing with geodesic interpolation (middle) and simulated annealing with givens interpolation (bottom). Points indicate index values at target planes selected during the optimization, and we see that with geodesic interpolation these values can decrease, impeding the optimization."}
+```{r rates-ferrn, echo=FALSE, eval=TRUE, out.width="80%", fig.align='center', fig.width=8, fig.height=8, layout= "l-body", fig.cap="Splines index value along the interpolated optimization path in the guided tour using geodesic optimization (top), simulated annealing with geodesic interpolation (middle) and simulated annealing with Givens interpolation (bottom). Points indicate index values at target planes selected during the optimization, and we see that with geodesic interpolation these values can decrease, impeding the optimization. XXX", fig.alt="Three trace plots with points and connecting lines. Top plot is very smoothly increasing to maximum value, whereas the bottom two plots show up and down patterns."}
 load("rates_tour_records.RData")
 library(ferrn)
 p1 <- get_interp(record_search_geodesic) %>%
@@ -951,44 +925,10 @@ cowplot::plot_grid(p1, p2, p3, ncol = 1, align = "hv" )
 
 ```
 
-
-```{r guided-geo-dynamic, out.width="50%", fig.align="center", echo = FALSE, fig.height = 3, fig.cap="Guided tour optimisation of splines index using geodesic interpolation.", include=knitr::is_html_output(), eval=knitr::is_html_output()}
-#knitr::include_graphics("guided_geo.gif")
-```
-
-
-```{r guided-geo-static, out.width="50%", fig.align="center", echo = FALSE, fig.height = 3, fig.cap="Guided tour optimisation of splines index using geodesic interpolation.", include=knitr::is_latex_output(), eval=knitr::is_latex_output()}
-#knitr::include_graphics("guided_geo.png")
-```
-
-
-
-
-```{r guided-givens-dynamic, out.width="50%", fig.align="center", echo = FALSE, fig.height = 3, fig.cap="Guided tour optimisation of splines index using Givens interpolation.", include=knitr::is_html_output(), eval=knitr::is_html_output()}
-#knitr::include_graphics("guided_givens.gif")
-```
-
-
-
-```{r guided-givens-static, out.width="50%", fig.align="center", echo = FALSE, fig.height = 3, fig.cap="Guided tour optimisation of modified splines index using Givens interpolation.", include=knitr::is_latex_output(), eval=knitr::is_latex_output()}
-#knitr::include_graphics("guided_givens.png")
-```
-
-```{r guided-givens-random-dynamic, out.width="50%", fig.align="center", echo = FALSE, fig.height = 3, fig.cap="Guided tour optimisation of modified splines index using Givens interpolation with better optimisation.", include=knitr::is_html_output(), eval=knitr::is_html_output()}
-#knitr::include_graphics("guided_givens_random.gif")
-```
-
-
-
-```{r guided-givens-random-static, out.width="50%", fig.align="center", echo = FALSE, fig.height = 3, fig.cap="Guided tour optimisation of modified splines index using Givens interpolation with better optimisation.", include=knitr::is_latex_output(), eval=knitr::is_latex_output()}
-#knitr::include_graphics("guided_givens_random.png")
-```
-
-
 # Conclusion
 
 The R package \CRANpkg{woylier} provides implementation of Givens interpolation path algorithm that can be used as an alternative interpolation method for tour. The algorithm implemented in the \CRANpkg{woylier} package comes from @buja_cook_asimov_hurley_2005. We illustrate the use of the functions provided in the package for R users.
 
 The motivation to develop this package comes from rotational invariance problem of current geodesic interpolation algorithm implemeneted in \CRANpkg{tourr} package. The package gives users the ability to detect non-linear association between variables more precisely. 
 
-It is important to mention that \CRANpkg{woylier} package should be integrated with \CRANpkg{tourr} package. The future improvements that needs to be done in the package is to generalize the interpolation for more than 2d projections of data.
+It is important to mention that \CRANpkg{woylier} package should be used in conjunction with the \CRANpkg{tourr} package. The future improvements that needs to be done in the package is to generalize the interpolation for more than 2D projections of data.

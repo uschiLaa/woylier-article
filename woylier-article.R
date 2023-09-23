@@ -183,7 +183,7 @@ kbl(tbl, caption="Primary functions in the woylier package.") %>%
 #> givens_full_path(base1, base2, nsteps = 5)
 
 
-## ----compare-paths, echo=FALSE, eval=TRUE, out.width="80%", fig.width=6, fig.height=10, fig.align="center", fig.cap="Comparison of Givens path and geodesic path between 2D projections. The Givens path preserves the frame ending at the provided basis (frame), while geodesic is agnostic to the particular basis. In general the geodesic is preferred because it removes within-plane spin, but occasionally it is helpful to very specifically arrive at the prescribed basis."----
+## ----compare-paths, echo=FALSE, eval=TRUE, out.width="80%", fig.width=6, fig.height=10, fig.align="center", fig.cap="Comparison of Givens path and geodesic path between 2D projections. The Givens path preserves the frame ending at the provided basis (frame), while geodesic is agnostic to the particular basis. In general the geodesic is preferred because it removes within-plane spin, but occasionally it is helpful to very specifically arrive at the prescribed basis.", fig.alt="Four columns and five rows: first column projection coefficients from the Givens path; second column has scatterplots showing the corresponding projected data; third column projection coefficients from the geodesic path; fourth column has scatterplots showing the  corresponding projected data. First row is the same starting projection, subsequent rows are the steps for each path. Final row is the ending projection, which can be seen that both are the same plane, but the Givens goes to the specified frame showing the sine curve, and geodesic goes to a rotated view of the sine curve."----
 # from code in comparison_plot_table.R
 knitr::include_graphics("compare-paths.png")
 
@@ -256,11 +256,11 @@ knitr::include_graphics("compare-paths.png")
 #>                   "sphere.gif")
 
 
-## ----1d-path-dynamic, out.width="45%", fig.align="center", echo = FALSE, fig.height = 3, fig.show='hold', fig.cap="Interpolation steps of 1D (left) and 2D (right) projections of 3D data made with a Givens path (forest green) and a geodesic path (deep red). The cream points represent the space of all projections, which is a sphere for 1D projections and a torus for 2D projections. In the 1D example, geodesic arrives at the opposite side of the sphere to Givens, indicating that it has flipped the direction of the vector in order to make the shortest path to the same plane. A similar thing happens for the 2D example, geosesic flips the sign of one basis vector, but it defines the same plane, as indicated by the cream circles.", include=knitr::is_html_output(), eval=knitr::is_html_output(), fig.alt = "Two highlighted points on the surface of sphere connected by 10 interpolated steps, rotating."----
+## ----1d-path-dynamic, out.width="45%", fig.align="center", echo = FALSE, fig.height = 3, fig.show='hold', fig.cap="Interpolation steps of 1D (left) and 2D (right) projections of 3D data made with a Givens path (forest green) and a geodesic path (deep red). The cream points represent the space of all projections, which is a sphere for 1D projections and a torus for 2D projections. In the 1D example, geodesic arrives at the opposite side of the sphere to Givens, indicating that it has flipped the direction of the vector in order to make the shortest path to the same plane. A similar thing happens for the 2D example, geosesic flips the sign of one basis vector, but it defines the same plane, as indicated by the cream circles.", include=knitr::is_html_output(), eval=knitr::is_html_output(), fig.alt = "Two highlighted points on the surface of a 3D sphere (left) and 6D torus (right) connected by a path of points which are the interpolation steps, rotating."----
 #> knitr::include_graphics(c("sphere.gif", "torus.gif"))
 
 
-## ----1d-path-static, out.width="45%", fig.align="center", echo = FALSE, fig.height = 3, fig.show='hold', fig.cap="Interpolation steps of 1D (left) and 2D (right) projections of 3D data made with a Givens path (forest green) and a geodesic path (deep red). The cream points represent the space of all projections, which is a sphere for 1D projections and a torus for 2D projections. In the 1D example, geodesic arrives at the opposite side of the sphere to Givens, indicating that it has flipped the direction of the vector in order to make the shortest path to the same plane. A similar thing happens for the 2D example, geosesic flips the sign of one basis vector, but it defines the same plane, as indicated by the cream circles.", include=knitr::is_latex_output(), eval=knitr::is_latex_output(), fig.alt = "Two highlighted points on the surface of sphere connected by 10 interpolated steps, rotating."----
+## ----1d-path-static, out.width="45%", fig.align="center", echo = FALSE, fig.height = 3, fig.show='hold', fig.cap="Interpolation steps of 1D (left) and 2D (right) projections of 3D data made with a Givens path (forest green) and a geodesic path (deep red). The cream points represent the space of all projections, which is a sphere for 1D projections and a torus for 2D projections. In the 1D example, geodesic arrives at the opposite side of the sphere to Givens, indicating that it has flipped the direction of the vector in order to make the shortest path to the same plane. A similar thing happens for the 2D example, geosesic flips the sign of one basis vector, but it defines the same plane, as indicated by the cream circles.", include=knitr::is_latex_output(), eval=knitr::is_latex_output(), fig.alt = "Two highlighted points on the surface of a 3D sphere (left) and 6D torus (right) connected by a path of points which are the interpolation steps, static views."----
 knitr::include_graphics(c("sphere_static.png", "torus_static.png"))
 
 
@@ -371,16 +371,6 @@ knitr::include_graphics(c("sphere_static.png", "torus_static.png"))
 #>                   "torus.gif")
 
 
-## ----2d-path-dynamic, out.width="50%", fig.align="center", echo = FALSE, fig.height = 3, fig.cap="Interpolation steps of 2D projections of 6D data", include=knitr::is_html_output(), eval=knitr::is_html_output(), fig.alt = "2 highlighted points on the surface of torus connected by 10 interpolated steps, rotating."----
-#> 
-#> knitr::include_graphics("torus.gif")
-
-
-## ----2d-path-static, out.width="50%", fig.align="center", echo = FALSE, fig.height = 3, fig.cap="Interpolation steps of 2D projections of 6D data", include=knitr::is_latex_output(), eval=knitr::is_latex_output(), fig.alt = "2 highlighted points on the surface of torus connected by 10 interpolated steps, rotating."----
-
-knitr::include_graphics("torus_static.png")
-
-
 ## ----echo = FALSE, eval=FALSE-------------------------------------------------
 #> # trying with more information in one animation
 #> set.seed(2022)
@@ -404,8 +394,6 @@ knitr::include_graphics("torus_static.png")
 #>                  as.data.frame(t(apply(frames_2d_2, 3, c))),
 #>                  as.data.frame(t(as.vector(start3))),
 #>                  as.data.frame(t(apply(frames_2d_3, 3, c)))) %>%
-#> #<- t(apply(frames_2d, 3, c)) %>%
-#>   #as.data.frame() %>%
 #>   mutate(type="givens")
 #> proj_2d <- proj_2d %>%
 #>   mutate(type="torus")
@@ -545,19 +533,7 @@ knitr::include_graphics("torus_static.png")
 #> anim_save("sine_anim_geodesic.gif")
 
 
-## ----compare-interpolations, echo=FALSE, out.width="50%", fig.align = "center", fig.show='hold', include=knitr::is_html_output(), eval=knitr::is_html_output(), fig.cap="Givens interpolation path (left) and Geodesic interpolation path (right) to target frame. Givens interpolation goes to exact frame that has the correct orientation while Geodesic interpolation goes to rotation of the target plane."----
-#> knitr::include_graphics(
-#>   c("sine_anim_givens.gif",
-#>     "sine_anim_geodesic.gif"))
-
-
-## ----compare-interpolations-static, echo=FALSE, out.width="50%", fig.align = "center", fig.show='hold', include=knitr::is_latex_output(), eval=knitr::is_latex_output(), fig.cap="Givens interpolation path (left) and Geodesic interpolation path (right) to target frame. Givens interpolation goes to exact frame that has the correct orientation while Geodesic interpolation goes to rotation of the target plane."----
-knitr::include_graphics(
-  c("given_sine.png",
-    "geodesic_sine.png"))
-
-
-## ----currency, out.width="100%", fig.width = 9, fig.height = 4.5, layout = "l-body", fig.cap="All the currencies are standardised and the sign is flipped. The high value means the currency strengthened against the USD, and low means that it weakened."----
+## ----currency, out.width="100%", fig.width = 9, fig.height = 4.5, layout = "l-body", fig.cap="Examining the behaviour of six cross-currency rates (ARS, EUR, KRW, AUD, JPY, MYR) prior to and in the first month of the pandemic. All the currencies are standardised and the sign is flipped. JPY and EUR strengthend against the USD (high values) in March, while the other currencies weakened (low values).", fig.alt="Six time series plots all very similar until March 2020 when JPY and EUR go up. All currencies go down in mid-March and JPY and EUR increase again at the end of March."----
 rates <- read_csv("rates_Nov19_Mar20.csv", show_col_types = FALSE) %>% 
   select(date, ARS, AUD, EUR, JPY, KRW, MYR) 
 rates_sub <- rates %>%
@@ -576,7 +552,7 @@ ggplot(rates_sub_long, aes(x=date, y=crossrate, colour=currency)) +
 rate_march <- lubridate::month(rates$date)==3
 
 
-## ----pca-result-static, echo=FALSE, out.width="80%", fig.width=8, fig.height=8, fig.align = "center", fig.show='hold', fig.cap="There is a strong non-linear dependence between PC1 and PC2. Observations in March 2020 are highlighted in dark blue, all other months are shown in grey."----
+## ----pca-result-static, echo=FALSE, out.width="80%", fig.width=8, fig.height=8, fig.align = "center", fig.show='hold', fig.cap="Scatterplot matrix of the six principal components. Observations in March 2020 are highlighted in dark blue, all other months are shown in grey. There is a strong non-linear dependence between PC1 and PC2.", fig.alt="PC1 and PC2 exihibt almost a sine wave, which starts with grey points and ends with blue. The other pairs of plots have little structure."----
 # Use PCA to remove linear dependence
 rates_pca <- prcomp(rates[,-1], scale. = TRUE)
 pca <- ggscatmat(cbind(tibble::as_tibble(rates_pca$x), rate_march),
@@ -680,20 +656,20 @@ rates_pca_sd <-  apply(rates_pca$x, 2, function(x) (x-mean(x))/sd(x))
 #> 
 
 
-## ----rates-tour-animated, echo=FALSE, out.width="33%", fig.align = "center", fig.show='hold', include=knitr::is_html_output(), eval=knitr::is_html_output(), fig.cap="Optimisation in the guided tour using geodesic optimisation (left), simulated annealing with geodesic interpolation (middle) and simulated annealing with givens interpolation (right). (Refresh page to re-start the animation.)"----
+## ----rates-tour-animated, echo=FALSE, out.width="33%", fig.align = "center", fig.show='hold', include=knitr::is_html_output(), eval=knitr::is_html_output(), fig.cap="optimization in the guided tour using geodesic optimization (left), simulated annealing with geodesic interpolation (middle) and simulated annealing with Givens interpolation (right). (Refresh page to re-start the animation.)", fig.alt="Three animated plots showing biplot axes. The left and the middle scatterplot end at little structure, and the last scatterplot ends at a strong non-linear relationship."----
 #> knitr::include_graphics(
 #>   c("rates_tour_geodesic.gif",
 #>     "rates_tour_better.gif",
 #>     "rates_tour_givens.gif"))
 
 
-## ----rates-tour-static, out.width="30%", fig.align="center", echo = FALSE, fig.show='hold', include=knitr::is_latex_output(), eval=knitr::is_latex_output(), fig.cap="Final view after optimisation in the guided tour using geodesic optimisation (left), simulated annealing with geodesic interpolation (middle) and simulated annealing with givens interpolation (right)."----
+## ----rates-tour-static, out.width="30%", fig.align="center", echo = FALSE, fig.show='hold', include=knitr::is_latex_output(), eval=knitr::is_latex_output(), fig.cap="Final view after optimization in the guided tour using geodesic optimization (left), simulated annealing with geodesic interpolation (middle) and simulated annealing with Givens interpolation (right).", fig.alt="Three scatterplots with biplot axes. The left and the middle scatterplot have little structure, and the last scatterplot shows a strong non-linear relationship."----
 knitr::include_graphics(c("rates_tour_geodesic_final.png",
     "rates_tour_better_final.png",
     "rates_tour_givens_final.png"))
 
 
-## ----rates-ferrn, echo=FALSE, eval=TRUE, fig.cap="Splines index value along the interpolated optimisation path in the guided tour using geodesic optimisation (top), simulated annealing with geodesic interpolation (middle) and simulated annealing with givens interpolation (bottom). Points indicate index values at target planes selected during the optimization, and we see that with geodesic interpolation these values can decrease, impeding the optimization."----
+## ----rates-ferrn, echo=FALSE, eval=TRUE, out.width="80%", fig.align='center', fig.width=8, fig.height=8, layout= "l-body", fig.cap="Splines index value along the interpolated optimization path in the guided tour using geodesic optimization (top), simulated annealing with geodesic interpolation (middle) and simulated annealing with Givens interpolation (bottom). Points indicate index values at target planes selected during the optimization, and we see that with geodesic interpolation these values can decrease, impeding the optimization. XXX", fig.alt="Three trace plots with points and connecting lines. Top plot is very smoothly increasing to maximum value, whereas the bottom two plots show up and down patterns."----
 load("rates_tour_records.RData")
 library(ferrn)
 p1 <- get_interp(record_search_geodesic) %>%
@@ -730,28 +706,4 @@ p3 <- get_interp(record_search_givens) %>%
 
 cowplot::plot_grid(p1, p2, p3, ncol = 1, align = "hv" )
 
-
-
-## ----guided-geo-dynamic, out.width="50%", fig.align="center", echo = FALSE, fig.height = 3, fig.cap="Guided tour optimisation of splines index using geodesic interpolation.", include=knitr::is_html_output(), eval=knitr::is_html_output()----
-#> #knitr::include_graphics("guided_geo.gif")
-
-
-## ----guided-geo-static, out.width="50%", fig.align="center", echo = FALSE, fig.height = 3, fig.cap="Guided tour optimisation of splines index using geodesic interpolation.", include=knitr::is_latex_output(), eval=knitr::is_latex_output()----
-#knitr::include_graphics("guided_geo.png")
-
-
-## ----guided-givens-dynamic, out.width="50%", fig.align="center", echo = FALSE, fig.height = 3, fig.cap="Guided tour optimisation of splines index using Givens interpolation.", include=knitr::is_html_output(), eval=knitr::is_html_output()----
-#> #knitr::include_graphics("guided_givens.gif")
-
-
-## ----guided-givens-static, out.width="50%", fig.align="center", echo = FALSE, fig.height = 3, fig.cap="Guided tour optimisation of modified splines index using Givens interpolation.", include=knitr::is_latex_output(), eval=knitr::is_latex_output()----
-#knitr::include_graphics("guided_givens.png")
-
-
-## ----guided-givens-random-dynamic, out.width="50%", fig.align="center", echo = FALSE, fig.height = 3, fig.cap="Guided tour optimisation of modified splines index using Givens interpolation with better optimisation.", include=knitr::is_html_output(), eval=knitr::is_html_output()----
-#> #knitr::include_graphics("guided_givens_random.gif")
-
-
-## ----guided-givens-random-static, out.width="50%", fig.align="center", echo = FALSE, fig.height = 3, fig.cap="Guided tour optimisation of modified splines index using Givens interpolation with better optimisation.", include=knitr::is_latex_output(), eval=knitr::is_latex_output()----
-#knitr::include_graphics("guided_givens_random.png")
 

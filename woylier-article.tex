@@ -23,7 +23,7 @@ Most projection pursuit indexes, particularly those provided by in \CRANpkg{tour
 
 Figure \ref{fig:splines2d-static} illustrates the rotational invariance problem for a modified splines index, where we always consider the horizontal direction as the predictor variable, and the vertical direction as the response. Thus, our modified index computes the splines on one orientation, exaggerating the rotational variability. The example data was simulated to follow a sine curve and the modified splines index is calculated on different within-plane rotations of the data. Although they have the same structure, the index values vary greatly.
 
-The lack of rotation invariance of the splines index raises complications in the optimisation process in the projection-pursuit guided tour as available in \CRANpkg{tourr}. Fixing this is the motivation of this work. The goal with the frame-to-frame interpolation is that optimisation would find the best within-plane rotation, and thus appropriately optimize the index.
+The lack of rotation invariance of the splines index raises complications in the optimization process in the projection-pursuit guided tour as available in \CRANpkg{tourr}. Fixing this is the motivation of this work. The goal with the frame-to-frame interpolation is that optimization would find the best within-plane rotation, and thus appropriately optimize the index.
 
 \begin{figure}
 \includegraphics[width=1\linewidth]{woylier-article_files/figure-latex/splines2d-static-1} \caption{The impact of rotation on a spline index that is NOT rotation invariant. The index value for different within-plane rotations take very different values: (a) original projection has maximum index value of 1.00, (b) axes rotated 45$^o$ drops index value to 0.83, (c) axes rotated 60$^o$ drops index to a very low 0.26. Geodesic interpolation between planes will have difficulty finding the maximum of an index like this because it is focused only on the projection plane, not the frame defining the plane.}\label{fig:splines2d-static}
@@ -261,7 +261,7 @@ This section describes the application of Givens interpolation path with guided 
 The data was extracted from \href{https://openexchangerates.org}{openexchangerates} and contains cross-rate for ARS, AUD, EUR, JPY, KRW, MYR between 2019-11-1 to 2020-03-31. Figure \ref{fig:currency} shows how the currencies changed relative to USD over the time period. We see some collective behavior in March of 2020 with EUR and JPY increasing in a similar manner, and smaller currencies decreasing in value. This could be understood as a consequence of flight-to-quality at this uncertain times.
 
 \begin{figure}
-\includegraphics[width=1\linewidth]{woylier-article_files/figure-latex/currency-1} \caption{All the currencies are standardised and the sign is flipped. The high value means the currency strengthened against the USD, and low means that it weakened.}\label{fig:currency}
+\includegraphics[width=1\linewidth]{woylier-article_files/figure-latex/currency-1} \caption{Examining the behaviour of six cross-currency rates (ARS, EUR, KRW, AUD, JPY, MYR) prior to and in the first month of the pandemic. All the currencies are standardised and the sign is flipped. JPY and EUR strengthend against the USD (high values) in March, while the other currencies weakened (low values).}\label{fig:currency}
 \end{figure}
 
 We are interested in capturing this relations over time, and from the time series visualization we expect that we can capture the main dynamics in a two-dimensional projection from the six-dimensional space of currencies. Thus we start from \(p=6\) (the different currencies) and \(n=152\) the number of days in our sample. We expect that a projection onto \(d=2\) dimensions should capture the relation between the two groups of currencies mentioned above, and this should be identified within the noise of the random fluctuations.
@@ -274,10 +274,10 @@ We may expect that we can capture the dependence between the two groups using pr
 
 }
 
-\caption{There is a strong non-linear dependence between PC1 and PC2. Observations in March 2020 are highlighted in dark blue, all other months are shown in grey.}\label{fig:pca-result-static}
+\caption{Scatterplot matrix of the six principal components. Observations in March 2020 are highlighted in dark blue, all other months are shown in grey. There is a strong non-linear dependence between PC1 and PC2.}\label{fig:pca-result-static}
 \end{figure}
 
-\textbf{Guided tour optimisation}
+\textbf{Guided tour optimization}
 
 We now use the splines index to identify a projection with functional dependence between the first and second direction of the projection. Note here that because of strong linear correlations between the currencies, we start from the first four principal components, explaining over 97\% of the variance in the data. To avoid starting from the view already identified in the first two principal components we start from a projections onto the third and forth principal components. The PCA display in \texttt{tourr} is used to show each projection axes display in terms of the original variables, while only touring within the smaller space spanned by the first four principal components.
 
@@ -289,7 +289,7 @@ The results are shown in Figure \ref{fig:rates-tour-static} and we see on the ri
 
 }
 
-\caption{Final view after optimisation in the guided tour using geodesic optimisation (left), simulated annealing with geodesic interpolation (middle) and simulated annealing with givens interpolation (right).}\label{fig:rates-tour-static}
+\caption{Final view after optimization in the guided tour using geodesic optimization (left), simulated annealing with geodesic interpolation (middle) and simulated annealing with Givens interpolation (right).}\label{fig:rates-tour-static}
 \end{figure}
 
 To understand the result in more detail we use tools from \CRANpkg{ferrn} (Zhang et al. 2021) to show how the index value is changing over the optimization in Figure \ref{fig:rates-ferrn}. Points indicate selected target planes, and are connected by lines showing the index value along the interpolated path between them.
@@ -301,9 +301,12 @@ In the middle we are showing the path found when using a random search in combin
 Finally in the bottom row we see the result of the random search with Givens interpolation. While the index value can drop along an interpolation path, the value is strictly increasing for the target planes, as is required for the optimization. Note also that the search converged much faster (fewer target planes were selected). The length of the interpolated paths is similar, because for fixed angular step size the Givens interpolation will take more steps to interpolate between frames.
 
 \begin{figure}
-\centering
-\includegraphics{woylier-article_files/figure-latex/rates-ferrn-1.pdf}
-\caption{\label{fig:rates-ferrn}Splines index value along the interpolated optimisation path in the guided tour using geodesic optimisation (top), simulated annealing with geodesic interpolation (middle) and simulated annealing with givens interpolation (bottom). Points indicate index values at target planes selected during the optimization, and we see that with geodesic interpolation these values can decrease, impeding the optimization.}
+
+{\centering \includegraphics[width=0.8\linewidth]{woylier-article_files/figure-latex/rates-ferrn-1} 
+
+}
+
+\caption{Splines index value along the interpolated optimization path in the guided tour using geodesic optimization (top), simulated annealing with geodesic interpolation (middle) and simulated annealing with Givens interpolation (bottom). Points indicate index values at target planes selected during the optimization, and we see that with geodesic interpolation these values can decrease, impeding the optimization. XXX}\label{fig:rates-ferrn}
 \end{figure}
 
 \hypertarget{conclusion}{%
@@ -313,7 +316,7 @@ The R package \CRANpkg{woylier} provides implementation of Givens interpolation 
 
 The motivation to develop this package comes from rotational invariance problem of current geodesic interpolation algorithm implemeneted in \CRANpkg{tourr} package. The package gives users the ability to detect non-linear association between variables more precisely.
 
-It is important to mention that \CRANpkg{woylier} package should be integrated with \CRANpkg{tourr} package. The future improvements that needs to be done in the package is to generalize the interpolation for more than 2d projections of data.
+It is important to mention that \CRANpkg{woylier} package should be used in conjunction with the \CRANpkg{tourr} package. The future improvements that needs to be done in the package is to generalize the interpolation for more than 2D projections of data.
 
 \hypertarget{references}{%
 \section*{References}\label{references}}
