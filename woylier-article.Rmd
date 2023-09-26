@@ -867,24 +867,28 @@ knitr::include_graphics(c("figures/rates_tour_geodesic_final.png",
     "figures/rates_tour_givens_final.png"))
 ```
 
-To understand the result in more detail we use tools from \CRANpkg{ferrn} [@ferrn] to show how the index value is changing over the optimization in Figure `r knitr::asis_output(ifelse(knitr::is_html_output(), '\\@ref(fig:rates-ferrn)', '\\@ref(fig:rates-ferrn)'))`. Points indicate selected target planes, and are connected by lines showing the index value along the interpolated path between them.
+To understand the result in more detail we use tools from \CRANpkg{ferrn} [@ferrn] to show how the index value is changing over the optimization in Figure `r knitr::asis_output(ifelse(knitr::is_html_output(), '\\@ref(fig:rates-ferrn)', '\\@ref(fig:rates-ferrn)'))`. Points indicate selected target planes, and are connected by lines showing the index value along the interpolated path between them. For ease of comparison, the horizontal line shown in all three panels indicates the maximum index value found when using Givens interpolation.
 
-The top row is showing the path found via geodesic optimization. This search strategy only moves along geodesic paths, and cannot select target frames with rotation within the plane. We can see that as a consequence the optimization converges to a local optimum and the search does not identify the pattern of interest.
+The top row is showing the path found via geodesic optimization. This search strategy only moves along geodesic paths, and cannot select target frames that are rotated within the plane. By construction this gives a smooth path. However, we can see that as a consequence the optimization converges to a local optimum and the search does not identify the pattern of interest.
 
-In the middle we are showing the path found when using a random search in combination with geodesic interpolation. In this case the search can suggest any target frame (allowing for within-plane rotation), but the interpolation step will reset the orientation. This is why we see drops in the index value even from one target plane to the next, and the optimization also does not identify the pattern of interest.
+In the middle we are showing the path found when using a random search in combination with geodesic interpolation. In this case the search can suggest any target frame, also allowing for any within-plane rotation. The algorithm will compute the index value for the suggested target frame and accept it if the index value is larger than that for the current frame. However, once the target is accepted, the interpolation step will reset the orientation, potentially resulting in a frame that shows the same plane but with a much lower index value. This is why we see drops in the index value even from one target plane to the next, and the optimization also does not identify the pattern of interest.
 
-Finally in the bottom row we see the result of the random search with Givens interpolation. While the index value can drop along an interpolation path, the value is strictly increasing for the target planes, as is required for the optimization. Note also that the search converged much faster (fewer target planes were selected). The length of the interpolated paths is similar, because for fixed angular step size the Givens interpolation will take more steps to interpolate between frames.
+Finally in the bottom row we see the result of the random search with Givens interpolation. While the index value can drop along an interpolation path, the value is strictly increasing for the target planes (up to small differences from numeric precision in the interpolation), as is required for the optimization. Note also that the search converged much faster (fewer target planes were selected). The length of the interpolated paths is similar, because for fixed angular step size the Givens interpolation will take more steps to interpolate between frames.
 
 
-```{r rates-ferrn, echo=FALSE, eval=TRUE, out.width="80%", fig.align='center', fig.width=8, fig.height=8, layout= "l-body", fig.cap="Splines index value along the interpolated optimization path in the guided tour using geodesic optimization (top), simulated annealing with geodesic interpolation (middle) and simulated annealing with Givens interpolation (bottom). Points indicate index values at target planes selected during the optimization, and we see that with geodesic interpolation these values can decrease, impeding the optimization. XXX", fig.alt="Three trace plots with points and connecting lines. Top plot is very smoothly increasing to maximum value, whereas the bottom two plots show up and down patterns."}
+```{r rates-ferrn, echo=FALSE, eval=TRUE, out.width="80%", fig.align='center', fig.width=8, fig.height=8, layout= "l-body", fig.cap="Splines index value along the interpolated optimization path in the guided tour using geodesic optimization (top), simulated annealing with geodesic interpolation (middle) and simulated annealing with Givens interpolation (bottom). Points indicate index values at target planes selected during the optimization, and the horizontal line shows the maximum across the three searches. With geodesic optimization no within-plane rotation is possible and we are stuck in a local optimum. With geodesic interpolation resetting the frame after accepting a target with higher index value can result in drops in index value during the optimization. This does not happen with Givens interpolation, allowing the search to find the optimal view.  XXX", fig.alt="Three trace plots with points and connecting lines. Top plot is very smoothly increasing to maximum value, whereas the bottom two plots show up and down patterns."}
 load("data/rates_tour_records.RData")
 library(ferrn)
+
+max_idx <- max(get_interp_last(record_search_givens)$index_val)
+
 p1 <- get_interp(record_search_geodesic) %>%
   ggplot(aes(id, index_val)) +
   geom_line() +
   geom_point(data = dplyr::bind_rows(get_start(record_search_geodesic),
                                      get_interp_last(record_search_geodesic))) +
   ylim(0,1) +
+  geom_hline(yintercept = max_idx, color = "sienna3") +
   xlab(NULL) +
   ylab(NULL) +
   theme_bw()
@@ -896,6 +900,7 @@ p2 <- get_interp(record_search_better) %>%
   geom_point(data = dplyr::bind_rows(get_start(record_search_better),
                                      get_interp_last(record_search_better))) +
   ylim(0,1)+
+  geom_hline(yintercept = max_idx, color = "sienna3") +
   xlab(NULL) +
   ylab("Index value") +
   theme_bw() 
@@ -907,6 +912,7 @@ p3 <- get_interp(record_search_givens) %>%
   geom_point(data = dplyr::bind_rows(get_start(record_search_givens),
                                      get_interp_last(record_search_givens))) +
   ylim(0,1)+
+  geom_hline(yintercept = max_idx, color = "sienna3") +
   xlab("Interpolation step") +
   ylab(NULL) +
   theme_bw() 
@@ -919,6 +925,6 @@ cowplot::plot_grid(p1, p2, p3, ncol = 1, align = "hv" )
 
 The R package \CRANpkg{woylier} provides implementation of Givens interpolation path algorithm that can be used as an alternative interpolation method for tour. The algorithm implemented in the \CRANpkg{woylier} package comes from @buja_cook_asimov_hurley_2005. We illustrate the use of the functions provided in the package for R users.
 
-The motivation to develop this package comes from rotational invariance problem of current geodesic interpolation algorithm implemeneted in \CRANpkg{tourr} package. The package gives users the ability to detect non-linear association between variables more precisely. 
+The motivation to develop this package comes from rotational invariance problem of current geodesic interpolation algorithm implemented in \CRANpkg{tourr} package. The package gives users the ability to detect non-linear association between variables more precisely. 
 
 It is important to mention that \CRANpkg{woylier} package should be used in conjunction with the \CRANpkg{tourr} package. The future improvements that needs to be done in the package is to generalize the interpolation for more than 2D projections of data.
