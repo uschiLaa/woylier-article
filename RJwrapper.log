@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.9.22)  23 SEP 2023 17:29
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.9.22)  26 SEP 2023 16:43
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -796,58 +796,58 @@ LaTeX Font Info:    Font shape `T1/zi4/m/n' will be
 <figures/compare-paths.png, id=113, 546.843pt x 748.7172pt>
 File: figures/compare-paths.png Graphic file (type png)
 <use figures/compare-paths.png>
-Package pdftex.def Info: figures/compare-paths.png  used on input line 229.
+Package pdftex.def Info: figures/compare-paths.png  used on input line 217.
 (pdftex.def)             Requested size: 318.67207pt x 436.33553pt.
 <figures/sphere_static.png, id=116, 480.79625pt x 479.7925pt>
 File: figures/sphere_static.png Graphic file (type png)
 <use figures/sphere_static.png>
-Package pdftex.def Info: figures/sphere_static.png  used on input line 244.
+Package pdftex.def Info: figures/sphere_static.png  used on input line 232.
 (pdftex.def)             Requested size: 179.25113pt x 178.87482pt.
 <figures/torus_static.png, id=117, 479.7925pt x 479.7925pt>
 File: figures/torus_static.png Graphic file (type png)
 <use figures/torus_static.png>
-Package pdftex.def Info: figures/torus_static.png  used on input line 244.
+Package pdftex.def Info: figures/torus_static.png  used on input line 232.
 (pdftex.def)             Requested size: 179.25113pt x 179.2482pt.
-[6] [7 <./figures/compare-paths.png>]
-<woylier-article_files/figure-latex/currency-1.pdf, id=135, 640.3925pt x 256.96pt>
+<woylier-article_files/figure-latex/currency-1.pdf, id=121, 640.3925pt x 256.96pt>
 File: woylier-article_files/figure-latex/currency-1.pdf Graphic file (type pdf)
 <use woylier-article_files/figure-latex/currency-1.pdf>
-Package pdftex.def Info: woylier-article_files/figure-latex/currency-1.pdf  used on input line 264.
+Package pdftex.def Info: woylier-article_files/figure-latex/currency-1.pdf  used on input line 252.
 (pdftex.def)             Requested size: 398.33858pt x 159.83502pt.
-<woylier-article_files/figure-latex/pca-result-static-1.pdf, id=137, 555.07375pt x 544.0325pt>
+[6] [7 <./figures/compare-paths.png>] [8 <./figures/sphere_static.png> <./figures/torus_static.png> <./woylier-article_files/figure-latex/currency-1.pdf>]
+<woylier-article_files/figure-latex/pca-result-static-1.pdf, id=151, 555.07375pt x 544.0325pt>
 File: woylier-article_files/figure-latex/pca-result-static-1.pdf Graphic file (type pdf)
 <use woylier-article_files/figure-latex/pca-result-static-1.pdf>
-Package pdftex.def Info: woylier-article_files/figure-latex/pca-result-static-1.pdf  used on input line 273.
+Package pdftex.def Info: woylier-article_files/figure-latex/pca-result-static-1.pdf  used on input line 261.
 (pdftex.def)             Requested size: 318.67207pt x 312.33478pt.
-<figures/rates_tour_geodesic_final.png, id=139, 200.75pt x 200.75pt>
+<figures/rates_tour_geodesic_final.png, id=153, 200.75pt x 200.75pt>
 File: figures/rates_tour_geodesic_final.png Graphic file (type png)
 <use figures/rates_tour_geodesic_final.png>
-Package pdftex.def Info: figures/rates_tour_geodesic_final.png  used on input line 288.
+Package pdftex.def Info: figures/rates_tour_geodesic_final.png  used on input line 276.
 (pdftex.def)             Requested size: 119.50278pt x 119.5044pt.
-<figures/rates_tour_better_final.png, id=140, 200.75pt x 200.75pt>
+<figures/rates_tour_better_final.png, id=154, 200.75pt x 200.75pt>
 File: figures/rates_tour_better_final.png Graphic file (type png)
 <use figures/rates_tour_better_final.png>
-Package pdftex.def Info: figures/rates_tour_better_final.png  used on input line 288.
+Package pdftex.def Info: figures/rates_tour_better_final.png  used on input line 276.
 (pdftex.def)             Requested size: 119.50278pt x 119.5044pt.
-<figures/rates_tour_givens_final.png, id=141, 200.75pt x 200.75pt>
+<figures/rates_tour_givens_final.png, id=155, 200.75pt x 200.75pt>
 File: figures/rates_tour_givens_final.png Graphic file (type png)
 <use figures/rates_tour_givens_final.png>
-Package pdftex.def Info: figures/rates_tour_givens_final.png  used on input line 288.
+Package pdftex.def Info: figures/rates_tour_givens_final.png  used on input line 276.
 (pdftex.def)             Requested size: 119.50278pt x 119.5044pt.
-[8 <./figures/sphere_static.png> <./figures/torus_static.png>] [9 <./woylier-article_files/figure-latex/currency-1.pdf> <./woylier-article_files/figure-latex/pca-result-static-1.pdf>]
+[9 <./woylier-article_files/figure-latex/pca-result-static-1.pdf>]
 <woylier-article_files/figure-latex/rates-ferrn-1.pdf, id=173, 572.1375pt x 569.12625pt>
 File: woylier-article_files/figure-latex/rates-ferrn-1.pdf Graphic file (type pdf)
 <use woylier-article_files/figure-latex/rates-ferrn-1.pdf>
-Package pdftex.def Info: woylier-article_files/figure-latex/rates-ferrn-1.pdf  used on input line 305.
+Package pdftex.def Info: woylier-article_files/figure-latex/rates-ferrn-1.pdf  used on input line 293.
 (pdftex.def)             Requested size: 318.67207pt x 316.99774pt.
 [10 <./figures/rates_tour_geodesic_final.png> <./figures/rates_tour_better_final.png> <./figures/rates_tour_givens_final.png>] [11 <./woylier-article_files/figure-latex/rates-ferrn-1.pdf>]
 No file RJwrapper.bbl.
 
 LaTeX Font Warning: Font shape `T1/zi4/m/it' undefined
-(Font)              using `T1/zi4/m/n' instead on input line 381.
+(Font)              using `T1/zi4/m/n' instead on input line 369.
 
 LaTeX Font Info:    Font shape `T1/zi4/m/it' will be
-(Font)              scaled to size 9.18004pt on input line 381.
+(Font)              scaled to size 9.18004pt on input line 369.
 ) [12] (./RJwrapper.aux)
  ***********
 LaTeX2e <2023-06-01> patch level 1
@@ -860,15 +860,15 @@ Package rerunfilecheck Info: File `RJwrapper.out' has not changed.
 (rerunfilecheck)             Checksum: ABBD7AE4BFDD43983082D98EDB644C5B;1590.
  ) 
 Here is how much of TeX's memory you used:
- 26778 strings out of 476894
- 488393 string characters out of 5808354
+ 26772 strings out of 476894
+ 488345 string characters out of 5808354
  1935791 words of memory out of 5000000
  47235 multiletter control sequences out of 15000+600000
- 607333 words of font info for 300 fonts, out of 8000000 for 9000
+ 607025 words of font info for 296 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  117i,12n,131p,1139b,764s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </Users/cookd/Library/TinyTeX/texmf-dist/fonts/type1/public/inconsolata/Inconsolata-zi4r.pfb></Users/cookd/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></Users/cookd/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></Users/cookd/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></Users/cookd/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></Users/cookd/Library/TinyTeX/texmf-dist/fonts/type1/public/mathpazo/fplmr.pfb></Users/cookd/Library/TinyTeX/texmf-dist/fonts/type1/public/mathpazo/fplmri.pfb></Users/cookd/Library/TinyTeX/texmf-dist/fonts/type1/urw/palatino/uplb8a.pfb></Users/cookd/Library/TinyTeX/texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb></Users/cookd/Library/TinyTeX/texmf-dist/fonts/type1/urw/palatino/uplri8a.pfb>
-Output written on RJwrapper.pdf (12 pages, 918804 bytes).
+Output written on RJwrapper.pdf (12 pages, 918760 bytes).
 PDF statistics:
  302 PDF objects out of 1000 (max. 8388607)
  237 compressed objects within 3 object streams

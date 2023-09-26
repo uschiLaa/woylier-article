@@ -134,7 +134,7 @@ In our example, \(W_a\) looks like:
 
 \[ W_a = R_m(\theta_m) ... R_2(\theta_2)R_1(\theta_1)W_z\]
 
-At each rotation, the angle \(\theta_i\) that zero out the next coordinate of a plane is calculated. Here \(m = \sum_{k=1}^d (2d - k)\), so when \(d=2\) we need \(m=5\) rotations with 5 different angles, each making one element 0. For example, the first rotation angle \(\theta_1\) is an angle in radiant between \((1, 0)\) and \((a_{11}, a_{21})\). This rotation matrix would make element \(a_{21}\) zero:
+At each rotation, the angle \(\theta_i\) that zero out the next coordinate of a plane is calculated. Here \(m = \sum_{k=1}^d (2d - k)\), so when \(d=2\) we need \(m=5\) rotations with 5 different angles, each making one element 0. For example, the first rotation angle \(\theta_1\) is an angle in radians between \((1, 0)\) and \((a_{11}, a_{21})\). This rotation matrix would make element \(a_{21}\) zero:
 
 \[R_1(\theta_1) = G(1, 2, \theta_1) = \begin{bmatrix} cos\theta_1 & -sin\theta_1 & 0 & 0 \\sin\theta_1  &cos\theta_1 & 0 &0 \\ 0&0&1&0 \\0&0&0&1\end{bmatrix}\]
 Here \(G(i,j,\theta_k)\) denotes a Givens rotation in components \(i\) and \(j\) by angle \(\theta_k\).
@@ -205,18 +205,6 @@ tourr::animate_xy(<data>, tour_path = woylier::grand_tour_givens())
 \section{Comparison of geodesic interpolation and Givens interpolation}\label{comparison-of-geodesic-interpolation-and-givens-interpolation}}
 
 The \texttt{givens\_full\_path()} function returns the intermediate interpolation step projections for a given number of steps. The code chunk below demonstrates the interpolation between 2 random bases in 5 steps.
-
-XXX maybe drop the printout of base1 and base2 since output is not shown anyways?
-
-\begin{verbatim}
-set.seed(2022)
-p <- 6
-base1 <- tourr::basis_random(p, d=2)
-base2 <- tourr::basis_random(p, d=2)
-
-base1
-base2
-\end{verbatim}
 
 \begin{verbatim}
 givens_full_path(base1, base2, nsteps = 5)

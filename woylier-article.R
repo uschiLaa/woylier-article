@@ -169,14 +169,14 @@ kbl(tbl, caption="Primary functions in the woylier package.") %>%
 #> tourr::animate_xy(<data>, tour_path = woylier::grand_tour_givens())
 
 
-## ----echo=TRUE, eval=FALSE----------------------------------------------------
+## ----echo=FALSE, eval=FALSE---------------------------------------------------
 #> set.seed(2022)
 #> p <- 6
 #> base1 <- tourr::basis_random(p, d=2)
 #> base2 <- tourr::basis_random(p, d=2)
 #> 
-#> base1
-#> base2
+#> #base1
+#> #base2
 
 
 ## ----echo=TRUE, eval=FALSE----------------------------------------------------
