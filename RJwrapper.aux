@@ -2,13 +2,10 @@
 \providecommand\hyper@newdestlabel[2]{}
 \providecommand\HyperFirstAtBeginDocument{\AtBeginDocument}
 \HyperFirstAtBeginDocument{\ifx\hyper@anchor\@undefined
-\global\let\oldcontentsline\contentsline
-\gdef\contentsline#1#2#3#4{\oldcontentsline{#1}{#2}{#3}}
 \global\let\oldnewlabel\newlabel
 \gdef\newlabel#1#2{\newlabelxx{#1}#2}
 \gdef\newlabelxx#1#2#3#4#5#6{\oldnewlabel{#1}{{#2}{#3}}}
 \AtEndDocument{\ifx\hyper@anchor\@undefined
-\let\contentsline\oldcontentsline
 \let\newlabel\oldnewlabel
 \fi}
 \fi}
@@ -17,90 +14,40 @@
 \providecommand\HyField@AuxAddToFields[1]{}
 \providecommand\HyField@AuxAddToCoFields[2]{}
 \bibstyle{abbrvnat}
-\citation{asimov_1985}
-\citation{buja_cook_asimov_hurley_2005}
-\citation{cook_manual_1997}
-\citation{mmtour}
-\citation{grandtour1995}
-\citation{tourrev}
-\citation{tourr}
-\citation{kruskal_1969}
-\citation{Buja2004TheoryOD}
-\citation{Grimm2016}
-\citation{pp}
-\citation{Grimm2016}
 \@writefile{toc}{\contentsline {chapter}{\numberline {1}Frame to frame interpolation for high-dimensional data visualisation using the woylier package}{1}{section*.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {2.1}Introduction}{1}{section.2.1}\protected@file@percent }
 \newlabel{introduction}{{2.1}{1}{Introduction}{section.2.1}{}}
-\@writefile{brf}{\backcite{asimov_1985}{{1}{2.1}{section.2.1}}}
-\@writefile{brf}{\backcite{buja_cook_asimov_hurley_2005}{{1}{2.1}{section.2.1}}}
-\@writefile{brf}{\backcite{cook_manual_1997}{{1}{2.1}{section.2.1}}}
-\@writefile{brf}{\backcite{mmtour}{{1}{2.1}{section.2.1}}}
-\@writefile{brf}{\backcite{grandtour1995}{{1}{2.1}{section.2.1}}}
-\@writefile{brf}{\backcite{tourrev}{{1}{2.1}{section.2.1}}}
-\@writefile{brf}{\backcite{tourr}{{1}{2.1}{section.2.1}}}
-\@writefile{brf}{\backcite{kruskal_1969}{{1}{2.1}{section.2.1}}}
-\@writefile{brf}{\backcite{Buja2004TheoryOD}{{1}{2.1}{section.2.1}}}
-\@writefile{brf}{\backcite{Grimm2016}{{1}{2.1}{section.2.1}}}
-\@writefile{brf}{\backcite{pp}{{1}{2.1}{section.2.1}}}
-\@writefile{brf}{\backcite{Grimm2016}{{1}{2.1}{section.2.1}}}
-\citation{buja_cook_asimov_hurley_2005}
-\citation{buja_cook_asimov_hurley_2005}
-\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces The impact of rotation on a spline index that is NOT rotation invariant}}{2}{figure.caption.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces The impact of rotation on a spline index that is NOT rotation invariant. The index value for different within-plane rotations take very different values: (a) original projection has maximum index value of 1.00, (b) axes rotated 45$^o$ drops index value to 0.83, (c) axes rotated 60$^o$ drops index to a very low 0.26. Geodesic interpolation between planes will have difficulty finding the maximum of an index like this because it is focused only on the projection plane, not the frame defining the plane.}}{2}{figure.caption.2}\protected@file@percent }
 \providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
-\newlabel{fig:splines2d-static}{{1}{2}{The impact of rotation on a spline index that is NOT rotation invariant}{figure.caption.2}{}}
-\@writefile{brf}{\backcite{buja_cook_asimov_hurley_2005}{{2}{2.1}{figure.caption.2}}}
+\newlabel{fig:splines2d-static}{{1}{2}{The impact of rotation on a spline index that is NOT rotation invariant. The index value for different within-plane rotations take very different values: (a) original projection has maximum index value of 1.00, (b) axes rotated 45$^o$ drops index value to 0.83, (c) axes rotated 60$^o$ drops index to a very low 0.26. Geodesic interpolation between planes will have difficulty finding the maximum of an index like this because it is focused only on the projection plane, not the frame defining the plane}{figure.caption.2}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {2.2}Background}{2}{section.2.2}\protected@file@percent }
 \newlabel{background}{{2.2}{2}{Background}{section.2.2}{}}
-\@writefile{brf}{\backcite{buja_cook_asimov_hurley_2005}{{2}{2.2}{section.2.2}}}
-\citation{matrix_computation}
-\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Plane to plane interpolation (left) and Frame to frame interpolation (right)}}{3}{figure.caption.3}\protected@file@percent }
-\newlabel{fig:dogs}{{2}{3}{Plane to plane interpolation (left) and Frame to frame interpolation (right)}{figure.caption.3}{}}
-\@writefile{brf}{\backcite{matrix_computation}{{3}{2.2}{figure.caption.3}}}
-\citation{tourr}
-\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Primary functions in the woylier package.\relax }}{5}{table.caption.4}\protected@file@percent }
-\newlabel{tab:fns-pdf}{{1}{5}{Primary functions in the woylier package.\relax }{table.caption.4}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Plane to plane interpolation (left) and Frame to frame interpolation (right). We used dog index for illustration purposes. For some non-linear index orientation of data could affect the index.}}{3}{figure.caption.3}\protected@file@percent }
+\newlabel{fig:dogs}{{2}{3}{Plane to plane interpolation (left) and Frame to frame interpolation (right). We used dog index for illustration purposes. For some non-linear index orientation of data could affect the index}{figure.caption.3}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Primary functions in the woylier package.}}{5}{table.caption.4}\protected@file@percent }
+\newlabel{tab:fns-pdf}{{1}{5}{Primary functions in the woylier package}{table.caption.4}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {2.3}Implementation}{5}{section.2.3}\protected@file@percent }
 \newlabel{implementation}{{2.3}{5}{Implementation}{section.2.3}{}}
-\@writefile{brf}{\backcite{tourr}{{5}{2.3}{table.caption.4}}}
-\citation{geozoo}
 \@writefile{toc}{\contentsline {section}{\numberline {2.4}Comparison of geodesic interpolation and Givens interpolation}{6}{section.2.4}\protected@file@percent }
 \newlabel{comparison-of-geodesic-interpolation-and-givens-interpolation}{{2.4}{6}{Comparison of geodesic interpolation and Givens interpolation}{section.2.4}{}}
-\@writefile{brf}{\backcite{geozoo}{{6}{2.4}{figure.caption.5}}}
 \@writefile{toc}{\contentsline {section}{\numberline {2.5}Application}{6}{section.2.5}\protected@file@percent }
 \newlabel{application}{{2.5}{6}{Application}{section.2.5}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Comparison of Givens path and geodesic path between 2D projections}}{7}{figure.caption.5}\protected@file@percent }
-\newlabel{fig:compare-paths}{{3}{7}{Comparison of Givens path and geodesic path between 2D projections}{figure.caption.5}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Interpolation steps of 1D (left) and 2D (right) projections of 3D data made with a Givens path (forest green) and a geodesic path (deep red)}}{8}{figure.caption.6}\protected@file@percent }
-\newlabel{fig:1d-path-static}{{4}{8}{Interpolation steps of 1D (left) and 2D (right) projections of 3D data made with a Givens path (forest green) and a geodesic path (deep red)}{figure.caption.6}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Examining the behaviour of six cross-currency rates (ARS, EUR, KRW, AUD, JPY, MYR) prior to and in the first month of the pandemic}}{8}{figure.caption.7}\protected@file@percent }
-\newlabel{fig:currency}{{5}{8}{Examining the behaviour of six cross-currency rates (ARS, EUR, KRW, AUD, JPY, MYR) prior to and in the first month of the pandemic}{figure.caption.7}{}}
-\citation{ferrn}
-\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Scatterplot matrix of the six principal components}}{9}{figure.caption.8}\protected@file@percent }
-\newlabel{fig:pca-result-static}{{6}{9}{Scatterplot matrix of the six principal components}{figure.caption.8}{}}
-\@writefile{brf}{\backcite{ferrn}{{9}{2.5}{figure.caption.9}}}
-\citation{buja_cook_asimov_hurley_2005}
-\bibdata{woylier-article.bib}
-\bibcite{asimov_1985}{{1}{1985}{{Asimov}}{{}}}
-\bibcite{Buja2004TheoryOD}{{2}{2004}{{Buja et~al.}}{{Buja, Cook, Asimov, and Hurley}}}
-\bibcite{buja_cook_asimov_hurley_2005}{{3}{2005}{{Buja et~al.}}{{Buja, Cook, Asimov, and Hurley}}}
-\bibcite{cook_manual_1997}{{4}{1997}{{Cook and Buja}}{{}}}
-\bibcite{grandtour1995}{{5}{1995}{{Cook et~al.}}{{Cook, Buja, Cabrera, and Hurley}}}
-\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Final view after optimization in the guided tour using geodesic optimization (left), simulated annealing with geodesic interpolation (middle) and simulated annealing with Givens interpolation (right)}}{10}{figure.caption.9}\protected@file@percent }
-\newlabel{fig:rates-tour-static}{{7}{10}{Final view after optimization in the guided tour using geodesic optimization (left), simulated annealing with geodesic interpolation (middle) and simulated annealing with Givens interpolation (right)}{figure.caption.9}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Comparison of Givens path and geodesic path between 2D projections. The Givens path preserves the frame ending at the provided basis (frame), while geodesic is agnostic to the particular basis. In general the geodesic is preferred because it removes within-plane spin, but occasionally it is helpful to very specifically arrive at the prescribed basis.}}{7}{figure.caption.5}\protected@file@percent }
+\newlabel{fig:compare-paths}{{3}{7}{Comparison of Givens path and geodesic path between 2D projections. The Givens path preserves the frame ending at the provided basis (frame), while geodesic is agnostic to the particular basis. In general the geodesic is preferred because it removes within-plane spin, but occasionally it is helpful to very specifically arrive at the prescribed basis}{figure.caption.5}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Interpolation steps of 1D (left) and 2D (right) projections of 3D data made with a Givens path (forest green) and a geodesic path (deep red). The cream points represent the space of all projections, which is a sphere for 1D projections and a torus for 2D projections. In the 1D example, geodesic arrives at the opposite side of the sphere to Givens, indicating that it has flipped the direction of the vector in order to make the shortest path to the same plane. A similar thing happens for the 2D example, geosesic flips the sign of one basis vector, but it defines the same plane, as indicated by the cream circles.}}{8}{figure.caption.6}\protected@file@percent }
+\newlabel{fig:1d-path-static}{{4}{8}{Interpolation steps of 1D (left) and 2D (right) projections of 3D data made with a Givens path (forest green) and a geodesic path (deep red). The cream points represent the space of all projections, which is a sphere for 1D projections and a torus for 2D projections. In the 1D example, geodesic arrives at the opposite side of the sphere to Givens, indicating that it has flipped the direction of the vector in order to make the shortest path to the same plane. A similar thing happens for the 2D example, geosesic flips the sign of one basis vector, but it defines the same plane, as indicated by the cream circles}{figure.caption.6}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Examining the behaviour of six cross-currency rates (ARS, EUR, KRW, AUD, JPY, MYR) prior to and in the first month of the pandemic. All the currencies are standardised and the sign is flipped. JPY and EUR strengthend against the USD (high values) in March, while the other currencies weakened (low values).}}{8}{figure.caption.7}\protected@file@percent }
+\newlabel{fig:currency}{{5}{8}{Examining the behaviour of six cross-currency rates (ARS, EUR, KRW, AUD, JPY, MYR) prior to and in the first month of the pandemic. All the currencies are standardised and the sign is flipped. JPY and EUR strengthend against the USD (high values) in March, while the other currencies weakened (low values)}{figure.caption.7}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Scatterplot matrix of the six principal components. Observations in March 2020 are highlighted in dark blue, all other months are shown in grey. There is a strong non-linear dependence between PC1 and PC2.}}{9}{figure.caption.8}\protected@file@percent }
+\newlabel{fig:pca-result-static}{{6}{9}{Scatterplot matrix of the six principal components. Observations in March 2020 are highlighted in dark blue, all other months are shown in grey. There is a strong non-linear dependence between PC1 and PC2}{figure.caption.8}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Final view after optimization in the guided tour using geodesic optimization (GEOO) (left), simulated annealing with geodesic interpolation (SAGEO) (middle) and simulated annealing with Givens interpolation (SAGIV) (right).}}{10}{figure.caption.9}\protected@file@percent }
+\newlabel{fig:rates-tour-static}{{7}{10}{Final view after optimization in the guided tour using geodesic optimization (GEOO) (left), simulated annealing with geodesic interpolation (SAGEO) (middle) and simulated annealing with Givens interpolation (SAGIV) (right)}{figure.caption.9}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {2.6}Conclusion}{10}{section.2.6}\protected@file@percent }
 \newlabel{conclusion}{{2.6}{10}{Conclusion}{section.2.6}{}}
-\@writefile{brf}{\backcite{buja_cook_asimov_hurley_2005}{{10}{2.6}{section.2.6}}}
-\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces Splines index value along the interpolated optimization path in the guided tour using geodesic optimization (top), simulated annealing with geodesic interpolation (middle) and simulated annealing with Givens interpolation (bottom)}}{11}{figure.caption.10}\protected@file@percent }
-\newlabel{fig:rates-ferrn}{{8}{11}{Splines index value along the interpolated optimization path in the guided tour using geodesic optimization (top), simulated annealing with geodesic interpolation (middle) and simulated annealing with Givens interpolation (bottom)}{figure.caption.10}{}}
-\bibcite{matrix_computation}{{6}{1989}{{Golub and Loan}}{{}}}
-\bibcite{Grimm2016}{{7}{2016}{{Grimm}}{{}}}
-\bibcite{kruskal_1969}{{8}{1969}{{Kruskal}}{{}}}
-\bibcite{pp}{{9}{2020}{{Laa and Cook}}{{}}}
-\bibcite{mmtour}{{10}{2023}{{Laa et~al.}}{{Laa, Aumann, Cook, and Valencia}}}
-\bibcite{tourrev}{{11}{2022}{{Lee et~al.}}{{Lee, Cook, da~Silva, Laa, Spyrison, Wang, and Zhang}}}
-\bibcite{geozoo}{{12}{2016}{{Schloerke}}{{}}}
-\bibcite{tourr}{{13}{2011}{{Wickham et~al.}}{{Wickham, Cook, Hofmann, and Buja}}}
-\bibcite{ferrn}{{14}{2021}{{Zhang et~al.}}{{Zhang, Cook, Laa, Langren{é}, and Men{é}ndez}}}
+\newlabel{references}{{2.6}{10}{}{section.2.6}{}}
+\@writefile{toc}{\contentsline {section}{References}{10}{section.2.6}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces Splines index value along the interpolated optimization path in the guided tour using geodesic optimization (GEOO) (top), simulated annealing with geodesic interpolation (SAGEO) (middle) and with Givens interpolation (SAGIV) (bottom). Points indicate index values at target planes selected during the optimization, and the horizontal line shows the maximum across the three searches. With GEOO no within-plane rotation is possible and although the optimization always heads towards higher index values it finishes at a different frame in the same plane, with a lower than possible index value. With SAGEO, a different frame in the same plane interferes with the optimization. This does not happen with SAGIV, allowing the search to find the optimal view.}}{11}{figure.caption.10}\protected@file@percent }
+\newlabel{fig:rates-ferrn}{{8}{11}{Splines index value along the interpolated optimization path in the guided tour using geodesic optimization (GEOO) (top), simulated annealing with geodesic interpolation (SAGEO) (middle) and with Givens interpolation (SAGIV) (bottom). Points indicate index values at target planes selected during the optimization, and the horizontal line shows the maximum across the three searches. With GEOO no within-plane rotation is possible and although the optimization always heads towards higher index values it finishes at a different frame in the same plane, with a lower than possible index value. With SAGEO, a different frame in the same plane interferes with the optimization. This does not happen with SAGIV, allowing the search to find the optimal view}{figure.caption.10}{}}
+\bibdata{woylier-article.bib}
 \ttl@finishall
 \gdef \@abspage@last{12}

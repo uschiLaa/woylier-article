@@ -649,28 +649,32 @@ rates_pca_sd <-  apply(rates_pca$x, 2, function(x) (x-mean(x))/sd(x))
 #> 
 
 
-## ----rates-tour-animated, echo=FALSE, out.width="33%", fig.align = "center", fig.show='hold', include=knitr::is_html_output(), eval=knitr::is_html_output(), fig.cap="optimization in the guided tour using geodesic optimization (left), simulated annealing with geodesic interpolation (middle) and simulated annealing with Givens interpolation (right). (Refresh page to re-start the animation.)", fig.alt="Three animated plots showing biplot axes. The left and the middle scatterplot end at little structure, and the last scatterplot ends at a strong non-linear relationship."----
+## ----rates-tour-animated, echo=FALSE, out.width="33%", fig.align = "center", fig.show='hold', include=knitr::is_html_output(), eval=knitr::is_html_output(), fig.cap="Optimization in the guided tour using geodesic optimization (GEOO) (left), simulated annealing with geodesic interpolation (SAGEO) (middle) and simulated annealing with Givens interpolation (SAGIV) (right). (Refresh page to re-start the animation.)", fig.alt="Three animated plots showing biplot axes. The left and the middle scatterplot end at little structure, and the last scatterplot ends at a strong non-linear relationship."----
 #> knitr::include_graphics(
 #>   c("figures/rates_tour_geodesic.gif",
 #>     "figures/rates_tour_better.gif",
 #>     "figures/rates_tour_givens.gif"))
 
 
-## ----rates-tour-static, out.width="30%", fig.align="center", echo = FALSE, fig.show='hold', include=knitr::is_latex_output(), eval=knitr::is_latex_output(), fig.cap="Final view after optimization in the guided tour using geodesic optimization (left), simulated annealing with geodesic interpolation (middle) and simulated annealing with Givens interpolation (right).", fig.alt="Three scatterplots with biplot axes. The left and the middle scatterplot have little structure, and the last scatterplot shows a strong non-linear relationship."----
+## ----rates-tour-static, out.width="30%", fig.align="center", echo = FALSE, fig.show='hold', include=knitr::is_latex_output(), eval=knitr::is_latex_output(), fig.cap="Final view after optimization in the guided tour using geodesic optimization  (GEOO) (left), simulated annealing with geodesic interpolation (SAGEO) (middle) and simulated annealing with Givens interpolation (SAGIV) (right).", fig.alt="Three scatterplots with biplot axes. The left and the middle scatterplot have little structure, and the last scatterplot shows a strong non-linear relationship, even better than provided by PCA."----
 knitr::include_graphics(c("figures/rates_tour_geodesic_final.png",
     "figures/rates_tour_better_final.png",
     "figures/rates_tour_givens_final.png"))
 
 
-## ----rates-ferrn, echo=FALSE, eval=TRUE, out.width="80%", fig.align='center', fig.width=8, fig.height=8, layout= "l-body", fig.cap="Splines index value along the interpolated optimization path in the guided tour using geodesic optimization (top), simulated annealing with geodesic interpolation (middle) and simulated annealing with Givens interpolation (bottom). Points indicate index values at target planes selected during the optimization, and we see that with geodesic interpolation these values can decrease, impeding the optimization. XXX", fig.alt="Three trace plots with points and connecting lines. Top plot is very smoothly increasing to maximum value, whereas the bottom two plots show up and down patterns."----
+## ----rates-ferrn, echo=FALSE, eval=TRUE, out.width="80%", fig.align='center', fig.width=8, fig.height=8, layout= "l-body", fig.cap="Splines index value along the interpolated optimization path in the guided tour using geodesic optimization (GEOO) (top), simulated annealing with geodesic interpolation  (SAGEO) (middle) and with Givens interpolation (SAGIV) (bottom). Points indicate index values at target planes selected during the optimization, and the horizontal line shows the maximum across the three searches. With GEOO no within-plane rotation is possible and although the optimization always heads towards higher index values it finishes at a different frame in the same plane, with a lower than possible index value. With SAGEO, a different frame in the same plane interferes with the optimization. This does not happen with SAGIV, allowing the search to find the optimal view.", fig.alt="Three trace plots with points and connecting lines. Top plot is very smoothly increasing to maximum value, whereas the bottom two plots show up and down patterns."----
 load("data/rates_tour_records.RData")
 library(ferrn)
+
+max_idx <- max(get_interp_last(record_search_givens)$index_val)
+
 p1 <- get_interp(record_search_geodesic) %>%
   ggplot(aes(id, index_val)) +
   geom_line() +
   geom_point(data = dplyr::bind_rows(get_start(record_search_geodesic),
                                      get_interp_last(record_search_geodesic))) +
   ylim(0,1) +
+  geom_hline(yintercept = max_idx, color = "sienna3") +
   xlab(NULL) +
   ylab(NULL) +
   theme_bw()
@@ -682,6 +686,7 @@ p2 <- get_interp(record_search_better) %>%
   geom_point(data = dplyr::bind_rows(get_start(record_search_better),
                                      get_interp_last(record_search_better))) +
   ylim(0,1)+
+  geom_hline(yintercept = max_idx, color = "sienna3") +
   xlab(NULL) +
   ylab("Index value") +
   theme_bw() 
@@ -693,6 +698,7 @@ p3 <- get_interp(record_search_givens) %>%
   geom_point(data = dplyr::bind_rows(get_start(record_search_givens),
                                      get_interp_last(record_search_givens))) +
   ylim(0,1)+
+  geom_hline(yintercept = max_idx, color = "sienna3") +
   xlab("Interpolation step") +
   ylab(NULL) +
   theme_bw() 
