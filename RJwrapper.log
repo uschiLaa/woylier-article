@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.9.22)  27 SEP 2023 14:54
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.9.22)  27 SEP 2023 15:00
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -820,22 +820,22 @@ File: woylier-article_files/figure-latex/pca-result-static-1.pdf Graphic file (t
 Package pdftex.def Info: woylier-article_files/figure-latex/pca-result-static-1.pdf  used on input line 261.
 (pdftex.def)             Requested size: 318.67207pt x 312.33478pt.
 [9 <./woylier-article_files/figure-latex/pca-result-static-1.pdf>]
-<figures/rates_tour_geodesic_final.png, id=167, 200.75pt x 200.75pt>
+<figures/rates_tour_geodesic_final.png, id=166, 200.75pt x 200.75pt>
 File: figures/rates_tour_geodesic_final.png Graphic file (type png)
 <use figures/rates_tour_geodesic_final.png>
 Package pdftex.def Info: figures/rates_tour_geodesic_final.png  used on input line 278.
 (pdftex.def)             Requested size: 119.50278pt x 119.5044pt.
-<figures/rates_tour_better_final.png, id=168, 200.75pt x 200.75pt>
+<figures/rates_tour_better_final.png, id=167, 200.75pt x 200.75pt>
 File: figures/rates_tour_better_final.png Graphic file (type png)
 <use figures/rates_tour_better_final.png>
 Package pdftex.def Info: figures/rates_tour_better_final.png  used on input line 278.
 (pdftex.def)             Requested size: 119.50278pt x 119.5044pt.
-<figures/rates_tour_givens_final.png, id=169, 200.75pt x 200.75pt>
+<figures/rates_tour_givens_final.png, id=168, 200.75pt x 200.75pt>
 File: figures/rates_tour_givens_final.png Graphic file (type png)
 <use figures/rates_tour_givens_final.png>
 Package pdftex.def Info: figures/rates_tour_givens_final.png  used on input line 278.
 (pdftex.def)             Requested size: 119.50278pt x 119.5044pt.
-<woylier-article_files/figure-latex/rates-ferrn-1.pdf, id=172, 572.1375pt x 569.12625pt>
+<woylier-article_files/figure-latex/rates-ferrn-1.pdf, id=171, 572.1375pt x 569.12625pt>
 File: woylier-article_files/figure-latex/rates-ferrn-1.pdf Graphic file (type pdf)
 <use woylier-article_files/figure-latex/rates-ferrn-1.pdf>
 Package pdftex.def Info: woylier-article_files/figure-latex/rates-ferrn-1.pdf  used on input line 295.
@@ -860,15 +860,15 @@ Package rerunfilecheck Info: File `RJwrapper.out' has not changed.
 (rerunfilecheck)             Checksum: ABBD7AE4BFDD43983082D98EDB644C5B;1590.
  ) 
 Here is how much of TeX's memory you used:
- 26778 strings out of 476894
- 488396 string characters out of 5808354
+ 26781 strings out of 476894
+ 488423 string characters out of 5808354
  1935791 words of memory out of 5000000
  47235 multiletter control sequences out of 15000+600000
- 607339 words of font info for 300 fonts, out of 8000000 for 9000
+ 607498 words of font info for 302 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  117i,12n,131p,1139b,764s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </Users/cookd/Library/TinyTeX/texmf-dist/fonts/type1/public/inconsolata/Inconsolata-zi4r.pfb></Users/cookd/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></Users/cookd/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></Users/cookd/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></Users/cookd/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></Users/cookd/Library/TinyTeX/texmf-dist/fonts/type1/public/mathpazo/fplmr.pfb></Users/cookd/Library/TinyTeX/texmf-dist/fonts/type1/public/mathpazo/fplmri.pfb></Users/cookd/Library/TinyTeX/texmf-dist/fonts/type1/urw/palatino/uplb8a.pfb></Users/cookd/Library/TinyTeX/texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb></Users/cookd/Library/TinyTeX/texmf-dist/fonts/type1/urw/palatino/uplri8a.pfb>
-Output written on RJwrapper.pdf (12 pages, 920224 bytes).
+Output written on RJwrapper.pdf (12 pages, 920326 bytes).
 PDF statistics:
  302 PDF objects out of 1000 (max. 8388607)
  237 compressed objects within 3 object streams
