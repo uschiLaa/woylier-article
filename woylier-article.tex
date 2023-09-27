@@ -140,7 +140,7 @@ At each rotation, the angle \(\theta_i\) that zero out the next coordinate of a 
 Here \(G(i,j,\theta_k)\) denotes a Givens rotation in components \(i\) and \(j\) by angle \(\theta_k\).
 In the same way we zero out the elements \(a_{31}\) and \(a_{41}\). Because of the orthonormality this means that now \(a_{11} = 1\) and that \(a_{12} = 0\). We thus need only two more rotations to zero out \(a_{32}\) and \(a_{42}\).
 
-XXX something about how we calculate theta?
+Each \(\theta_i\) is an angle in 2D, and is computed from the polar coordinates returned by the \texttt{atan2()} function.
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
@@ -267,9 +267,9 @@ We may expect that we can capture the dependence between the two groups using pr
 
 \textbf{Guided tour optimization}
 
-We now use the splines index to further explore functional dependence beyond what is observed from PCA. Note here that because of strong linear correlations between the currencies, we start from the first four PCs, explaining over 97\% of the variance in the data. And to make the challenge of finding functional dependence harder we start from a projection onto the third and forth PCs. We hope to find a stronger functional dependence than uncovered by PCA. The \texttt{display\_pca()} function in \texttt{tourr} is used to show the original variables, that correspond to the 2D projection of the first four PCs, so that interpretation can be made with respect to the cross-currencies.
+We now use the splines index to further explore functional dependence beyond what is observed from PCA. Note here that because of strong linear correlations between the currencies, we start from the first four PCs, explaining over 97\% of the variance in the data. And to make the challenge of finding functional dependence harder we start from a projection onto the third and forth PCs. We hope to find a stronger functional dependence than uncovered by PCA. The \texttt{display\_pca()} function in \CRANpkg{tourr} is used to show the original variables, that correspond to the 2D projection of the first four PCs, so that interpretation can be made with respect to the cross-currencies.
 
-There are several options for optimization in the \texttt{tourr} package. Geodesic optimization (GEOO) (provided by the \texttt{search\_geodesic()} function) is a derivative-free method, approximating a stochastic optimization algorithm. From any starting plane a random search in the near neighborhood delivers the most promising direction to follow. The tour using geodesic interpolation follows this direction until the index value decreases, and then a new direction search is conducted. It guarantees that the index value always increases, but it can be slow, and it can get trapped at local maxima. Typically the best method is the simulated annealing (provided by the \texttt{search\_better()} function) performs a random search of a large neighborhood, and then cools down the neighborhood size as the optimization progresses. We have used this approach inserting geodesic (SAGEO) and Givens interpolation (SAGIV) to move between targets.
+There are several options for optimization in the \CRANpkg{tourr} package. Geodesic optimization (GEOO) (provided by the \texttt{search\_geodesic()} function) is a derivative-free method, approximating a stochastic optimization algorithm. From any starting plane a random search in the near neighborhood delivers the most promising direction to follow. The tour using geodesic interpolation follows this direction until the index value decreases, and then a new direction search is conducted. It guarantees that the index value always increases, but it can be slow, and it can get trapped at local maxima. Typically the best method is the simulated annealing (provided by the \texttt{search\_better()} function) performs a random search of a large neighborhood, and then cools down the neighborhood size as the optimization progresses. We have used this approach inserting geodesic (SAGEO) and Givens interpolation (SAGIV) to move between targets.
 
 The results are shown in Figure \ref{fig:rates-tour-static} and we see on the right that the guided tour with SAGIV has identified a non-linear functional dependence between the x and y axis in the final projection. The result on the left is using GEOO, and the result in the middle is uses SAGEO. Since these methods do not allow for within-plane rotation they were not able to identify the same and best functional relationship even though they are using the same starting plane and index function.
 
@@ -302,11 +302,15 @@ Finally, in the bottom row we see the result of the random search with Givens in
 \hypertarget{conclusion}{%
 \section{Conclusion}\label{conclusion}}
 
-The R package \CRANpkg{woylier} provides implementation of Givens interpolation path algorithm that can be used as an alternative interpolation method for tour. The algorithm implemented in the \CRANpkg{woylier} package comes from Buja et al. (2005). We illustrate the use of the functions provided in the package for R users.
+This paper describes the R package \CRANpkg{woylier} which provides implementation of Givens interpolation path algorithm that can be used as an alternative interpolation method for tour. The algorithm implemented in the \CRANpkg{woylier} package is as described in Buja et al. (2005).
 
-The motivation to develop this package comes from rotational invariance problem of current geodesic interpolation algorithm implemented in \CRANpkg{tourr} package. The package gives users the ability to detect non-linear association between variables more precisely.
+A prior implementation using C was available in the XGobi software (Swayne, Cook, and Buja 1998). This new implementation was undertaken at the request of an \CRANpkg{tourr} package user.
 
-It is important to mention that \CRANpkg{woylier} package should be used in conjunction with the \CRANpkg{tourr} package. The future improvements that needs to be done in the package is to generalize the interpolation for more than 2D projections of data.
+It is important to mention that \CRANpkg{woylier} package should be used in conjunction with the \CRANpkg{tourr} package. Currently, it is implemented for tours into 1D or 2D. A potential future development would be to generalize the interpolation for more than 2D projections of data, which could not be done here because it requires new mathematical derivations.
+
+For most purposes geodesic interpolation is desirable. The motivation for frame to frame interpolation arises from a rotational invariance problem of the current geodesic interpolation algorithm implemented in \CRANpkg{tourr} package. Frame to frame interpolation provides users with the tools to move to a specified frame, not the plane it defines.
+
+Our application shows the Givens interpolation used with a projection pursuit index which is not rotationally invariant, but ideal for detecting bivariate non-linear association in high-dimensional data. The potential applications where this might be useful are many and varied, possibly facial recognition algorithms and morphing between images, or imputing missing time steps in high-dimensional time series.
 
 \hypertarget{references}{%
 \section*{References}\label{references}}
@@ -349,6 +353,9 @@ Lee, Stuart, Dianne Cook, Natalia da Silva, Ursula Laa, Nicholas Spyrison, Earo 
 
 \leavevmode\vadjust pre{\hypertarget{ref-geozoo}{}}%
 Schloerke, Barret. 2016. \emph{Geozoo: Zoo of Geometric Objects}. \url{https://CRAN.R-project.org/package=geozoo}.
+
+\leavevmode\vadjust pre{\hypertarget{ref-xgobi}{}}%
+Swayne, Deborah F., Dianne Cook, and Andreas Buja. 1998. {``XGobi: Interactive Dynamic Data Visualization in the x Window System.''} \emph{Journal of Computational and Graphical Statistics} 7 (1): 113--30. \url{https://doi.org/10.1080/10618600.1998.10474764}.
 
 \leavevmode\vadjust pre{\hypertarget{ref-tourr}{}}%
 Wickham, Hadley, Dianne Cook, Heike Hofmann, and Andreas Buja. 2011. {``{tourr}: An {R} Package for Exploring Multivariate Data with Projections.''} \emph{Journal of Statistical Software} 40 (2): 1--18. \url{https://doi.org/10.18637/jss.v040.i02}.
