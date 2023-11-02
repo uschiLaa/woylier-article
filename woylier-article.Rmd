@@ -154,8 +154,8 @@ XXX I like the dog sketch but currently seems not really needed - what would be 
 
 ```{r dogs, echo=FALSE, out.width="45%", fig.align = "center", fig.show='hold', fig.cap="Plane to plane interpolation (left) and Frame to frame interpolation (right). We used dog index for illustration purposes. For some non-linear index orientation of data could affect the index."}
 knitr::include_graphics(
-  c("figures/plane.png",
-    "figures/frame.png"))
+  c("figures/plane_new.png",
+    "figures/frame_new.png"))
 ```
 
 To describe the interpolation algorithms we will use the following notation. 
