@@ -44,15 +44,13 @@ The topic of this article is the construction of the paths of projections. The i
 
 The \CRANpkg{tourr} package implements geodesic interpolation between planes, and the final interpolation step will reach the rotation of the target frame, avoiding any within-plane spin along the path. When the the orientation of projections matters interpolation between frames is required. The orientation of the frames could be important when a non-linear projection pursuit index function is used in the guided tour. This is illustrated by the different index values shown in the sketch in Figure \ref{fig:dogs}, as well as the splines index for the sine curve in Figure \ref{fig:splines2d-static}.
 
-XXX I like the dog sketch but currently seems not really needed - what would be nice would be showing a bit more here: starting plane is the dog looking in a different direction and also at an angle, the target is the one aligned as currently seen in the front, the geodesic path gets us to the target view at the angle as seen in the starting plane, givens path gives the exact target. Not sure how difficult it would be to make this though\ldots{}
-
 \begin{figure}
 
-{\centering \includegraphics[width=0.45\linewidth]{figures/plane} \includegraphics[width=0.45\linewidth]{figures/frame} 
+{\centering \includegraphics[width=1\linewidth]{figures/dog_index} 
 
 }
 
-\caption{Plane to plane interpolation (left) and Frame to frame interpolation (right). We used dog index for illustration purposes. For some non-linear index orientation of data could affect the index.}\label{fig:dogs}
+\caption{Plane to plane interpolation (left) and frame to frame interpolation (right). We used dog index for illustration purposes. Orientation of the data could affect the index value.}\label{fig:dogs}
 \end{figure}
 
 To describe the interpolation algorithms we will use the following notation.
