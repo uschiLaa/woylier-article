@@ -85,7 +85,7 @@ p3 <- ggplot(mat_rot2, aes(x=x, y=y)) +
 p1+p2+p3
 
 
-## ----dogs, echo=FALSE, out.width="100%", fig.align = "center", fig.show='hold', fig.cap="Plane to plane interpolation (left) and frame to frame interpolation (right). We used dog index for illustration purposes. Orientation of the data could affect the index value."----
+## ----dogs, echo=FALSE, out.width="100%", fig.align = "center", fig.show='hold', fig.cap="Plane to plane interpolation (left) and frame to frame interpolation (right). We use the dog index for illustration purposes. Orientation of the data within the plane could affect the index value. Frame to frame interpolation guarantees reaching a particular frame of the many defining a plane."----
 knitr::include_graphics(
   "figures/dog_index.png")
 
