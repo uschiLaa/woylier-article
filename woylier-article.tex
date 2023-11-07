@@ -19,7 +19,7 @@ The guided tour combines projection pursuit with the grand tour and it is implem
 
 A tour path is a sequence of projections and we use an interpolation to produce small steps simulating a smooth movement. The current implementation of tour in the \CRANpkg{tourr} package uses geodesic interpolation between planes. The geodesic interpolation path is the shortest path between planes with no within-plane spin (see Buja et al. (2004) for more details). As a result, the rendered target plane could be a within-plane rotation of the target plane originally specified. This is not a problem when the structure we are looking for can be identified from any rotation. However, even simple associations in 2D, such as the calculated correlation between variables, can be very different when the basis is rotated.
 
-Most projection pursuit indexes, particularly those provided by in \CRANpkg{tourr} are rotationally invariant. However, there are some applications where the orientation of frames does matter. One example is the splines index proposed by Grimm (2016). The splines index computes a spline model for the two variables in a projection, in order to measure non-linear association. It compares the variance of the response variable to the variance of residuals, and the functional dependence is stronger when the index value is larger. It can be useful to detect non-linear relationships in high-dimensional data. However, its value will change substantially if the projection is rotated within the plane (Laa and Cook 2020). The procedure in Grimm (2016) was less affected by the orientation because it considered only pairs of variables, and it selected the maximum value found when exchanging which variable is considered as a predictor or response variable.
+Most projection pursuit indexes, particularly those provided by in \CRANpkg{tourr} are rotationally invariant. However, there are some applications where the orientation of frames does matter. One example is the splines index proposed by Grimm (2016). The splines index computes a spline model for the two variables in a projection (using the implementation in \CRANpkg{mgcv} (Wood 2011)), in order to measure non-linear association. It compares the variance of the response variable to the variance of residuals, and the functional dependence is stronger when the index value is larger. It can be useful to detect non-linear relationships in high-dimensional data. However, its value will change substantially if the projection is rotated within the plane (Laa and Cook 2020). The procedure in Grimm (2016) was less affected by the orientation because it considered only pairs of variables, and it selected the maximum value found when exchanging which variable is considered as a predictor or response variable.
 
 Figure \ref{fig:splines2d-static} illustrates the rotational invariance problem for a modified splines index, where we always consider the horizontal direction as the predictor variable and the vertical direction as the response. Thus, our modified index computes the splines on one orientation, exaggerating the rotational variability. The example data was simulated to follow a sine curve and the modified splines index is calculated on different within-plane rotations of the data. Although they have the same structure, the index values vary greatly.
 
@@ -310,12 +310,21 @@ For most purposes geodesic interpolation is desirable. The motivation for frame-
 
 Our application shows the Givens interpolation used with a projection pursuit index which is not rotationally invariant, but ideal for detecting bivariate non-linear association in high-dimensional data. The potential applications where this might be useful are many and varied, possibly facial recognition algorithms and morphing between images, or imputing missing time steps in high-dimensional time series.
 
+\hypertarget{acknowledgements}{%
+\section*{Acknowledgements}\label{acknowledgements}}
+\addcontentsline{toc}{section}{Acknowledgements}
+
+We thank Saurabh Jhanjee for his contributions at the start of the project. This article is created using \CRANpkg{knitr} (Xie 2022) and \CRANpkg{rmarkdown} (Allaire et al. 2022) in R. For graphs we have used \CRANpkg{ggplot2} (Wickham 2016), \CRANpkg{cowplot} (Wilke 2020) and \CRANpkg{GGally} (Schloerke et al. 2021), for tables we have used \CRANpkg{kableExtra} (Zhu 2021). The source code for reproducing this paper can be found at: \url{https://github.com/uschiLaa/woylier-article}.
+
 \hypertarget{references}{%
 \section*{References}\label{references}}
 \addcontentsline{toc}{section}{References}
 
 \hypertarget{refs}{}
 \begin{CSLReferences}{1}{0}
+\leavevmode\vadjust pre{\hypertarget{ref-rmarkdown}{}}%
+Allaire, JJ, Yihui Xie, Jonathan McPherson, Javier Luraschi, Kevin Ushey, Aron Atkins, Hadley Wickham, Joe Cheng, Winston Chang, and Richard Iannone. 2022. \emph{Rmarkdown: Dynamic Documents for r}. \url{https://github.com/rstudio/rmarkdown}.
+
 \leavevmode\vadjust pre{\hypertarget{ref-asimov_1985}{}}%
 Asimov, D. 1985. {``The Grand Tour: A Tool for Viewing Multidimensional Data.''} \emph{SIAM J Sci Stat Comput 6(1)}, 128--43.
 
@@ -323,7 +332,7 @@ Asimov, D. 1985. {``The Grand Tour: A Tool for Viewing Multidimensional Data.''}
 Buja, Andreas, Dianne Cook, Daniel Asimov, and Catherine Hurley. 2005. {``Computational Methods for High-Dimensional Rotations in Data Visualization.''} \emph{Handbook of Statistics}, 391--413. \url{https://doi.org/10.1016/s0169-7161(04)24014-7}.
 
 \leavevmode\vadjust pre{\hypertarget{ref-Buja2004TheoryOD}{}}%
-Buja, Andreas, Dianne Cook, Daniel Asimov, and Catherine B. Hurley. 2004. {``Theory of Dynamic Projections in High-Dimensional Data Visualization.''} In.
+Buja, Andreas, Dianne Cook, Daniel Asimov, and Catherine B. Hurley. 2004. {``Theory of Dynamic Projections in High-Dimensional Data Visualization.''} In. \url{http://stat.wharton.upenn.edu/~buja/PAPERS/paper-dyn-proj-math.pdf}.
 
 \leavevmode\vadjust pre{\hypertarget{ref-cook_manual_1997}{}}%
 Cook, Dianne, and Andreas Buja. 1997. {``Manual Controls for High-Dimensional Data Projections.''} \emph{Journal of Computational and Graphical Statistics} 6 (4): 464--80. \url{https://doi.org/10.2307/1390747}.
@@ -352,14 +361,32 @@ Lee, Stuart, Dianne Cook, Natalia da Silva, Ursula Laa, Nicholas Spyrison, Earo 
 \leavevmode\vadjust pre{\hypertarget{ref-geozoo}{}}%
 Schloerke, Barret. 2016. \emph{Geozoo: Zoo of Geometric Objects}. \url{https://CRAN.R-project.org/package=geozoo}.
 
+\leavevmode\vadjust pre{\hypertarget{ref-ggally}{}}%
+Schloerke, Barret, Di Cook, Joseph Larmarange, Francois Briatte, Moritz Marbach, Edwin Thoen, Amos Elberg, and Jason Crowley. 2021. \emph{GGally: Extension to 'Ggplot2'}. \url{https://CRAN.R-project.org/package=GGally}.
+
 \leavevmode\vadjust pre{\hypertarget{ref-xgobi}{}}%
 Swayne, Deborah F., Dianne Cook, and Andreas Buja. 1998. {``XGobi: Interactive Dynamic Data Visualization in the x Window System.''} \emph{Journal of Computational and Graphical Statistics} 7 (1): 113--30. \url{https://doi.org/10.1080/10618600.1998.10474764}.
+
+\leavevmode\vadjust pre{\hypertarget{ref-ggplot2}{}}%
+Wickham, Hadley. 2016. \emph{Ggplot2: Elegant Graphics for Data Analysis}. Springer-Verlag New York. \url{https://ggplot2.tidyverse.org}.
 
 \leavevmode\vadjust pre{\hypertarget{ref-tourr}{}}%
 Wickham, Hadley, Dianne Cook, Heike Hofmann, and Andreas Buja. 2011. {``{tourr}: An {R} Package for Exploring Multivariate Data with Projections.''} \emph{Journal of Statistical Software} 40 (2): 1--18. \url{https://doi.org/10.18637/jss.v040.i02}.
 
+\leavevmode\vadjust pre{\hypertarget{ref-cowplot}{}}%
+Wilke, Claus O. 2020. \emph{Cowplot: Streamlined Plot Theme and Plot Annotations for 'Ggplot2'}. \url{https://CRAN.R-project.org/package=cowplot}.
+
+\leavevmode\vadjust pre{\hypertarget{ref-mgcv-gam}{}}%
+Wood, S. N. 2011. {``Fast Stable Restricted Maximum Likelihood and Marginal Likelihood Estimation of Semiparametric Generalized Linear Models.''} \emph{Journal of the Royal Statistical Society (B)} 73 (1): 3--36.
+
+\leavevmode\vadjust pre{\hypertarget{ref-knitr}{}}%
+Xie, Yihui. 2022. \emph{Knitr: A General-Purpose Package for Dynamic Report Generation in r}. \url{https://yihui.org/knitr/}.
+
 \leavevmode\vadjust pre{\hypertarget{ref-ferrn}{}}%
 Zhang, H. Sherry, Dianne Cook, Ursula Laa, Nicolas Langrené, and Patricia Menéndez. 2021. {``Visual Diagnostics for Constrained Optimisation with Application to Guided Tours.''} \emph{The R Journal} 13 (2): 624--41. \url{https://doi.org/10.32614/RJ-2021-105}.
+
+\leavevmode\vadjust pre{\hypertarget{ref-kableextra}{}}%
+Zhu, Hao. 2021. \emph{kableExtra: Construct Complex Table with 'Kable' and Pipe Syntax}. \url{https://CRAN.R-project.org/package=kableExtra}.
 
 \end{CSLReferences}
 
