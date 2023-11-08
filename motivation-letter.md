@@ -10,14 +10,15 @@ Editor
 The R Journal  
 \bigskip
 
-Dear Professor Cook,
+Dear Professor Urbanek,
 \bigskip
 
-Please consider our article titled "ToOoOlTiPs: An R Package for Customizable Tooltips in Interactive Graphics" for publication in the R Journal.
+Please consider our article titled "Frame to frame interpolation for high-dimensional data visualisation using the woylier package" for publication in the R Journal.
 
-The manuscript introduces the new package called `ToOoOlTiPs` which provides examples on how to use interactive graphics in journal articles, and general tips for making an interesting contribution.
+The manuscript introduces the new package called `Woylier` which implements tour interpolation paths between frames using Givens rotations. This offers an alternative approach to the geodesic interpolation between planes featured in the tourr package. Since it provides a way to reach a given target frame, the frame-to-frame interpolation can be useful for projection pursuit guided tours where the index is not rotationally invariant. 
 
-We believe the readers of the R Journal will find this article helpful for their work because it provides generally useful instructions that will work for many purposes. 
+We believe the readers of the R Journal will find this article helpful because the frame-to-frame interpolation can be applied across various use cases, particularly in cases where the objective is to detect bivariate non-linear association in high-dimensional data.
+
 
 \bigskip
 \bigskip
@@ -25,17 +26,22 @@ We believe the readers of the R Journal will find this article helpful for their
 Regards,
     
     
-    
-    
-Quietest Quokka  
-Department of Letter Q  
-University of Little Mates  
-Somewhere, Australia  
-qquo@ulm.edu
+Zoljargal Batsaikhan
+Department of Econometrics and Business Statistics
+University of Monash
+Clayton, VIC, Australia
+zoljargal11@gmail.com
+
+Di Cook
+Department of Econometrics and Business Statistics
+University of Monash
+Clayton, VIC, Australia
+dicook@monash.edu
+
+Ursula Laa
+Institute of Statistics
+University of Natural Resources and Life Sciences Vienna
+Vienna, Austria
+ursula.laa@boku.ac.at
 
 \bigskip
-
-NOTES: Modify this file with information about your article. 
-
-1. It may be invisible to you, so be aware that after each address line there are two spaces, this makes the line break correctly.
-2. It is also reasonable to submit an .md format of your motivating letter instead of a pdf. 
