@@ -32,7 +32,7 @@ University of Monash
 Clayton, VIC, Australia
 zoljargal11@gmail.com
 
-Di Cook
+Dianne Cook
 Department of Econometrics and Business Statistics
 University of Monash
 Clayton, VIC, Australia
