@@ -3,13 +3,11 @@ title: "Frame to frame interpolation for high-dimensional data visualisation usi
 date: "`r Sys.Date()`"
 abstract: >
   The woylier package implements tour interpolation paths between frames using Givens rotations. This provides an alternative to the geodesic interpolation between planes currently available in the tourr package. Tours are used to visualise high-dimensional data and models, to detect clustering, anomalies and non-linear relationships. Frame-to-frame interpolation can be useful for projection pursuit guided tours when the index is not rotationally invariant. It also provides a way to specifically reach a given target frame. We demonstrate the method for exploring non-linear relationships between currency cross-rates.
-author:  
+authors:  
   # see ?rjournal_article for more information
   - name: Zoljargal Batsaikhan
     affiliation: Monash University
-    address:
-    - Department of Econometrics and Business Statistics
-    - Clayton, VIC, Australia
+    department: Department of Econometrics and Business Statistics
     url: https://github.com/zolabat
     orcid: 0009-0005-0055-1448
     email:  zoljargal11@gmail.com
@@ -18,19 +16,15 @@ author:
     email: dicook@monash.edu
     orcid: 0000-0002-3813-7155
     affiliation: Monash University
-    address:
-    - Department of Econometrics and Business Statistics
-    - Clayton, VIC, Australia
+    department: Department of Econometrics and Business Statistics
   - name: Ursula Laa
     url: https://uschilaa.github.io
     email: ursula.laa@boku.ac.at
     orcid: 0000-0002-0249-6439
     affiliation: University of Natural Resources and Life Sciences Vienna
-    address:
-    - Institute of Statistics
-    - Vienna, Austria
+    department: Institute of Statistics
 type: package
-output: pdf_document
+output: rticles::arxiv_article
 bibliography: woylier-article.bib
 ---
 
@@ -64,7 +58,7 @@ A tour path is a sequence of projections and we use an interpolation to produce 
 Most projection pursuit indexes, particularly those provided by in \CRANpkg{tourr} are rotationally invariant. However, there are some applications where the orientation of frames does matter. One example is the splines index proposed by @Grimm2016. The splines index computes a spline model for the two variables in a projection (using the implementation in \CRANpkg{mgcv} [@mgcv-gam]), in order to measure non-linear association. It compares the variance of the response variable to the variance of residuals, and the functional dependence is stronger when the index value is larger. It can be useful to detect non-linear relationships in high-dimensional data. However, its value will change substantially if the projection is rotated within the plane [@pp]. The procedure in @Grimm2016 was less affected by the orientation because it considered only pairs of variables, and it selected the maximum value found when exchanging which variable is considered as a predictor or response variable.
 
 
-Figure `r knitr::asis_output(ifelse(knitr::is_html_output(), '\\@ref(fig:splines2d-static)', '\\@ref(fig:splines2d-static)'))` illustrates the rotational invariance problem for a modified splines index, where we always consider the horizontal direction as the predictor variable and the vertical direction as the response. Thus, our modified index computes the splines on one orientation, exaggerating the rotational variability. The example data was simulated to follow a sine curve and the modified splines index is calculated on different within-plane rotations of the data. Although they have the same structure, the index values vary greatly. 
+Figure \ref{fig:splines2d-static} illustrates the rotational invariance problem for a modified splines index, where we always consider the horizontal direction as the predictor variable and the vertical direction as the response. Thus, our modified index computes the splines on one orientation, exaggerating the rotational variability. The example data was simulated to follow a sine curve and the modified splines index is calculated on different within-plane rotations of the data. Although they have the same structure, the index values vary greatly. 
 
 The lack of rotation invariance of the splines index raises complications in the optimization process in the projection-pursuit guided tour as available in \CRANpkg{tourr}. Fixing this is the motivation of this work. The goal with the frame-to-frame interpolation is that optimization would find the best within-plane rotation, and thus appropriately optimize the index. 
 
@@ -145,7 +139,7 @@ The topic of this article is the construction of the paths of projections. The i
 
 **Interpolating paths of planes versus paths of frames**
 
-The \CRANpkg{tourr} package implements geodesic interpolation between planes, and the final interpolation step will reach the rotation of the target frame, avoiding any within-plane spin along the path. When the the orientation of projections matters interpolation between frames is required. The orientation of the frames could be important when a non-linear projection pursuit index function is used in the guided tour. This is illustrated by the different index values shown in the sketch in Figure \@ref(fig:dogs), as well as the splines index for the sine curve in Figure \@ref(fig:splines2d-static). 
+The \CRANpkg{tourr} package implements geodesic interpolation between planes, and the final interpolation step will reach the rotation of the target frame, avoiding any within-plane spin along the path. When the the orientation of projections matters interpolation between frames is required. The orientation of the frames could be important when a non-linear projection pursuit index function is used in the guided tour. This is illustrated by the different index values shown in the sketch in Figure \ref{fig:dogs}, as well as the splines index for the sine curve in Figure \ref{fig:splines2d-static}. 
 
 ```{r dogs, echo=FALSE, out.width="100%", fig.align = "center", fig.show='hold', fig.cap="Plane to plane interpolation (left) and frame to frame interpolation (right). We use the dog index for illustration purposes. Orientation of the data within the plane could affect the index value. Frame to frame interpolation guarantees reaching a particular frame of the many defining a plane."}
 knitr::include_graphics(
@@ -238,7 +232,7 @@ At each time $t$ we can project the data using the frame $F_t$.
 
 # Implementation
 
-We implemented each of the steps in the Givens interpolation path algorithm in separate functions and combined them into a single function `givens_full_path()` to produce the full set of $F_t$. The same functions are used to integrate the Givens interpolation with the `animate()` functions of the \CRANpkg{tourr} package. Table \@ref(tab:`r ifelse(knitr::is_html_output(), 'fns-html','fns-pdf')`) lists the input and output of each function and its descriptions, functions to use with `animate()` are described separately below.
+We implemented each of the steps in the Givens interpolation path algorithm in separate functions and combined them into a single function `givens_full_path()` to produce the full set of $F_t$. The same functions are used to integrate the Givens interpolation with the `animate()` functions of the \CRANpkg{tourr} package. Table \ref{tab:fns-pd} lists the input and output of each function and its descriptions, functions to use with `animate()` are described separately below.
 
 ```{r}
 tbl <- tibble(name = c("`givens_full_path(Fa, Fz, nsteps)`",
@@ -342,7 +336,7 @@ base2 <- tourr::basis_random(p, d=2)
 givens_full_path(base1, base2, nsteps = 5)
 ```
 
-To compare the path generated with the Givens interpolation to that found with geodesic interpolations we look at the rotation of the sine data shown in Figure `r knitr::asis_output(ifelse(knitr::is_html_output(), '\\@ref(fig:splines2d-static)', '\\@ref(fig:splines2d-static)'))`. We consider a subset in $p=4$ dimensions where the first two dimensions contain noise and the last two contain the sine curve. Starting from a random projection we want to interpolate towards the original sine curve. The path comparison is shown in  Figure `r knitr::asis_output(ifelse(knitr::is_html_output(), '\\@ref(fig:compare-paths)', '\\@ref(fig:compare-paths)'))`.
+To compare the path generated with the Givens interpolation to that found with geodesic interpolations we look at the rotation of the sine data shown in Figure \ref{fig:splines2d-static}. We consider a subset in $p=4$ dimensions where the first two dimensions contain noise and the last two contain the sine curve. Starting from a random projection we want to interpolate towards the original sine curve. The path comparison is shown in  Figure \ref{fig:compare-paths}.
 
 
 ```{r compare-paths, echo=FALSE, eval=TRUE, out.width="80%", fig.width=6, fig.height=10, fig.align="center", fig.cap="Comparison of Givens path and geodesic path between 2D projections. The Givens path preserves the frame ending at the provided basis (frame), while geodesic is agnostic to the particular basis. In general the geodesic is preferred because it removes within-plane spin, but occasionally it is helpful to very specifically arrive at the prescribed basis.", fig.alt="Four columns and five rows: first column projection coefficients from the Givens path; second column has scatterplots showing the corresponding projected data; third column projection coefficients from the geodesic path; fourth column has scatterplots showing the  corresponding projected data. First row is the same starting projection, subsequent rows are the steps for each path. Final row is the ending projection, which can be seen that both are the same plane, but the Givens goes to the specified frame showing the sine curve, and geodesic goes to a rotated view of the sine curve."}
@@ -354,7 +348,7 @@ knitr::include_graphics("figures/compare-paths.png")
 
 For further comparison and to check that the interpolation is moving in equally sized steps we directly plot the interpolated paths. The space of 1D projections defines a unit sphere, while 2D projections define a torus. To illustrate the space, points on the surface of the sphere and the torus shape are randomly generated by functions from the \CRANpkg{geozoo} package [@geozoo]. The interpolated paths are then compared within that space.
 
-A 1D projection of data in $p$ dimensions corresponds to a linear combination where the weights are normalized. Therefore, we can plot the point on the surface of a hypersphere. In this case the Givens interpolation will reach the exact point, while geodesic interpolation might flip the direction and reach a point on the opposite side of the hypersphere. Figure `r knitr::asis_output(ifelse(knitr::is_html_output(), '\\@ref(fig:1d-path-dynamic)', '\\@ref(fig:1d-path-static)'))` (left) shows the comparison of the interpolation steps using the same target plane, for an example with $p=3$. Because the flipped target is close to the starting plane, the geodesic path is a lot shorter.
+A 1D projection of data in $p$ dimensions corresponds to a linear combination where the weights are normalized. Therefore, we can plot the point on the surface of a hypersphere. In this case the Givens interpolation will reach the exact point, while geodesic interpolation might flip the direction and reach a point on the opposite side of the hypersphere. Figure \ref{fig:1d-path-static} (left) shows the comparison of the interpolation steps using the same target plane, for an example with $p=3$. Because the flipped target is close to the starting plane, the geodesic path is a lot shorter.
 
 ```{r echo = FALSE, eval=FALSE}
 set.seed(315)
@@ -433,7 +427,7 @@ knitr::include_graphics(c("figures/sphere_static.png", "figures/torus_static.png
 ```
 
 
-In the case of 2D projections, we can plot the interpolated path between 2 frames on a torus. A torus can be seen as a crossing of 2 circles that are orthonormal, as is the case with our projection onto 2D. Figure `r knitr::asis_output(ifelse(knitr::is_html_output(), '\\@ref(fig:1d-path-dynamic)', '\\@ref(fig:1d-path-static)'))` (right) compares the interpolation paths for $p=3$.
+In the case of 2D projections, we can plot the interpolated path between 2 frames on a torus. A torus can be seen as a crossing of 2 circles that are orthonormal, as is the case with our projection onto 2D. Figure \ref{fig:1d-path-static} (right) compares the interpolation paths for $p=3$.
 
 For a 2D projection, the same target plane is found when rotating the basis within the plane, or when reflecting across one of the two directions (the reflected basis can then also be rotated). This means the space of target bases is constrained to two circles on the torus, and these are disconnected because the reflection corresponds to a jump. In the high-dimensional space, we can imagine the reflection as flipping over the target plane, resulting in a reflection of the normal vector on the plan.
 While the Givens interpolation will reach the exact basis, a geodesic interpolation towards the same target plane can land anywhere along those two circles, depending on the starting basis in the interpolation.
@@ -717,7 +711,7 @@ anim_save("figures/sine_anim_geodesic.gif")
 
 This section describes the application of the Givens interpolation path with a guided tour to explore non-linear association in multivariate data. We use cross-rates for currencies relative to the US dollar. A cross-rate is an exchange rate between two currencies computed by reference to a third currency, usually the US dollar. A strong non-linear functional relationship would indicate that underlying the collection of cross-currency rates is a single latent factor explaining all the movement in that time period.
 
-The data was extracted from [open exchange rates](https://openexchangerates.org) and contains cross-rate for ARS, AUD, EUR, JPY, KRW, MYR between 2019-11-1 to 2020-03-31. Figure `r knitr::asis_output(ifelse(knitr::is_html_output(), '\\@ref(fig:currency)', '\\@ref(fig:currency)'))` shows how the currencies changed relative to USD over the time period. We see some collective behavior in March of 2020 with EUR and JPY increasing in a similar manner, and smaller currencies decreasing in value. This could be understood as a consequence of flight-to-quality at these uncertain times.  
+The data was extracted from [open exchange rates](https://openexchangerates.org) and contains cross-rate for ARS, AUD, EUR, JPY, KRW, MYR between 2019-11-1 to 2020-03-31. Figure \ref{fig:currency} shows how the currencies changed relative to USD over the time period. We see some collective behavior in March of 2020 with EUR and JPY increasing in a similar manner, and smaller currencies decreasing in value. This could be understood as a consequence of flight-to-quality at these uncertain times.  
 
 ```{r currency, out.width="100%", fig.width = 9, fig.height = 4.5, layout = "l-body", fig.cap="Examining the behaviour of six cross-currency rates (ARS, EUR, KRW, AUD, JPY, MYR) prior to and in the first month of the pandemic. All the currencies are standardised and the sign is flipped. JPY and EUR strengthened against the USD (high values) in March, while the other currencies weakened (low values).", fig.alt="Six time series plots all very similar until March 2020 when JPY and EUR go up. All currencies go down in mid-March and JPY and EUR increase again at the end of March."}
 rates <- read_csv("data/rates_Nov19_Mar20.csv", show_col_types = FALSE) %>% 
@@ -741,7 +735,7 @@ rate_march <- lubridate::month(rates$date)==3
 We are interested in capturing this relation over time, and from the time series visualization we expect that we can capture the main dynamics in a two-dimensional projection from the six-dimensional space of currencies. Thus we start from $p=6$ (the different currencies) and $n=152$ the number of days in our sample. We expect that a projection onto $d=2$ dimensions should capture the relation between the two groups of currencies mentioned above, and this should be identified within the noise of the random fluctuations.
 
 
-We may expect that we can capture the dependence between the two groups using principal components analysis (PCA). Figure `r knitr::asis_output(ifelse(knitr::is_html_output(), '\\@ref(fig:pca-result-static)', '\\@ref(fig:pca-result-static)'))` shows a scatter plot matrix of the principal components (PCs) of our dataset. Indeed we find a strong non-linear association between the first two PCs. Investigation of the rotation shows that the first PC is primarily a balanced combination between ARS, AUD, KRW and MYR (and a smaller contribution of EUR), and the second contribution is dominated by EUR and JPY contrasted with smaller contributions from ARS and MYR. Our next step is to use projection pursuit to further explore for non-linear functional dependence.
+We may expect that we can capture the dependence between the two groups using principal components analysis (PCA). Figure \ref{fig:pca-result-static} shows a scatter plot matrix of the principal components (PCs) of our dataset. Indeed we find a strong non-linear association between the first two PCs. Investigation of the rotation shows that the first PC is primarily a balanced combination between ARS, AUD, KRW and MYR (and a smaller contribution of EUR), and the second contribution is dominated by EUR and JPY contrasted with smaller contributions from ARS and MYR. Our next step is to use projection pursuit to further explore for non-linear functional dependence.
 
 ```{r pca-result-static, echo=FALSE, out.width="80%", fig.width=8, fig.height=8, fig.align = "center", fig.show='hold', fig.cap="Scatterplot matrix of the six principal components. Observations in March 2020 are highlighted in dark blue, all other months are shown in grey. There is a strong non-linear dependence between PC1 and PC2.", fig.alt="PC1 and PC2 exhibit almost a sine wave, which starts with grey points and ends with blue. The other pairs of plots have little structure."}
 # Use PCA to remove linear dependence
@@ -762,7 +756,7 @@ We now use the splines index to further explore functional dependence beyond wha
 
 There are several options for optimization in the \CRANpkg{tourr} package. Geodesic optimization (GEOO) (provided by the `search_geodesic()` function) is a derivative-free method, approximating a stochastic optimization algorithm. From any starting plane, a random search in the near neighborhood delivers the most promising direction to follow. The tour using geodesic interpolation follows this direction until the index value decreases, and then a new direction search is conducted. It guarantees that the index value always increases, but it can be slow, and it can get trapped at local maxima. Typically the best method is the simulated annealing (provided by the `search_better()` function) performs a random search of a large neighborhood and then cools down the neighborhood size as the optimization progresses. We have used this approach inserting geodesic (SAGEO) and Givens interpolation (SAGIV) to move between targets. 
 
-The results are shown in Figure `r knitr::asis_output(ifelse(knitr::is_html_output(), '\\@ref(fig:rates-tour-animated)', '\\@ref(fig:rates-tour-static)'))` and we see on the right that the guided tour with SAGIV has identified a non-linear functional dependence between the x and y axis in the final projection. The result on the left is using GEOO, and the result in the middle uses SAGEO. Since these methods do not allow for within-plane rotation they were not able to identify the same and best functional relationship even though they are using the same starting plane and index function.
+The results are shown in Figure \ref{fig:rates-tour-static} and we see on the right that the guided tour with SAGIV has identified a non-linear functional dependence between the x and y axis in the final projection. The result on the left is using GEOO, and the result in the middle uses SAGEO. Since these methods do not allow for within-plane rotation they were not able to identify the same and best functional relationship even though they are using the same starting plane and index function.
 
 ```{r}
 rates_pca_sd <-  apply(rates_pca$x, 2, function(x) (x-mean(x))/sd(x))
@@ -863,7 +857,7 @@ knitr::include_graphics(c("figures/rates_tour_geodesic_final.png",
     "figures/rates_tour_givens_final.png"))
 ```
 
-To understand the result in more detail we use tools from \CRANpkg{ferrn} [@ferrn] to show how the index value is changing over the optimization in Figure `r knitr::asis_output(ifelse(knitr::is_html_output(), '\\@ref(fig:rates-ferrn)', '\\@ref(fig:rates-ferrn)'))`. Points indicate selected target planes, and are connected by lines showing the index value along the interpolated path between them. For ease of comparison, the horizontal line shown in all three panels indicates the maximum index value found when using Givens interpolation.
+To understand the result in more detail we use tools from \CRANpkg{ferrn} [@ferrn] to show how the index value is changing over the optimization in Figure \ref{fig:rates-ferrn}. Points indicate selected target planes, and are connected by lines showing the index value along the interpolated path between them. For ease of comparison, the horizontal line shown in all three panels indicates the maximum index value found when using Givens interpolation.
 
 The top row shows the path found via GEOO. This search strategy only moves along geodesic paths to a target *plane* and does not reach a specific target *frame*. By construction, this gives a smooth path. However, we can see that as a consequence the optimization converges to a plane that does not identify the pattern of interest.
 
@@ -933,4 +927,4 @@ Our application shows the Givens interpolation used with a projection pursuit in
 
 We thank Saurabh Jhanjee for his contributions at the start of the project. This article is created using \CRANpkg{knitr} [@knitr] and \CRANpkg{rmarkdown} [@rmarkdown] in R. For graphs we have used \CRANpkg{ggplot2} [@ggplot2], \CRANpkg{cowplot} [@cowplot] and \CRANpkg{GGally} [@ggally], for tables we have used \CRANpkg{kableExtra} [@kableextra]. The source code for reproducing this paper can be found at: \url{https://github.com/uschiLaa/woylier-article}.
 
-
+# References {-}

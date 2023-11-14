@@ -1,42 +1,45 @@
-% Options for packages loaded elsewhere
-\PassOptionsToPackage{unicode}{hyperref}
-\PassOptionsToPackage{hyphens}{url}
-%
-\documentclass[
-]{article}
-\usepackage{amsmath,amssymb}
-\usepackage{iftex}
-\ifPDFTeX
-  \usepackage[T1]{fontenc}
-  \usepackage[utf8]{inputenc}
-  \usepackage{textcomp} % provide euro and other symbols
-\else % if luatex or xetex
-  \usepackage{unicode-math} % this also loads fontspec
-  \defaultfontfeatures{Scale=MatchLowercase}
-  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
-\fi
-\usepackage{lmodern}
-\ifPDFTeX\else
-  % xetex/luatex font selection
-\fi
-% Use upquote if available, for straight quotes in verbatim environments
-\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
-\IfFileExists{microtype.sty}{% use microtype if available
-  \usepackage[]{microtype}
-  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
-}{}
-\makeatletter
-\@ifundefined{KOMAClassName}{% if non-KOMA class
-  \IfFileExists{parskip.sty}{%
-    \usepackage{parskip}
-  }{% else
-    \setlength{\parindent}{0pt}
-    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
-}{% if KOMA class
-  \KOMAoptions{parskip=half}}
-\makeatother
-\usepackage{xcolor}
-\usepackage[margin=1in]{geometry}
+\documentclass{article}
+
+\usepackage{arxiv}
+
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{lmodern}        % https://github.com/rstudio/rticles/issues/343
+\usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{graphicx}
+
+\title{Frame to frame interpolation for high-dimensional data
+visualisation using the woylier package}
+
+\author{
+    Zoljargal Batsaikhan
+   \\
+    Department of Econometrics and Business Statistics \\
+    Monash University \\
+   \\
+  \texttt{\href{mailto:zoljargal11@gmail.com}{\nolinkurl{zoljargal11@gmail.com}}} \\
+   \And
+    Dianne Cook
+   \\
+    Department of Econometrics and Business Statistics \\
+    Monash University \\
+   \\
+  \texttt{\href{mailto:dicook@monash.edu}{\nolinkurl{dicook@monash.edu}}} \\
+   \And
+    Ursula Laa
+   \\
+    Institute of Statistics \\
+    University of Natural Resources and Life Sciences Vienna \\
+   \\
+  \texttt{\href{mailto:ursula.laa@boku.ac.at}{\nolinkurl{ursula.laa@boku.ac.at}}} \\
+  }
+
+% Pandoc syntax highlighting
 \usepackage{color}
 \usepackage{fancyvrb}
 \newcommand{\VerbBar}{|}
@@ -48,13 +51,13 @@
 \newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
 \newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
 \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
 \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
 \newcommand{\BuiltInTok}[1]{#1}
 \newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
 \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
 \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
 \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
 \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
 \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
@@ -62,7 +65,7 @@
 \newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
 \newcommand{\ExtensionTok}[1]{#1}
 \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
-\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
 \newcommand{\ImportTok}[1]{#1}
 \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
 \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
@@ -71,35 +74,30 @@
 \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
 \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
 \newcommand{\RegionMarkerTok}[1]{#1}
-\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
 \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
 \newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
 \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
 \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
 \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\usepackage{graphicx}
-\makeatletter
-\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
-\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
-\makeatother
-% Scale images if necessary, so that they will not overflow the page
-% margins by default, and it is still possible to overwrite the defaults
-% using explicit options in \includegraphics[width, height, ...]{}
-\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
-% Set default figure placement to htbp
-\makeatletter
-\def\fps@figure{htbp}
-\makeatother
-\setlength{\emergencystretch}{3em} % prevent overfull lines
+
+% tightlist command for lists without linebreak
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
-\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+
+
+% Pandoc citation processing
 \newlength{\cslhangindent}
 \setlength{\cslhangindent}{1.5em}
 \newlength{\csllabelwidth}
 \setlength{\csllabelwidth}{3em}
 \newlength{\cslentryspacingunit} % times entry-spacing
 \setlength{\cslentryspacingunit}{\parskip}
+% for Pandoc 2.8 to 2.10.1
+\newenvironment{cslreferences}%
+  {}%
+  {\par}
+% For Pandoc 2.11+
 \newenvironment{CSLReferences}[2] % #1 hanging-ident, #2 entry spacing
  {% don't indent paragraphs
   \setlength{\parindent}{0pt}
@@ -117,6 +115,7 @@
 \newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{#1}}
 \newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{#1}\break}
 \newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
+
 \usepackage{booktabs}
 \usepackage{longtable}
 \usepackage{array}
@@ -131,25 +130,10 @@
 \usepackage[normalem]{ulem}
 \usepackage{makecell}
 \usepackage{xcolor}
-\ifLuaTeX
-  \usepackage{selnolig}  % disable illegal ligatures
-\fi
-\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
-\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
-\urlstyle{same}
-\hypersetup{
-  pdftitle={Frame to frame interpolation for high-dimensional data visualisation using the woylier package},
-  pdfauthor={Zoljargal Batsaikhan, Dianne Cook, Ursula Laa},
-  hidelinks,
-  pdfcreator={LaTeX via pandoc}}
-
-\title{Frame to frame interpolation for high-dimensional data
-visualisation using the woylier package}
-\author{Zoljargal Batsaikhan, Dianne Cook, Ursula Laa}
-\date{2023-11-15}
-
 \begin{document}
 \maketitle
+
+
 \begin{abstract}
 The woylier package implements tour interpolation paths between frames
 using Givens rotations. This provides an alternative to the geodesic
@@ -161,6 +145,7 @@ index is not rotationally invariant. It also provides a way to
 specifically reach a given target frame. We demonstrate the method for
 exploring non-linear relationships between currency cross-rates.
 \end{abstract}
+
 
 \hypertarget{introduction}{%
 \section{Introduction}\label{introduction}}
@@ -221,7 +206,7 @@ the orientation because it considered only pairs of variables, and it
 selected the maximum value found when exchanging which variable is
 considered as a predictor or response variable.
 
-Figure @ref(fig:splines2d-static) illustrates the rotational invariance
+Figure \ref{fig:splines2d-static} illustrates the rotational invariance
 problem for a modified splines index, where we always consider the
 horizontal direction as the predictor variable and the vertical
 direction as the response. Thus, our modified index computes the splines
@@ -277,8 +262,8 @@ the orientation of projections matters interpolation between frames is
 required. The orientation of the frames could be important when a
 non-linear projection pursuit index function is used in the guided tour.
 This is illustrated by the different index values shown in the sketch in
-Figure @ref(fig:dogs), as well as the splines index for the sine curve
-in Figure @ref(fig:splines2d-static).
+Figure \ref{fig:dogs}, as well as the splines index for the sine curve
+in Figure \ref{fig:splines2d-static}.
 
 \begin{figure}
 
@@ -470,7 +455,7 @@ algorithm in separate functions and combined them into a single function
 \texttt{givens\_full\_path()} to produce the full set of \(F_t\). The
 same functions are used to integrate the Givens interpolation with the
 \texttt{animate()} functions of the \CRANpkg{tourr} package. Table
-@ref(tab:fns-pdf) lists the input and output of each function and its
+\ref{tab:fns-pd} lists the input and output of each function and its
 descriptions, functions to use with \texttt{animate()} are described
 separately below.
 
@@ -537,11 +522,11 @@ steps.
 
 To compare the path generated with the Givens interpolation to that
 found with geodesic interpolations we look at the rotation of the sine
-data shown in Figure @ref(fig:splines2d-static). We consider a subset in
+data shown in Figure \ref{fig:splines2d-static}. We consider a subset in
 \(p=4\) dimensions where the first two dimensions contain noise and the
 last two contain the sine curve. Starting from a random projection we
 want to interpolate towards the original sine curve. The path comparison
-is shown in Figure @ref(fig:compare-paths).
+is shown in Figure \ref{fig:compare-paths}.
 
 \begin{figure}
 
@@ -567,7 +552,7 @@ combination where the weights are normalized. Therefore, we can plot the
 point on the surface of a hypersphere. In this case the Givens
 interpolation will reach the exact point, while geodesic interpolation
 might flip the direction and reach a point on the opposite side of the
-hypersphere. Figure @ref(fig:1d-path-static) (left) shows the comparison
+hypersphere. Figure \ref{fig:1d-path-static} (left) shows the comparison
 of the interpolation steps using the same target plane, for an example
 with \(p=3\). Because the flipped target is close to the starting plane,
 the geodesic path is a lot shorter.
@@ -584,7 +569,7 @@ the geodesic path is a lot shorter.
 In the case of 2D projections, we can plot the interpolated path between
 2 frames on a torus. A torus can be seen as a crossing of 2 circles that
 are orthonormal, as is the case with our projection onto 2D. Figure
-@ref(fig:1d-path-static) (right) compares the interpolation paths for
+\ref{fig:1d-path-static} (right) compares the interpolation paths for
 \(p=3\).
 
 For a 2D projection, the same target plane is found when rotating the
@@ -613,7 +598,7 @@ all the movement in that time period.
 
 The data was extracted from \href{https://openexchangerates.org}{open
 exchange rates} and contains cross-rate for ARS, AUD, EUR, JPY, KRW, MYR
-between 2019-11-1 to 2020-03-31. Figure @ref(fig:currency) shows how the
+between 2019-11-1 to 2020-03-31. Figure \ref{fig:currency} shows how the
 currencies changed relative to USD over the time period. We see some
 collective behavior in March of 2020 with EUR and JPY increasing in a
 similar manner, and smaller currencies decreasing in value. This could
@@ -635,7 +620,7 @@ within the noise of the random fluctuations.
 
 We may expect that we can capture the dependence between the two groups
 using principal components analysis (PCA). Figure
-@ref(fig:pca-result-static) shows a scatter plot matrix of the principal
+\ref{fig:pca-result-static} shows a scatter plot matrix of the principal
 components (PCs) of our dataset. Indeed we find a strong non-linear
 association between the first two PCs. Investigation of the rotation
 shows that the first PC is primarily a balanced combination between ARS,
@@ -681,7 +666,7 @@ neighborhood and then cools down the neighborhood size as the
 optimization progresses. We have used this approach inserting geodesic
 (SAGEO) and Givens interpolation (SAGIV) to move between targets.
 
-The results are shown in Figure @ref(fig:rates-tour-static) and we see
+The results are shown in Figure \ref{fig:rates-tour-static} and we see
 on the right that the guided tour with SAGIV has identified a non-linear
 functional dependence between the x and y axis in the final projection.
 The result on the left is using GEOO, and the result in the middle uses
@@ -700,7 +685,7 @@ though they are using the same starting plane and index function.
 
 To understand the result in more detail we use tools from
 \CRANpkg{ferrn} (Zhang et al. 2021) to show how the index value is
-changing over the optimization in Figure @ref(fig:rates-ferrn). Points
+changing over the optimization in Figure \ref{fig:rates-ferrn}. Points
 indicate selected target planes, and are connected by lines showing the
 index value along the interpolated path between them. For ease of
 comparison, the horizontal line shown in all three panels indicates the
@@ -787,6 +772,10 @@ project. This article is created using \CRANpkg{knitr} (Xie 2022) and
 \CRANpkg{kableExtra} (Zhu 2021). The source code for reproducing this
 paper can be found at:
 \url{https://github.com/uschiLaa/woylier-article}.
+
+\hypertarget{references}{%
+\section*{References}\label{references}}
+\addcontentsline{toc}{section}{References}
 
 \hypertarget{refs}{}
 \begin{CSLReferences}{1}{0}
@@ -912,5 +901,9 @@ Zhu, Hao. 2021. \emph{kableExtra: Construct Complex Table with 'Kable'
 and Pipe Syntax}. \url{https://CRAN.R-project.org/package=kableExtra}.
 
 \end{CSLReferences}
+
+\bibliographystyle{unsrt}
+\bibliography{woylier-article.bib}
+
 
 \end{document}
