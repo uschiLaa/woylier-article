@@ -28,7 +28,7 @@ RESPONSE:
 
 - Formally cite the open exchange rates site as well as providing the link to the site directly in the text.
 
-RESPONSE:
+RESPONSE: Thank you for this suggestion. The formal citation has been added.
 
 - If the goal is rotation invariance, would it not also be valid to define the index as (forgive my notation) $$\max_{\theta\in[0, 2\pi)} f_{\text{index}(p(x, \theta), p(y, \theta))}$$ and use the geodesic projection? Essentially, this would relax the assumption that $y = f(x)$, without requiring the rotation. Since the authors themselves mention "In general the geodesic is preferred because it removes within-plane spin, but occasionally it is helpful to very specifically arrive at the prescribed basis.", it might be worth at least explaining why the obvious solution (change the index) isn't as good as the `woylier` solution.
 
@@ -41,29 +41,29 @@ RESPONSE:
 - Page 1:
     - "These are different ways of selecting the sequence of projection bases for the tour" ~~, for an overview~~ +(+see Lee et al. (2022)+)+.
 
-RESPONSE:
+RESPONSE: Thank you for this suggestion. The sentence has been revised for clarity.
 
     - "Projection pursuit"+, originally proposed in Kruskal (1969),+ "is a procedure used to locate the projection of high-to-low dimensional space that should expose the most interesting feature of data"~~, originally proposed in Kruskal (1969)~~.
 
-RESPONSE:
+RESPONSE: Thank you for this suggestion. The sentence has been revised for clarity.
 
     - "It compares the variance of the response variable to the variance of residuals", +such that+ ~~and~~ "the functional dependence is stronger when the index value is larger."
 
-RESPONSE:
+RESPONSE: Thank you for this suggestion. The sentence has been revised for clarity.
 
     - "The procedure in Grimm (2016) ~~was~~ +is+ less affected by the orientation because it considered only pairs of variables, and it selected the maximum value found when exchanging which variable is considered as a predictor or response variable."
 
-RESPONSE:
+RESPONSE: Thank you for this suggestion. The sentence has been revised for clarity.
 
 - Page 4:
     - "Performing these rotations would go from the starting frame to the target frame in one step."+, but+ ~~But~~ "we want to do it sequentially in a number of steps so interpolation between frames looks dynamic."
 
-RESPONSE:
+RESPONSE: Thank you for this suggestion. The sentence has been revised for clarity.
 
 - Page 6:
     - "The data ~~was~~ +were+ extracted from open exchange rates and ~~contains~~ +contain+ cross-rate+s+ ..."
 
-RESPONSE:
+RESPONSE: Thank you for this suggestion. The sentence has been revised for clarity.
 
 ## Code
 
