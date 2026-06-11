@@ -1,0 +1,57 @@
+## Referee report of "Frame to frame interpolation for high-dimensional data visualisation using the woylier package".
+
+- **Id**: 2023-131
+
+## General
+
+The article describes a method to rotate points within the plane while conducting a tour, in order to maximize the spline index value which can be used to guide projection pursuit tours. This is an improvement on previous methods, and provides useful functionality to the R community. The paper is well written, though it could probably address other obvious and straightforward solutions to the defined problem, such as modifying the calculation of the spline index so that it is rotation invariant (e.g. by maximizing over rotation angle theta).
+
+## Detailed comments
+
+- Visualizations in the paper should be labeled properly and optimized for accessibility (colorblindness as well as color contrast for those with low vision).
+    - Figure 1: Labels should include "Index = X.xx" for each subplot
+    - Figure 4: Use of red and green is absolutely not colorblind accessible, and color contrast should be optimized for this figure as well. Double-encode points used so that people viewing the paper on low-color devices (or black-and-white printer physical copies) can still make out the differences between the (currently) red and greenpoints.
+    - Figure 5: Double encode lines using linetype to help differentiate colors.
+
+- In the preprojection algorithm section, define the full process using mathematical notation, don't just assume that Gram-Schmidt is a known procedure (yes, it's standard in linear algebra, but it's been a while for a lot of readers).
+
+-  "In the literature, a number of such criteria have been developed based on clustering, spread, and outliers."
+Did you want to cite this literature parenthetically at the end of the sentence?
+
+- Formally cite the open exchange rates site as well as providing the link to the site directly in the text.
+
+- If the goal is rotation invariance, would it not also be valid to define the index as (forgive my notation) $$\max_{\theta\in[0, 2\pi)} f_{\text{index}(p(x, \theta), p(y, \theta))}$$ and use the geodesic projection? Essentially, this would relax the assumption that $y = f(x)$, without requiring the rotation. Since the authors themselves mention "In general the geodesic is preferred because it removes within-plane spin, but occasionally it is helpful to very specifically arrive at the prescribed basis.", it might be worth at least explaining why the obvious solution (change the index) isn't as good as the `woylier` solution.
+
+### Minor Wordsmithing Suggestions
+
+~~text to remove~~ +text to add+
+
+- Page 1:
+    - "These are different ways of selecting the sequence of projection bases for the tour" ~~, for an overview~~ +(+see Lee et al. (2022)+)+.
+
+    - "Projection pursuit"+, originally proposed in Kruskal (1969),+ "is a procedure used to locate the projection of high-to-low dimensional space that should expose the most interesting feature of data"~~, originally proposed in Kruskal (1969)~~.
+
+    - "It compares the variance of the response variable to the variance of residuals", +such that+ ~~and~~ "the functional dependence is stronger when the index value is larger."
+
+    - "The procedure in Grimm (2016) ~~was~~ +is+ less affected by the orientation because it considered only pairs of variables, and it selected the maximum value found when exchanging which variable is considered as a predictor or response variable."
+
+- Page 4:
+    - "Performing these rotations would go from the starting frame to the target frame in one step."+, but+ ~~But~~ "we want to do it sequentially in a number of steps so interpolation between frames looks dynamic."
+
+- Page 6:
+    - "The data ~~was~~ +were+ extracted from open exchange rates and ~~contains~~ +contain+ cross-rate+s+ ..."
+
+## Code
+
+Usability:
+
+- It is often helpful to have a short example on the main page of the package documentation. Right now, https://numbats.github.io/woylier/ just has the install_github() command. Presumably that should be updated to include the CRAN release as well?
+- The getting started page of the documentation on the website could include a few gifs of the resulting tours with and without the rotation features added by woylier. This might provide some motivation (and intuition) for someone investigating the package to see how the rotation method works -- most people won't benefit that much from the printing of matrix slices.
+- It would be nice to see longer descriptions/motivations for some of the package functions that include some of the content in the paper (e.g. the math notation underlying how the functions work), rather than the one sentence descriptions that are currently present.
+- The plots in the vignette should be optimized for accessibility and color contrast, and if possible, it would be nice to not have the points overlap the projection indicator in the bottom left corner. https://numbats.github.io/woylier/articles/Plotting_with_woylier.html
+
+Code:
+
+- The package code could be modularized a bit more effectively, using shorter functions that only accomplish one task. This is admittedly a stylistic choice, but there are a few functions that are a bit too long for my personal comfort.
+- I'm not sure why this is a separate package instead of being integrated into a new release of tourr directly. The number of additional functions is small and the package relies so heavily on tourr that it would seem to be easier just to combine the packages given the number of common authors. While there are obviously advantages in terms of additional publications and CV line items, I'm not convinced it's advantageous to the R user to have to install e.g. 5 packages to get the full tour functionality.
+

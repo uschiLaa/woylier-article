@@ -118,16 +118,16 @@ tbl <- tibble(name = c("`givens_full_path(Fa, Fz, nsteps)`",
 
 
 ## ----fns-html, eval=knitr::is_html_output()-----------------------------------
-#> kbl(tbl, escape = FALSE, caption="Primary functions in the woylier package.") %>%
-#>   column_spec(1, width="30em") %>%
-#>   column_spec(2, width="25em") %>%
-#>   column_spec(3, width="20em") %>%
-#>   column_spec(4, width="30em") %>%
-#>   row_spec(2, extra_css = "vertical-align: left!important;") %>%
-#>   row_spec(3, extra_css = "vertical-align: left!important;") %>%
-#>   row_spec(4, extra_css = "vertical-align: left!important;") %>%
-#>   row_spec(5, extra_css = "vertical-align: left!important;") %>%
-#>   row_spec(6, extra_css = "vertical-align: left!important;")
+# kbl(tbl, escape = FALSE, caption="Primary functions in the woylier package.") %>%
+#   column_spec(1, width="30em") %>%
+#   column_spec(2, width="25em") %>%
+#   column_spec(3, width="20em") %>%
+#   column_spec(4, width="30em") %>%
+#   row_spec(2, extra_css = "vertical-align: left!important;") %>%
+#   row_spec(3, extra_css = "vertical-align: left!important;") %>%
+#   row_spec(4, extra_css = "vertical-align: left!important;") %>%
+#   row_spec(5, extra_css = "vertical-align: left!important;") %>%
+#   row_spec(6, extra_css = "vertical-align: left!important;")
 
 
 ## ----fns-pdf, eval=knitr::is_latex_output(), results='asis'-------------------
@@ -165,21 +165,21 @@ kbl(tbl, caption="Primary functions in the woylier package.") %>%
 
 
 ## ----echo=TRUE, eval=FALSE----------------------------------------------------
-#> tourr::animate_xy(<data>, tour_path = woylier::grand_tour_givens())
+# tourr::animate_xy(<data>, tour_path = woylier::grand_tour_givens())
 
 
 ## ----echo=FALSE, eval=FALSE---------------------------------------------------
-#> set.seed(2022)
-#> p <- 6
-#> base1 <- tourr::basis_random(p, d=2)
-#> base2 <- tourr::basis_random(p, d=2)
-#> 
-#> #base1
-#> #base2
+# set.seed(2022)
+# p <- 6
+# base1 <- tourr::basis_random(p, d=2)
+# base2 <- tourr::basis_random(p, d=2)
+# 
+# #base1
+# #base2
 
 
 ## ----echo=TRUE, eval=FALSE----------------------------------------------------
-#> givens_full_path(base1, base2, nsteps = 5)
+# givens_full_path(base1, base2, nsteps = 5)
 
 
 ## ----compare-paths, echo=FALSE, eval=TRUE, out.width="80%", fig.width=6, fig.height=10, fig.align="center", fig.cap="Comparison of Givens path and geodesic path between 2D projections. The Givens path preserves the frame ending at the provided basis (frame), while geodesic is agnostic to the particular basis. In general the geodesic is preferred because it removes within-plane spin, but occasionally it is helpful to very specifically arrive at the prescribed basis.", fig.alt="Four columns and five rows: first column projection coefficients from the Givens path; second column has scatterplots showing the corresponding projected data; third column projection coefficients from the geodesic path; fourth column has scatterplots showing the  corresponding projected data. First row is the same starting projection, subsequent rows are the steps for each path. Final row is the ending projection, which can be seen that both are the same plane, but the Givens goes to the specified frame showing the sine curve, and geodesic goes to a rotated view of the sine curve."----
@@ -188,75 +188,75 @@ knitr::include_graphics("figures/compare-paths.png")
 
 
 ## ----echo = FALSE, eval=FALSE-------------------------------------------------
-#> set.seed(315)
-#> p <- 3
-#> n <- 2000
-#> base1 <- tourr::basis_random(p, d=1)
-#> base2 <- tourr::basis_random(p, d=1)
-#> 
-#> frames <- givens_full_path(base1, base2, nsteps = 10)
-#> 
-#> base <- save_history(flea[,1:3], grand_tour(1), max_bases = 2)
-#> base[,,1] <- base1[,1]
-#> base[,,2] <- base2[,1]
-#> planes <- interpolate(base, angle=proj_dist(base1, base2)/10)[,,1:10] #last plane duplicated
-#> 
-#> sp <- generate_space_view(n=n, p=p)
-#> 
-#> sp_path <- add_path(sp, frames)
-#> sp_path <- add_path(sp_path, planes)
-#> # Correct labels
-#> sp_path$type[(n+1):(n+10)] <- "f_path"
-#> sp_path$type[(n+11):(n+20)] <- "p_path"
-#> 
-#> point1 <- as.data.frame(t(base1))
-#> point1$type <- "point1"
-#> 
-#> point2 <- as.data.frame(t(base2))
-#> point2$type <- "point2"
-#> 
-#> sp_path <- rbind(sp_path, point1, point2)
-#> #sp_path$type <- factor(sp_path$type,
-#> #                       levels = c("point1", "path", "proj_space",
-#> #                                  "point2"))
-#> 
-#> # Colours from
-#> # paletteer::scale_colour_paletteer_d("rcartocolor::TealRose")
-#> clrs <- c("#F1EAC8FF", "#B1C7B3FF", "#72AAA1FF", "#009392FF", "#E5B9ADFF", "#D98994FF", "#D0587EFF",
-#>           "lightgrey")
-#> sp_path$typecol <- case_when(sp_path$type=="proj_space" ~ clrs[1],
-#>                              sp_path$type=="point1" ~ clrs[8],
-#>                              sp_path$type=="f_path" ~ clrs[3],
-#>                              sp_path$type=="point2" ~ clrs[4],
-#>                              sp_path$type=="p_path" ~ clrs[6])
-#> 
-#> edges <- matrix(c(n+20+1, seq(n+1, n+10, 1), seq(n+11, n+19, 1), nrow(sp_path), seq(n+1, n+10, 1), n+20+2, seq(n+12, n+20, 1), n+20), ncol=2, byrow=FALSE)
-#> edges.col <- c(rep(clrs[3], 10), rep(clrs[6], 10), clrs[1]) #factor(rep("path", 10), levels=c("point1", "path", "proj_space",
-#>                                   "point2"))
-#> 
-#> cex <- c(rep(1, n), rep(3, nrow(sp_path)-n))
-#> 
-#> animate_xy(as.matrix(sp_path[,1:p]), axes="off",
-#>            col=sp_path$typecol,
-#>            edges=edges,
-#>            edges.col=edges.col,
-#>            edges.width=3,
-#>            cex=cex)
-#> 
-#> tourr::render_gif(as.matrix(sp_path[,1:p]),
-#>                   tour_path = grand_tour(),
-#>                   display = display_xy(axes="off",
-#>                       col=sp_path$typecol,
-#>                       edges=edges,
-#>                       edges.col=edges.col,
-#>                       edges.width=3,
-#>                       cex=cex),
-#>                   frames = 100,
-#>                   "sphere.gif")
+# set.seed(315)
+# p <- 3
+# n <- 2000
+# base1 <- tourr::basis_random(p, d=1)
+# base2 <- tourr::basis_random(p, d=1)
+# 
+# frames <- givens_full_path(base1, base2, nsteps = 10)
+# 
+# base <- save_history(flea[,1:3], grand_tour(1), max_bases = 2)
+# base[,,1] <- base1[,1]
+# base[,,2] <- base2[,1]
+# planes <- interpolate(base, angle=proj_dist(base1, base2)/10)[,,1:10] #last plane duplicated
+# 
+# sp <- generate_space_view(n=n, p=p)
+# 
+# sp_path <- add_path(sp, frames)
+# sp_path <- add_path(sp_path, planes)
+# # Correct labels
+# sp_path$type[(n+1):(n+10)] <- "f_path"
+# sp_path$type[(n+11):(n+20)] <- "p_path"
+# 
+# point1 <- as.data.frame(t(base1))
+# point1$type <- "point1"
+# 
+# point2 <- as.data.frame(t(base2))
+# point2$type <- "point2"
+# 
+# sp_path <- rbind(sp_path, point1, point2)
+# #sp_path$type <- factor(sp_path$type,
+# #                       levels = c("point1", "path", "proj_space",
+# #                                  "point2"))
+# 
+# # Colours from
+# # paletteer::scale_colour_paletteer_d("rcartocolor::TealRose")
+# clrs <- c("#F1EAC8FF", "#B1C7B3FF", "#72AAA1FF", "#009392FF", "#E5B9ADFF", "#D98994FF", "#D0587EFF",
+#           "lightgrey")
+# sp_path$typecol <- case_when(sp_path$type=="proj_space" ~ clrs[1],
+#                              sp_path$type=="point1" ~ clrs[8],
+#                              sp_path$type=="f_path" ~ clrs[3],
+#                              sp_path$type=="point2" ~ clrs[4],
+#                              sp_path$type=="p_path" ~ clrs[6])
+# 
+# edges <- matrix(c(n+20+1, seq(n+1, n+10, 1), seq(n+11, n+19, 1), nrow(sp_path), seq(n+1, n+10, 1), n+20+2, seq(n+12, n+20, 1), n+20), ncol=2, byrow=FALSE)
+# edges.col <- c(rep(clrs[3], 10), rep(clrs[6], 10), clrs[1]) #factor(rep("path", 10), levels=c("point1", "path", "proj_space",
+#                                   "point2"))
+# 
+# cex <- c(rep(1, n), rep(3, nrow(sp_path)-n))
+# 
+# animate_xy(as.matrix(sp_path[,1:p]), axes="off",
+#            col=sp_path$typecol,
+#            edges=edges,
+#            edges.col=edges.col,
+#            edges.width=3,
+#            cex=cex)
+# 
+# tourr::render_gif(as.matrix(sp_path[,1:p]),
+#                   tour_path = grand_tour(),
+#                   display = display_xy(axes="off",
+#                       col=sp_path$typecol,
+#                       edges=edges,
+#                       edges.col=edges.col,
+#                       edges.width=3,
+#                       cex=cex),
+#                   frames = 100,
+#                   "sphere.gif")
 
 
 ## ----1d-path-dynamic, out.width="45%", fig.align="center", echo = FALSE, fig.height = 3, fig.show='hold', fig.cap="Interpolation steps of 1D (left) and 2D (right) projections of 3D data made with a Givens path (forest green) and a geodesic path (deep red). The cream points represent the space of all projections, which is a sphere for 1D projections and a torus for 2D projections. In the 1D example, geodesic arrives at the opposite side of the sphere to Givens, indicating that it has flipped the direction of the vector in order to make the shortest path to the same plane. A similar thing happens for the 2D example, geodesic flips the sign of one basis vector, but it defines the same plane, as indicated by the cream circles.", include=knitr::is_html_output(), eval=knitr::is_html_output(), fig.alt = "Two highlighted points on the surface of a 3D sphere (left) and 6D torus (right) connected by a path of points which are the interpolation steps, rotating."----
-#> knitr::include_graphics(c("figures/sphere.gif", "figures/torus.gif"))
+# knitr::include_graphics(c("figures/sphere.gif", "figures/torus.gif"))
 
 
 ## ----1d-path-static, out.width="45%", fig.align="center", echo = FALSE, fig.height = 3, fig.show='hold', fig.cap="Interpolation steps of 1D (left) and 2D (right) projections of 3D data made with a Givens path (forest green) and a geodesic path (deep red). The cream points represent the space of all projections, which is a sphere for 1D projections and a torus for 2D projections. In the 1D example, geodesic arrives at the opposite side of the sphere to Givens, indicating that it has flipped the direction of the vector in order to make the shortest path to the same plane. A similar thing happens for the 2D example, geodesic flips the sign of one basis vector, but it defines the same plane, as indicated by the cream circles.", include=knitr::is_latex_output(), eval=knitr::is_latex_output(), fig.alt = "Two highlighted points on the surface of a 3D sphere (left) and 6D torus (right) connected by a path of points which are the interpolation steps, static views."----
@@ -264,272 +264,272 @@ knitr::include_graphics(c("figures/sphere_static.png", "figures/torus_static.png
 
 
 ## ----echo = FALSE, eval=FALSE-------------------------------------------------
-#> set.seed(319)
-#> p <- 3
-#> n <- 5000
-#> d <- 2
-#> base1 <- orthonormalise(tourr::basis_random(p, d=2))
-#> base2 <- orthonormalise(tourr::basis_random(p, d=2))
-#> # generating the torus spanning the space
-#> proj_2d <- map(1:n, ~basis_random(n=p,  d=2)) %>%
-#>   purrr::flatten_dbl() %>%
-#>   matrix(ncol = p*2, byrow = TRUE) %>%
-#>   as.tibble() %>%
-#>   mutate(type="torus")
-#> # Givens path, fixing number of steps to 100
-#> frames_2d <- givens_full_path(base1, base2, 100)
-#> path_2d <- rbind(as.data.frame(t(as.vector(base1))),
-#>                  as.data.frame(t(apply(frames_2d, 3, c)))) %>%
-#>   mutate(type = "givens")
-#> # Geodesic path, also taking 100 steps
-#> pt_geo <- save_history(flea[, 1:p], planned_tour(list(base1, base2)))
-#> int_geo <- interpolate(pt_geo, angle = proj_dist(base1, base2)/100)[,,1:101]
-#> # the last plane is duplicate of the target
-#> path_2d_geo <- as.data.frame(t(apply(int_geo, 3, c))) %>%
-#>   mutate(type = "geodesic")
-#> # generating the equivalent bases (rotations in the target plane)
-#> base2_rot_1 <- matrix(ncol = 6, nrow = 41)
-#> base2_rot_2 <- matrix(ncol = 6, nrow = 41)
-#> i <- 1
-#> base2_2 <- base2
-#> base2_2[,2] <- -base2_2[,2]
-#> flip_connect <- matrix(ncol = 7, nrow = 0) # don't know how many entries we will need, so will use rbind
-#> for (a in seq(0,2*pi, pi/20)){
-#>     rotM <- matrix(c(cos(a), sin(a), -sin(a), cos(a)), ncol = 2)
-#>     dprj_1 <- base2 %*% rotM
-#>     base2_rot_1[i,] <- as.vector(dprj_1)
-#>     rot2 <- matrix(c(cos(a+pi/4), sin(a+pi/4), -sin(a+pi/4), cos(a+pi/4)), ncol = 2)
-#>     dprj_2 <- base2_2 %*% rot2
-#>     base2_rot_2[i,] <- as.vector(dprj_2)
-#>     flip_connect <- rbind(flip_connect, (t(c(as.vector(dprj_1),i))),
-#>                  cbind(t(apply(
-#>                    givens_full_path(dprj_1, dprj_2, 30),
-#>                    3, c)),
-#>                    i))
-#>     cat(proj_dist(base2, dprj_1), proj_dist(base2_2, dprj_2), "\n")
-#>     i <- i+1
-#> }
-#> 
-#> connect_flipped <- as.data.frame(flip_connect) %>%
-#>   filter(!is.nan(V1)) %>%
-#>   mutate(type="connect")
-#> rot_base2 <- as.data.frame(rbind(base2_rot_1, base2_rot_2)) %>%
-#>   mutate(type="target")
-#> # starting base as tibble
-#> start_2d <- as.tibble(t(as.vector(base1))) %>%
-#>   mutate(type = "start")
-#> # putting everything together
-#> proj_path <- bind_rows(proj_2d, rot_base2, #connect_flipped,
-#>                        path_2d, path_2d_geo, start_2d)
-#> 
-#> 
-#> # Colours from
-#> # paletteer::scale_colour_paletteer_d("rcartocolor::TealRose")
-#> clrs <- c("#F1EAC8FF", "#B1C7B3FF", "#72AAA1FF", "#009392FF", "#E5B9ADFF", "#D98994FF", "#D0587EFF",
-#>           "lightgrey")
-#> proj_path$typecol <- case_when(proj_path$type=="torus" ~ clrs[1],
-#>                              proj_path$type=="start" ~ clrs[8],
-#>                              proj_path$type=="givens" ~ clrs[3],
-#>                              proj_path$type=="target" ~ clrs[8],
-#>                              proj_path$type=="geodesic" ~ clrs[6],
-#>                              proj_path$type=="connect" ~ clrs[8])
-#> edges <- matrix(c(which(proj_path$type=="target")[1:40], # starting nodes for target
-#>                   which(proj_path$type=="target")[42:81], # starting nodes for flipped target
-#>                   head(which(proj_path$type=="givens"),-1), # starting nodes for givens
-#>                   head(which(proj_path$type=="geodesic"),-1), # starting nodes for geodesic
-#>                   which(proj_path$type=="target")[2:41], # ending nodes for target
-#>                    which(proj_path$type=="target")[43:82], # starting nodes for flipped target
-#>                   tail(which(proj_path$type=="givens"),-1), # ending nodes for givens
-#>                   tail(which(proj_path$type=="geodesic"),-1)), # ending nodes for geodesic
-#>                 ncol=2, byrow=FALSE)
-#> edges.col <- c(rep(clrs[1], sum(proj_path$type=="target")-1),
-#>                rep(clrs[3], sum(proj_path$type=="givens")-1),
-#>                rep(clrs[6], sum(proj_path$type=="geodesic")-1))
-#> 
-#> cex <- c(rep(0.5, n+41), rep(1, nrow(proj_path)-(n+41)))
-#> cex[which(proj_path$type == "start")] <- 2
-#> cex[which(proj_path$type == "target")] <- 0.1
-#> 
-#> animate_xy(as.matrix(proj_path[,1:(2*p)]),
-#>            axes="off",
-#>            col=proj_path$typecol,
-#>            edges=edges,
-#>            edges.col=edges.col,
-#>            edges.width=3,
-#>            cex=cex)
-#> 
-#> tourr::render_gif(as.matrix(proj_path[,1:(2*p)]),
-#>                   tour_path = grand_tour(),
-#>                   display = display_xy(axes="off",
-#>                     col=proj_path$typecol,
-#>                     edges=edges,
-#>                     edges.col=edges.col,
-#>                     edges.width=3,
-#>                     cex=cex),
-#>                   frames = 100,
-#>                   "torus.gif")
+# set.seed(319)
+# p <- 3
+# n <- 5000
+# d <- 2
+# base1 <- orthonormalise(tourr::basis_random(p, d=2))
+# base2 <- orthonormalise(tourr::basis_random(p, d=2))
+# # generating the torus spanning the space
+# proj_2d <- map(1:n, ~basis_random(n=p,  d=2)) %>%
+#   purrr::flatten_dbl() %>%
+#   matrix(ncol = p*2, byrow = TRUE) %>%
+#   as.tibble() %>%
+#   mutate(type="torus")
+# # Givens path, fixing number of steps to 100
+# frames_2d <- givens_full_path(base1, base2, 100)
+# path_2d <- rbind(as.data.frame(t(as.vector(base1))),
+#                  as.data.frame(t(apply(frames_2d, 3, c)))) %>%
+#   mutate(type = "givens")
+# # Geodesic path, also taking 100 steps
+# pt_geo <- save_history(flea[, 1:p], planned_tour(list(base1, base2)))
+# int_geo <- interpolate(pt_geo, angle = proj_dist(base1, base2)/100)[,,1:101]
+# # the last plane is duplicate of the target
+# path_2d_geo <- as.data.frame(t(apply(int_geo, 3, c))) %>%
+#   mutate(type = "geodesic")
+# # generating the equivalent bases (rotations in the target plane)
+# base2_rot_1 <- matrix(ncol = 6, nrow = 41)
+# base2_rot_2 <- matrix(ncol = 6, nrow = 41)
+# i <- 1
+# base2_2 <- base2
+# base2_2[,2] <- -base2_2[,2]
+# flip_connect <- matrix(ncol = 7, nrow = 0) # don't know how many entries we will need, so will use rbind
+# for (a in seq(0,2*pi, pi/20)){
+#     rotM <- matrix(c(cos(a), sin(a), -sin(a), cos(a)), ncol = 2)
+#     dprj_1 <- base2 %*% rotM
+#     base2_rot_1[i,] <- as.vector(dprj_1)
+#     rot2 <- matrix(c(cos(a+pi/4), sin(a+pi/4), -sin(a+pi/4), cos(a+pi/4)), ncol = 2)
+#     dprj_2 <- base2_2 %*% rot2
+#     base2_rot_2[i,] <- as.vector(dprj_2)
+#     flip_connect <- rbind(flip_connect, (t(c(as.vector(dprj_1),i))),
+#                  cbind(t(apply(
+#                    givens_full_path(dprj_1, dprj_2, 30),
+#                    3, c)),
+#                    i))
+#     cat(proj_dist(base2, dprj_1), proj_dist(base2_2, dprj_2), "\n")
+#     i <- i+1
+# }
+# 
+# connect_flipped <- as.data.frame(flip_connect) %>%
+#   filter(!is.nan(V1)) %>%
+#   mutate(type="connect")
+# rot_base2 <- as.data.frame(rbind(base2_rot_1, base2_rot_2)) %>%
+#   mutate(type="target")
+# # starting base as tibble
+# start_2d <- as.tibble(t(as.vector(base1))) %>%
+#   mutate(type = "start")
+# # putting everything together
+# proj_path <- bind_rows(proj_2d, rot_base2, #connect_flipped,
+#                        path_2d, path_2d_geo, start_2d)
+# 
+# 
+# # Colours from
+# # paletteer::scale_colour_paletteer_d("rcartocolor::TealRose")
+# clrs <- c("#F1EAC8FF", "#B1C7B3FF", "#72AAA1FF", "#009392FF", "#E5B9ADFF", "#D98994FF", "#D0587EFF",
+#           "lightgrey")
+# proj_path$typecol <- case_when(proj_path$type=="torus" ~ clrs[1],
+#                              proj_path$type=="start" ~ clrs[8],
+#                              proj_path$type=="givens" ~ clrs[3],
+#                              proj_path$type=="target" ~ clrs[8],
+#                              proj_path$type=="geodesic" ~ clrs[6],
+#                              proj_path$type=="connect" ~ clrs[8])
+# edges <- matrix(c(which(proj_path$type=="target")[1:40], # starting nodes for target
+#                   which(proj_path$type=="target")[42:81], # starting nodes for flipped target
+#                   head(which(proj_path$type=="givens"),-1), # starting nodes for givens
+#                   head(which(proj_path$type=="geodesic"),-1), # starting nodes for geodesic
+#                   which(proj_path$type=="target")[2:41], # ending nodes for target
+#                    which(proj_path$type=="target")[43:82], # starting nodes for flipped target
+#                   tail(which(proj_path$type=="givens"),-1), # ending nodes for givens
+#                   tail(which(proj_path$type=="geodesic"),-1)), # ending nodes for geodesic
+#                 ncol=2, byrow=FALSE)
+# edges.col <- c(rep(clrs[1], sum(proj_path$type=="target")-1),
+#                rep(clrs[3], sum(proj_path$type=="givens")-1),
+#                rep(clrs[6], sum(proj_path$type=="geodesic")-1))
+# 
+# cex <- c(rep(0.5, n+41), rep(1, nrow(proj_path)-(n+41)))
+# cex[which(proj_path$type == "start")] <- 2
+# cex[which(proj_path$type == "target")] <- 0.1
+# 
+# animate_xy(as.matrix(proj_path[,1:(2*p)]),
+#            axes="off",
+#            col=proj_path$typecol,
+#            edges=edges,
+#            edges.col=edges.col,
+#            edges.width=3,
+#            cex=cex)
+# 
+# tourr::render_gif(as.matrix(proj_path[,1:(2*p)]),
+#                   tour_path = grand_tour(),
+#                   display = display_xy(axes="off",
+#                     col=proj_path$typecol,
+#                     edges=edges,
+#                     edges.col=edges.col,
+#                     edges.width=3,
+#                     cex=cex),
+#                   frames = 100,
+#                   "torus.gif")
 
 
 ## ----echo = FALSE, eval=FALSE-------------------------------------------------
-#> # trying with more information in one animation
-#> set.seed(2022)
-#> p <- 6
-#> n <- 5000
-#> d <- 2
-#> base1 <- tourr::basis_random(p, d=2) # this is start 1
-#> base2 <- tourr::basis_random(p, d=2)
-#> start2 <- tourr::basis_random(p, d=2)
-#> start3 <- tourr::basis_random(p, d=2)
-#> frames_2d <- givens_full_path(base1, base2, 100)
-#> frames_2d_2 <- givens_full_path(start2, base2, 100)
-#> frames_2d_3 <- givens_full_path(start3, base2, 100)
-#> proj_2d <- map(1:n, ~basis_random(n = p,  d=d)) %>%
-#>   purrr::flatten_dbl() %>%
-#>   matrix(ncol = p*2, byrow = TRUE) %>%
-#>   as_tibble()
-#> path_2d <- rbind(as.data.frame(t(as.vector(base1))),
-#>                  as.data.frame(t(apply(frames_2d, 3, c))),
-#>                  as.data.frame(t(as.vector(start2))),
-#>                  as.data.frame(t(apply(frames_2d_2, 3, c))),
-#>                  as.data.frame(t(as.vector(start3))),
-#>                  as.data.frame(t(apply(frames_2d_3, 3, c)))) %>%
-#>   mutate(type="givens")
-#> proj_2d <- proj_2d %>%
-#>   mutate(type="torus")
-#> pt_geo <- save_history(flea[, 1:p], planned_tour(list(base1, base2)))
-#> int_geo <- interpolate(pt_geo)
-#> pt_geo_2 <- save_history(flea[, 1:p], planned_tour(list(start2, base2)))
-#> int_geo_2 <- interpolate(pt_geo_2)
-#> pt_geo_3 <- save_history(flea[, 1:p], planned_tour(list(start3, base2)))
-#> int_geo_3 <- interpolate(pt_geo_3)
-#> path_geo <- rbind(as.data.frame(t(apply(int_geo, 3, c))),
-#>                   as.data.frame(t(apply(int_geo_2, 3, c))),
-#>                   as.data.frame(t(apply(int_geo_3, 3, c)))) %>%
-#>   #t(apply(int_geo, 3, c)) %>%
-#>   #as.data.frame() %>%
-#>   mutate(type="geodesic")
-#> 
-#> base2_rot <- matrix(ncol = 12, nrow = 2*201)
-#> i <- 1
-#> for (a in seq(0,2*pi, pi/100)){
-#>     rotM <- matrix(c(cos(a), sin(a), -sin(a), cos(a)), ncol = 2)
-#>     dprj <- base2 %*% rotM
-#>     base2_rot[i,] <- as.vector(dprj)
-#>     i <- i+1
-#>     dprj <- base2[,c(2,1)] %*% rotM
-#>     base2_rot[i,] <- as.vector(dprj)
-#>     i <- i+1
-#> }
-#> rot_base2 <- as.data.frame(base2_rot) %>%
-#>   mutate(type="target")
-#> proj_path <- bind_rows(proj_2d, path_2d, path_geo, rot_base2)
-#> proj_path$type <- factor(proj_path$type, levels=c("torus", "target",
-#>                                                "givens", "geodesic"))
-#> proj_path <- arrange(proj_path, type)
-#> animate_xy(proj_path[,1:12], col=proj_path$type, palette="Teal-Rose",
-#>            cex=c(rep(0.5, n), rep(1, nrow(proj_path)-n)),
-#>                  axes="off")
-#> 
+# # trying with more information in one animation
+# set.seed(2022)
+# p <- 6
+# n <- 5000
+# d <- 2
+# base1 <- tourr::basis_random(p, d=2) # this is start 1
+# base2 <- tourr::basis_random(p, d=2)
+# start2 <- tourr::basis_random(p, d=2)
+# start3 <- tourr::basis_random(p, d=2)
+# frames_2d <- givens_full_path(base1, base2, 100)
+# frames_2d_2 <- givens_full_path(start2, base2, 100)
+# frames_2d_3 <- givens_full_path(start3, base2, 100)
+# proj_2d <- map(1:n, ~basis_random(n = p,  d=d)) %>%
+#   purrr::flatten_dbl() %>%
+#   matrix(ncol = p*2, byrow = TRUE) %>%
+#   as_tibble()
+# path_2d <- rbind(as.data.frame(t(as.vector(base1))),
+#                  as.data.frame(t(apply(frames_2d, 3, c))),
+#                  as.data.frame(t(as.vector(start2))),
+#                  as.data.frame(t(apply(frames_2d_2, 3, c))),
+#                  as.data.frame(t(as.vector(start3))),
+#                  as.data.frame(t(apply(frames_2d_3, 3, c)))) %>%
+#   mutate(type="givens")
+# proj_2d <- proj_2d %>%
+#   mutate(type="torus")
+# pt_geo <- save_history(flea[, 1:p], planned_tour(list(base1, base2)))
+# int_geo <- interpolate(pt_geo)
+# pt_geo_2 <- save_history(flea[, 1:p], planned_tour(list(start2, base2)))
+# int_geo_2 <- interpolate(pt_geo_2)
+# pt_geo_3 <- save_history(flea[, 1:p], planned_tour(list(start3, base2)))
+# int_geo_3 <- interpolate(pt_geo_3)
+# path_geo <- rbind(as.data.frame(t(apply(int_geo, 3, c))),
+#                   as.data.frame(t(apply(int_geo_2, 3, c))),
+#                   as.data.frame(t(apply(int_geo_3, 3, c)))) %>%
+#   #t(apply(int_geo, 3, c)) %>%
+#   #as.data.frame() %>%
+#   mutate(type="geodesic")
+# 
+# base2_rot <- matrix(ncol = 12, nrow = 2*201)
+# i <- 1
+# for (a in seq(0,2*pi, pi/100)){
+#     rotM <- matrix(c(cos(a), sin(a), -sin(a), cos(a)), ncol = 2)
+#     dprj <- base2 %*% rotM
+#     base2_rot[i,] <- as.vector(dprj)
+#     i <- i+1
+#     dprj <- base2[,c(2,1)] %*% rotM
+#     base2_rot[i,] <- as.vector(dprj)
+#     i <- i+1
+# }
+# rot_base2 <- as.data.frame(base2_rot) %>%
+#   mutate(type="target")
+# proj_path <- bind_rows(proj_2d, path_2d, path_geo, rot_base2)
+# proj_path$type <- factor(proj_path$type, levels=c("torus", "target",
+#                                                "givens", "geodesic"))
+# proj_path <- arrange(proj_path, type)
+# animate_xy(proj_path[,1:12], col=proj_path$type, palette="Teal-Rose",
+#            cex=c(rep(0.5, n), rep(1, nrow(proj_path)-n)),
+#                  axes="off")
+# 
 
 
 ## ----echo = FALSE, eval=FALSE-------------------------------------------------
-#> # Generate a sample interpolation
-#> set.seed(5543)
-#> base1 <- tourr::orthonormalise(tourr::basis_random(6, d=2))
-#> base2 <- matrix(c(0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1), ncol=2, byrow=T)
-#> sine_path <- givens_full_path(base1, base2, nsteps=100)
-#> sine_all <- NULL
-#> sine_proj <- NULL
-#> for (i in 1:dim(sine_path)[3]) {
-#>   d <- as.matrix(sine_curve) %*% as.matrix(sine_path[,,i])
-#>   d <- data.frame(d)
-#>   d$idx <- round(tourr::splines2d()(d), 2)
-#>   d$frame <- i
-#>   sine_all <- bind_rows(sine_all, d)
-#>   prj <- as.data.frame(sine_path[,,i])
-#>   prj$frame <- i
-#>   prj$names <- colnames(sine_curve)
-#>   sine_proj <- bind_rows(sine_proj, prj)
-#> }
-#> sine_label <- sine_all %>%
-#>   mutate(labelX = -1, labelY = 1.45, label_idx = paste0("spl=", format(idx, digits=2)))
-#> sine_proj <- sine_proj %>%
-#>   mutate(cx = 0, cy = 0)
-#> # With gganimate
-#> 
-#> sine_anim <- ggplot() +
-#>   geom_segment(data=sine_proj, aes(x=V1, y=V2,
-#>                                    xend=cx, yend=cy,
-#>                                    group=frame),
-#>                colour="grey60") +
-#>   geom_text(data=sine_proj, aes(x=V1, y=V2,
-#>                                 label=names,
-#>                                 group=frame),
-#>                colour="grey60") +
-#>   geom_point(data=sine_label, aes(x=X1, y=X2)) +
-#>   geom_text(data=sine_label, aes(x=labelX, y=labelY,
-#>                 label=label_idx), size=10) +
-#>   xlab("") + ylab("") +
-#>   transition_time(frame) +
-#>   theme_void() +
-#>   theme(aspect.ratio=1,
-#>         plot.background = element_rect(fill=NULL, colour = "black"))
-#> 
-#> animate(sine_anim, fps=8, renderer = gifski_renderer(loop = FALSE), width=400, height=400)
-#> anim_save("figures/sine_anim_givens.gif")
+# # Generate a sample interpolation
+# set.seed(5543)
+# base1 <- tourr::orthonormalise(tourr::basis_random(6, d=2))
+# base2 <- matrix(c(0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1), ncol=2, byrow=T)
+# sine_path <- givens_full_path(base1, base2, nsteps=100)
+# sine_all <- NULL
+# sine_proj <- NULL
+# for (i in 1:dim(sine_path)[3]) {
+#   d <- as.matrix(sine_curve) %*% as.matrix(sine_path[,,i])
+#   d <- data.frame(d)
+#   d$idx <- round(tourr::splines2d()(d), 2)
+#   d$frame <- i
+#   sine_all <- bind_rows(sine_all, d)
+#   prj <- as.data.frame(sine_path[,,i])
+#   prj$frame <- i
+#   prj$names <- colnames(sine_curve)
+#   sine_proj <- bind_rows(sine_proj, prj)
+# }
+# sine_label <- sine_all %>%
+#   mutate(labelX = -1, labelY = 1.45, label_idx = paste0("spl=", format(idx, digits=2)))
+# sine_proj <- sine_proj %>%
+#   mutate(cx = 0, cy = 0)
+# # With gganimate
+# 
+# sine_anim <- ggplot() +
+#   geom_segment(data=sine_proj, aes(x=V1, y=V2,
+#                                    xend=cx, yend=cy,
+#                                    group=frame),
+#                colour="grey60") +
+#   geom_text(data=sine_proj, aes(x=V1, y=V2,
+#                                 label=names,
+#                                 group=frame),
+#                colour="grey60") +
+#   geom_point(data=sine_label, aes(x=X1, y=X2)) +
+#   geom_text(data=sine_label, aes(x=labelX, y=labelY,
+#                 label=label_idx), size=10) +
+#   xlab("") + ylab("") +
+#   transition_time(frame) +
+#   theme_void() +
+#   theme(aspect.ratio=1,
+#         plot.background = element_rect(fill=NULL, colour = "black"))
+# 
+# animate(sine_anim, fps=8, renderer = gifski_renderer(loop = FALSE), width=400, height=400)
+# anim_save("figures/sine_anim_givens.gif")
 
 
 ## ----echo = FALSE, eval=FALSE-------------------------------------------------
-#> library(tourr)
-#> set.seed(5541)
-#> base1 <- tourr::orthonormalise(tourr::basis_random(6, d=2))
-#> base2 <- matrix(c(0,0,0,0,0,0,0,0,1, 0, 0, 1), ncol = 2, byrow = TRUE)
-#> basis_set <- array(dim = c(6,2,2))
-#> basis_set[,,1] <- base1
-#> basis_set[,,2] <- base2
-#> attr(basis_set, "class") <- c("history_array", class(basis_set))
-#> path_geo <- tourr::interpolate(basis_set, angle = 0.0151)
-#> data("sine_curve")
-#> 
-#> sine_all <- NULL
-#> sine_proj <- NULL
-#> for (i in 1:dim(path_geo)[3]) {
-#>   d <- as.matrix(sine_curve) %*% matrix(c(path_geo[,,i][[1]]), ncol = 2)
-#>   d <- data.frame(d)
-#>   d$idx <- round(tourr::splines2d()(d), 2)
-#>   d$frame <- i
-#>   sine_all <- bind_rows(sine_all, d)
-#>   prj <- as.data.frame(matrix(c(path_geo[,,i][[1]]), ncol = 2))
-#>   prj$frame <- i
-#>   prj$names <- colnames(sine_curve)
-#>   sine_proj <- bind_rows(sine_proj, prj)
-#> }
-#> sine_label <- sine_all %>%
-#>   mutate(labelX = -1, labelY = 1.45, label_idx = paste0("spl=", format(idx, digits=2)))
-#> sine_proj <- sine_proj %>%
-#>   mutate(cx = 0, cy = 0)
-#> 
-#> # With gganimate
-#> sine_anim <- ggplot() +
-#>   geom_segment(data=sine_proj, aes(x=V1, y=V2,
-#>                                    xend=cx, yend=cy,
-#>                                    group=frame),
-#>                colour="grey60") +
-#>   geom_text(data=sine_proj, aes(x=V1, y=V2,
-#>                                 label=names,
-#>                                 group=frame),
-#>                colour="grey60") +
-#>   geom_point(data=sine_label, aes(x=X1, y=X2)) +
-#>   geom_text(data=sine_label, aes(x=labelX, y=labelY,
-#>                 label=label_idx), size=10) +
-#>   xlab("") + ylab("") +
-#>   transition_time(frame) +
-#>   theme_void() +
-#>   theme(aspect.ratio=1,
-#>         plot.background = element_rect(fill=NULL, colour = "black"))
-#> 
-#> animate(sine_anim, fps=8, renderer = gifski_renderer(loop = FALSE), width=400, height=400)
-#> anim_save("figures/sine_anim_geodesic.gif")
+# library(tourr)
+# set.seed(5541)
+# base1 <- tourr::orthonormalise(tourr::basis_random(6, d=2))
+# base2 <- matrix(c(0,0,0,0,0,0,0,0,1, 0, 0, 1), ncol = 2, byrow = TRUE)
+# basis_set <- array(dim = c(6,2,2))
+# basis_set[,,1] <- base1
+# basis_set[,,2] <- base2
+# attr(basis_set, "class") <- c("history_array", class(basis_set))
+# path_geo <- tourr::interpolate(basis_set, angle = 0.0151)
+# data("sine_curve")
+# 
+# sine_all <- NULL
+# sine_proj <- NULL
+# for (i in 1:dim(path_geo)[3]) {
+#   d <- as.matrix(sine_curve) %*% matrix(c(path_geo[,,i][[1]]), ncol = 2)
+#   d <- data.frame(d)
+#   d$idx <- round(tourr::splines2d()(d), 2)
+#   d$frame <- i
+#   sine_all <- bind_rows(sine_all, d)
+#   prj <- as.data.frame(matrix(c(path_geo[,,i][[1]]), ncol = 2))
+#   prj$frame <- i
+#   prj$names <- colnames(sine_curve)
+#   sine_proj <- bind_rows(sine_proj, prj)
+# }
+# sine_label <- sine_all %>%
+#   mutate(labelX = -1, labelY = 1.45, label_idx = paste0("spl=", format(idx, digits=2)))
+# sine_proj <- sine_proj %>%
+#   mutate(cx = 0, cy = 0)
+# 
+# # With gganimate
+# sine_anim <- ggplot() +
+#   geom_segment(data=sine_proj, aes(x=V1, y=V2,
+#                                    xend=cx, yend=cy,
+#                                    group=frame),
+#                colour="grey60") +
+#   geom_text(data=sine_proj, aes(x=V1, y=V2,
+#                                 label=names,
+#                                 group=frame),
+#                colour="grey60") +
+#   geom_point(data=sine_label, aes(x=X1, y=X2)) +
+#   geom_text(data=sine_label, aes(x=labelX, y=labelY,
+#                 label=label_idx), size=10) +
+#   xlab("") + ylab("") +
+#   transition_time(frame) +
+#   theme_void() +
+#   theme(aspect.ratio=1,
+#         plot.background = element_rect(fill=NULL, colour = "black"))
+# 
+# animate(sine_anim, fps=8, renderer = gifski_renderer(loop = FALSE), width=400, height=400)
+# anim_save("figures/sine_anim_geodesic.gif")
 
 
 ## ----currency, out.width="100%", fig.width = 9, fig.height = 4.5, layout = "l-body", fig.cap="Examining the behaviour of six cross-currency rates (ARS, EUR, KRW, AUD, JPY, MYR) prior to and in the first month of the pandemic. All the currencies are standardised and the sign is flipped. JPY and EUR strengthened against the USD (high values) in March, while the other currencies weakened (low values).", fig.alt="Six time series plots all very similar until March 2020 when JPY and EUR go up. All currencies go down in mid-March and JPY and EUR increase again at the end of March."----
@@ -569,90 +569,90 @@ rates_pca_sd <-  apply(rates_pca$x, 2, function(x) (x-mean(x))/sd(x))
 
 
 ## ----echo = FALSE, eval=FALSE-------------------------------------------------
-#> # modified the splines2d
-#> # same as defined above, but keeping this block self-contained
-#> new_splines2d <- function ()
-#> {
-#>   function(mat) {
-#>     mat <- as.data.frame(mat)
-#>     colnames(mat) <- c("x", "y")
-#>     kx <- ifelse(length(unique(mat$x[!is.na(mat$x)])) < 20,
-#>                  3, 10)
-#>     mgam1 <- mgcv::gam(y ~ s(x, bs = "cr", k = kx), data = mat)
-#>     measure <- 1 - var(residuals(mgam1), na.rm = T)/var(mat$y, na.rm = T)
-#>     return(measure)
-#>   }
-#> }
-#> library(tourr)
-#> col_rates <- rep("grey", nrow(rates))
-#> col_rates[rate_march] <- "darkblue"
-#> basis_start <- matrix(rep(0, 8), ncol = 2)
-#> basis_start[3,1] <- 1
-#> basis_start[4,2] <- 1
-#> set.seed(2023)
-#> record_search_geodesic <- animate_pca(rates_pca_sd[,1:4], pc_coefs = rates_pca$rotation[,1:4],
-#>             tour_path = guided_tour(new_splines2d(), current = basis_start),
-#>             col = col_rates)
-#> set.seed(2023)
-#> record_search_givens <- animate_pca(rates_pca_sd[,1:4], pc_coefs = rates_pca$rotation[,1:4],
-#>            tour_path = guided_tour_givens(new_splines2d(),
-#>                                           current = basis_start,
-#>                                           optim = "search_better",
-#>                                           max.tries = 100,
-#>                                           alpha = 1),
-#>            col = col_rates)
-#> set.seed(2023)
-#> record_search_better <-animate_pca(rates_pca_sd[,1:4], pc_coefs = rates_pca$rotation[,1:4],
-#>            tour_path = guided_tour(new_splines2d(),
-#>                                           current = basis_start,
-#>                                           search_f = search_better,
-#>                                           max.tries = 100,
-#>                                           alpha = 1),
-#>            col = col_rates)
-#> save(record_search_better, record_search_geodesic, record_search_givens,
-#>      file = "data/rates_tour_records.RData")
+# # modified the splines2d
+# # same as defined above, but keeping this block self-contained
+# new_splines2d <- function ()
+# {
+#   function(mat) {
+#     mat <- as.data.frame(mat)
+#     colnames(mat) <- c("x", "y")
+#     kx <- ifelse(length(unique(mat$x[!is.na(mat$x)])) < 20,
+#                  3, 10)
+#     mgam1 <- mgcv::gam(y ~ s(x, bs = "cr", k = kx), data = mat)
+#     measure <- 1 - var(residuals(mgam1), na.rm = T)/var(mat$y, na.rm = T)
+#     return(measure)
+#   }
+# }
+# library(tourr)
+# col_rates <- rep("grey", nrow(rates))
+# col_rates[rate_march] <- "darkblue"
+# basis_start <- matrix(rep(0, 8), ncol = 2)
+# basis_start[3,1] <- 1
+# basis_start[4,2] <- 1
+# set.seed(2023)
+# record_search_geodesic <- animate_pca(rates_pca_sd[,1:4], pc_coefs = rates_pca$rotation[,1:4],
+#             tour_path = guided_tour(new_splines2d(), current = basis_start),
+#             col = col_rates)
+# set.seed(2023)
+# record_search_givens <- animate_pca(rates_pca_sd[,1:4], pc_coefs = rates_pca$rotation[,1:4],
+#            tour_path = guided_tour_givens(new_splines2d(),
+#                                           current = basis_start,
+#                                           optim = "search_better",
+#                                           max.tries = 100,
+#                                           alpha = 1),
+#            col = col_rates)
+# set.seed(2023)
+# record_search_better <-animate_pca(rates_pca_sd[,1:4], pc_coefs = rates_pca$rotation[,1:4],
+#            tour_path = guided_tour(new_splines2d(),
+#                                           current = basis_start,
+#                                           search_f = search_better,
+#                                           max.tries = 100,
+#                                           alpha = 1),
+#            col = col_rates)
+# save(record_search_better, record_search_geodesic, record_search_givens,
+#      file = "data/rates_tour_records.RData")
 
 
 ## ----echo = FALSE, eval=FALSE-------------------------------------------------
-#> # generating gifs for the three guided tours
-#> load("data/rates_tour_records.RData")
-#> library(ferrn)
-#> path_geodesic <- get_interp(record_search_geodesic)$basis
-#> path_better <- get_interp(record_search_better)$basis
-#> path_givens <- get_interp(record_search_givens)$basis
-#> 
-#> col_rates <- rep("grey", nrow(rates))
-#> col_rates[rate_march] <- "darkblue"
-#> # it seems this is using smaller interpolation steps so we set frames to
-#> # some high number to make sure we capture the full path
-#> tourr::render_gif(rates_pca_sd[,1:4],
-#>                   display = display_pca(col = col_rates,
-#>                                         pc_coefs = rates_pca$rotation[,1:4]),
-#>                   tour_path = planned_tour(path_geodesic),
-#>                   "rates_tour_geodesic.gif", frames = 500,
-#>                   loop = FALSE, width=200, height=200)
-#> 
-#> tourr::render_gif(rates_pca_sd[,1:4],
-#>                   display = display_pca(col = col_rates,
-#>                                         pc_coefs = rates_pca$rotation[,1:4]),
-#>                   tour_path = planned_tour_givens(path_givens),
-#>                   "rates_tour_givens.gif", frames = 700,
-#>                   loop = FALSE, width=200, height=200)
-#> 
-#> tourr::render_gif(rates_pca_sd[,1:4],
-#>                   display = display_pca(col = col_rates,
-#>                                         pc_coefs = rates_pca$rotation[,1:4]),
-#>                   tour_path = planned_tour(path_better),
-#>                   "rates_tour_better.gif", frames = 1000,
-#>                   loop = FALSE, width=200, height=200)
-#> 
+# # generating gifs for the three guided tours
+# load("data/rates_tour_records.RData")
+# library(ferrn)
+# path_geodesic <- get_interp(record_search_geodesic)$basis
+# path_better <- get_interp(record_search_better)$basis
+# path_givens <- get_interp(record_search_givens)$basis
+# 
+# col_rates <- rep("grey", nrow(rates))
+# col_rates[rate_march] <- "darkblue"
+# # it seems this is using smaller interpolation steps so we set frames to
+# # some high number to make sure we capture the full path
+# tourr::render_gif(rates_pca_sd[,1:4],
+#                   display = display_pca(col = col_rates,
+#                                         pc_coefs = rates_pca$rotation[,1:4]),
+#                   tour_path = planned_tour(path_geodesic),
+#                   "rates_tour_geodesic.gif", frames = 500,
+#                   loop = FALSE, width=200, height=200)
+# 
+# tourr::render_gif(rates_pca_sd[,1:4],
+#                   display = display_pca(col = col_rates,
+#                                         pc_coefs = rates_pca$rotation[,1:4]),
+#                   tour_path = planned_tour_givens(path_givens),
+#                   "rates_tour_givens.gif", frames = 700,
+#                   loop = FALSE, width=200, height=200)
+# 
+# tourr::render_gif(rates_pca_sd[,1:4],
+#                   display = display_pca(col = col_rates,
+#                                         pc_coefs = rates_pca$rotation[,1:4]),
+#                   tour_path = planned_tour(path_better),
+#                   "rates_tour_better.gif", frames = 1000,
+#                   loop = FALSE, width=200, height=200)
+# 
 
 
 ## ----rates-tour-animated, echo=FALSE, out.width="33%", fig.align = "center", fig.show='hold', include=knitr::is_html_output(), eval=knitr::is_html_output(), fig.cap="Optimization in the guided tour using geodesic optimization (GEOO) (left), simulated annealing with geodesic interpolation (SAGEO) (middle) and simulated annealing with Givens interpolation (SAGIV) (right). (Refresh page to re-start the animation.)", fig.alt="Three animated plots showing biplot axes. The left and the middle scatterplot end at little structure, and the last scatterplot ends at a strong non-linear relationship."----
-#> knitr::include_graphics(
-#>   c("figures/rates_tour_geodesic.gif",
-#>     "figures/rates_tour_better.gif",
-#>     "figures/rates_tour_givens.gif"))
+# knitr::include_graphics(
+#   c("figures/rates_tour_geodesic.gif",
+#     "figures/rates_tour_better.gif",
+#     "figures/rates_tour_givens.gif"))
 
 
 ## ----rates-tour-static, out.width="30%", fig.align="center", echo = FALSE, fig.show='hold', include=knitr::is_latex_output(), eval=knitr::is_latex_output(), fig.cap="Final view after optimization in the guided tour using geodesic optimization  (GEOO) (left), simulated annealing with geodesic interpolation (SAGEO) (middle) and simulated annealing with Givens interpolation (SAGIV) (right).", fig.alt="Three scatterplots with biplot axes. The left and the middle scatterplot have little structure, and the last scatterplot shows a strong non-linear relationship, even better than provided by PCA."----
