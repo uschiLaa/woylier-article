@@ -2,6 +2,8 @@
 
 - **Id**: 2023-131
 
+RESPONSE: We thank the editor, associate editor and reviewers for their careful evaluation of our article.
+
 ## General
 
 The article describes a method to rotate points within the plane while conducting a tour, in order to maximize the spline index value which can be used to guide projection pursuit tours. This is an improvement on previous methods, and provides useful functionality to the R community. The paper is well written, though it could probably address other obvious and straightforward solutions to the defined problem, such as modifying the calculation of the spline index so that it is rotation invariant (e.g. by maximizing over rotation angle theta).
@@ -15,11 +17,11 @@ RESPONSE: Thanks for the comment. Yes, for the spline index, but we will keep it
     - Figure 4: Use of red and green is absolutely not colorblind accessible, and color contrast should be optimized for this figure as well. Double-encode points used so that people viewing the paper on low-color devices (or black-and-white printer physical copies) can still make out the differences between the (currently) red and greenpoints.
     - Figure 5: Double encode lines using linetype to help differentiate colors.
 
-RESPONSE: DC to do
+RESPONSE: Fig 1 adjusted as suggested. Lines in Fig 5 are encoded with linetype as well as colour.
 
 - In the preprojection algorithm section, define the full process using mathematical notation, don't just assume that Gram-Schmidt is a known procedure (yes, it's standard in linear algebra, but it's been a while for a lot of readers).
 
-RESPONSE: DC to do
+RESPONSE: Done
 
 -  "In the literature, a number of such criteria have been developed based on clustering, spread, and outliers."
 Did you want to cite this literature parenthetically at the end of the sentence?
@@ -28,11 +30,11 @@ RESPONSE: ZB to do
 
 - Formally cite the open exchange rates site as well as providing the link to the site directly in the text.
 
-RESPONSE: Thank you for this suggestion. The formal citation has been added.
+RESPONSE: Done
 
 - If the goal is rotation invariance, would it not also be valid to define the index as (forgive my notation) $$\max_{\theta\in[0, 2\pi)} f_{\text{index}(p(x, \theta), p(y, \theta))}$$ and use the geodesic projection? Essentially, this would relax the assumption that $y = f(x)$, without requiring the rotation. Since the authors themselves mention "In general the geodesic is preferred because it removes within-plane spin, but occasionally it is helpful to very specifically arrive at the prescribed basis.", it might be worth at least explaining why the obvious solution (change the index) isn't as good as the `woylier` solution.
 
-RESPONSE: DC to do
+RESPONSE: A paragraph has been added to the Introduction providing more rationale.
 
 ### Minor Wordsmithing Suggestions
 
@@ -41,29 +43,29 @@ RESPONSE: DC to do
 - Page 1:
     - "These are different ways of selecting the sequence of projection bases for the tour" ~~, for an overview~~ +(+see Lee et al. (2022)+)+.
 
-RESPONSE: Thank you for this suggestion. The sentence has been revised for clarity.
+RESPONSE: The sentence has been revised.
 
     - "Projection pursuit"+, originally proposed in Kruskal (1969),+ "is a procedure used to locate the projection of high-to-low dimensional space that should expose the most interesting feature of data"~~, originally proposed in Kruskal (1969)~~.
 
-RESPONSE: Thank you for this suggestion. The sentence has been revised for clarity.
+RESPONSE: The sentence has been revised.
 
     - "It compares the variance of the response variable to the variance of residuals", +such that+ ~~and~~ "the functional dependence is stronger when the index value is larger."
 
-RESPONSE: Thank you for this suggestion. The sentence has been revised for clarity.
+RESPONSE: The sentence has been revised.
 
     - "The procedure in Grimm (2016) ~~was~~ +is+ less affected by the orientation because it considered only pairs of variables, and it selected the maximum value found when exchanging which variable is considered as a predictor or response variable."
 
-RESPONSE: Thank you for this suggestion. The sentence has been revised for clarity.
+RESPONSE: The sentence has been revised.
 
 - Page 4:
     - "Performing these rotations would go from the starting frame to the target frame in one step."+, but+ ~~But~~ "we want to do it sequentially in a number of steps so interpolation between frames looks dynamic."
 
-RESPONSE: Thank you for this suggestion. The sentence has been revised for clarity.
+RESPONSE: The sentence has been revised.
 
 - Page 6:
     - "The data ~~was~~ +were+ extracted from open exchange rates and ~~contains~~ +contain+ cross-rate+s+ ..."
 
-RESPONSE: Thank you for this suggestion. The sentence has been revised for clarity.
+RESPONSE: The sentence has been revised.
 
 ## Code
 
@@ -81,4 +83,5 @@ Code:
 - The package code could be modularized a bit more effectively, using shorter functions that only accomplish one task. This is admittedly a stylistic choice, but there are a few functions that are a bit too long for my personal comfort.
 - I'm not sure why this is a separate package instead of being integrated into a new release of tourr directly. The number of additional functions is small and the package relies so heavily on tourr that it would seem to be easier just to combine the packages given the number of common authors. While there are obviously advantages in terms of additional publications and CV line items, I'm not convinced it's advantageous to the R user to have to install e.g. 5 packages to get the full tour functionality.
 
-RESPONSE: DC to do
+RESPONSE: Thank you for the comment. Yes, ideally all the code is re-factored.The tour package is a behemoth now, and at some point we will undertake this. Working on the frame to frame interpolation was much easier in a separate package. We suspect that application of frame to frame interpolation is fairly rare, and most tourr users will not need to install woylier. When the tourr package is refactored we can revisit intergrating the woylier functions. We do also toy with breaking the tourr package into many smaller packages, to help with the maintenance!
+

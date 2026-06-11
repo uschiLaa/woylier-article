@@ -2,7 +2,7 @@
 title: "Frame to frame interpolation for high-dimensional data visualisation using the woylier package"
 date: "`r Sys.Date()`"
 abstract: >
-  The woylier package implements tour interpolation paths between frames using Givens rotations. This provides an alternative to the geodesic interpolation between planes currently available in the tourr package. Tours are used to visualise high-dimensional data and models, to detect clustering, anomalies and non-linear relationships. Frame-to-frame interpolation can be useful for projection pursuit guided tours when the index is not rotationally invariant. It also provides a way to specifically reach a given target frame. We demonstrate the method for exploring non-linear relationships between currency cross-rates.
+  The woylier package implements tour interpolation paths between frames using Givens rotations. This provides an alternative to the geodesic interpolation between planes currently available in the tourr package. Tours are used to visualise high-dimensional data and models, to detect clustering, anomalies and non-linear relationships. Frame-to-frame interpolation can be useful for projection pursuit guided tours when the index is not rotationally invariant. It also provides a way to specifically reach a given target frame, useful for some applications. We demonstrate the method for exploring non-linear relationships between currency cross-rates.
 author:  
   # see ?rjournal_article for more information
   - name: Zoljargal Batsaikhan
@@ -60,7 +60,7 @@ library(kableExtra)
 
 When data has up to three variables, visualization is relatively intuitive, while with more than three variables, we face the challenge of visualizing high dimensions on 2D displays. This issue was tackled by the *grand tour* [@asimov_1985] which can be used to view data in more than three dimensions using linear projections. It is based on the idea of rotations of a lower-dimensional projection in high-dimensional space. The grand tour allows users to see dynamic low-dimensional (typically 2D) projections of higher-dimensional space. Originally, Asimov's grand tour presented the viewer with an automatic movie of projections with no user control. Since then new work has added interactivity to the tour, giving more control to users [@buja_cook_asimov_hurley_2005]. New variations include the manual [@cook_manual_1997] or radial tour [@mmtour], little tour, guided tour [@grandtour1995], local tour, and planned tour. These are different ways of selecting the sequence of projection bases for the tour, see @tourrev.
 
-The guided tour combines projection pursuit with the grand tour and it is implemented in the \CRANpkg{tourr} package [@tourr]. Projection pursuit, originally proposed in @kruskal_1969, is a procedure used to locate the projection of high-to-low dimensional space that should expose the most interesting feature of data. It involves defining a criterion of interest, a numerical objective function that indicates the interestingness of each projection, and an optimization for selecting planes with increasing values of the function. In the literature, a number of such criteria have been developed based on clustering, spread, and outliers. 
+The guided tour combines projection pursuit with the grand tour and it is implemented in the \CRANpkg{tourr} package [@tourr]. Projection pursuit, originally proposed in @kruskal_1969, is a procedure used to locate the projection of high-to-low dimensional space that should expose the most interesting feature of data. It involves defining a criterion of interest, a numerical objective function that indicates the interestingness of each projection, and an optimization for selecting planes with increasing values of the function. In the literature, a number of such criteria have been developed based on clustering, spread, and outliers (e.g. @cook1993). 
 
 A tour path is a sequence of projections and we use an interpolation to produce small steps simulating a smooth movement. The current implementation of tour in the \CRANpkg{tourr} package uses geodesic interpolation between planes. The geodesic interpolation path is the shortest path between planes with no within-plane spin (see @Buja2004TheoryOD for more details). As a result, the rendered target plane could be a within-plane rotation of the target plane originally specified. This is not a problem when the structure we are looking for can be identified from any rotation. However, even simple associations in 2D, such as the calculated correlation between variables, can be very different when the basis is rotated.
 
@@ -69,9 +69,11 @@ Most projection pursuit indexes, particularly those provided by in \CRANpkg{tour
 
 Figure `r knitr::asis_output(ifelse(knitr::is_html_output(), '\\@ref(fig:splines2d-static)', '\\@ref(fig:splines2d-static)'))` illustrates the rotational invariance problem for a modified splines index, where we always consider the horizontal direction as the predictor variable and the vertical direction as the response. Thus, our modified index computes the splines on one orientation, exaggerating the rotational variability. The example data was simulated to follow a sine curve and the modified splines index is calculated on different within-plane rotations of the data. Although they have the same structure, the index values vary greatly. 
 
-The lack of rotation invariance of the splines index raises complications in the optimization process in the projection-pursuit guided tour as available in \CRANpkg{tourr}. Fixing this is the motivation of this work. The goal with the frame-to-frame interpolation is that optimization would find the best within-plane rotation, and thus appropriately optimize the index. 
+The lack of rotation invariance of the splines index raises complications in the optimization process in the projection-pursuit guided tour as available in \CRANpkg{tourr}. Fixing this is one motivation of this work, and makes the explanation of frame-to-frame interpolation easier. The goal with the frame-to-frame interpolation is that optimization would find the best within-plane rotation, and thus appropriately optimize the index. 
 
-```{r splines2d-static, out.width = "100%", fig.width = 9, fig.height = 4.5, layout = "l-body", fig.cap="The impact of rotation on a spline index that is NOT rotation invariant. The index value for different within-plane rotations take very different values: (a) original projection has a maximum index value of 1.00, (b) axes rotated 45$^o$ drops index value to 0.83, (c) axes rotated 60$^o$ drops index to a very low 0.26. Geodesic interpolation between planes will have difficulty finding the maximum of an index like this because it is focused only on the projection plane, not the frame defining the plane.", fig.alt = "Three side-by-side scatterplots. The left side plot shows two variables, V5, V6, with a sine curve. The index value is the maximum of 1. The middle plot shows the two variables rotated 45 degrees clockwise, and the calculated index value is 0.83. The right-side plot is rotated 60 degrees, and the calculated index value is 0.26."}
+We should note that, if optimization was the only goal, it could be achieved simply by modifying the index to also optimize across all frames in the same plane, by adding a within-plane rotation and index calculation. This might slow the optimisation down a little, but it would achieve the objective of finding the best projection, regardless of orientation. However, there are some specific applications where we would like to reach a specific frame at the target. This is an area of potential future research but places where we have found it to be desirable are interpolating between frames provided by two different principal component solutions, perhaps computed on two different samples, to digest the similarity and difference between them. Another recent example is to examine high-dimensional ternary diagrams (simplexes) summarizing preferential data, where we would like to rotate through very specific frames corresponding to pairs or preferences, to understand how preferences might flow between groups. 
+
+```{r splines2d-static, out.width = "100%", fig.width = 9, fig.height = 3.5, layout = "l-body", fig.cap="The impact of rotation on a spline index that is NOT rotation invariant. The index value for different within-plane rotations take very different values: (a) original projection has a maximum index value of 1.00, (b) axes rotated 45$^o$ drops index value to 0.83, (c) axes rotated 60$^o$ drops index to a very low 0.26. Geodesic interpolation between planes will have difficulty finding the maximum of an index like this because it is focused only on the projection plane, not the frame defining the plane.", fig.alt = "Three side-by-side scatterplots. The left side plot shows two variables, V5, V6, with a sine curve. The index value is the maximum of 1. The middle plot shows the two variables rotated 45 degrees clockwise, and the calculated index value is 0.83. The right-side plot is rotated 60 degrees, and the calculated index value is 0.26."}
 data("sine_curve")
 
 # modified the splines2d
@@ -112,7 +114,7 @@ p1 <- ggplot(mat, aes(x=V5, y=V6)) +
   geom_text(data=tibble(V5=c(1,0), V6=c(0,1), label=c("V5", "V6")), aes(x=V5, y=V6, label=label)) +
   xlim(c(-1.2, 1.2)) + ylim(c(-1.2, 1.2)) +
   xlab("Proj 1") + ylab("Proj 2") +
-  ggtitle(paste("a. 0 deg: ", mat_idx)) +
+  ggtitle(paste("a. 0 deg, Index = ", sprintf("%.2f", mat_idx))) +
   theme_bw() +
   theme(aspect.ratio=1)
 p2 <- ggplot(mat_rot1, aes(x=x, y=y)) + 
@@ -121,7 +123,7 @@ p2 <- ggplot(mat_rot1, aes(x=x, y=y)) +
   geom_text(data=tibble(V5=rot1[1,], V6=rot1[2,], label=c("V5", "V6")), aes(x=V5, y=V6, label=label)) +
   xlim(c(-1.2, 1.2)) + ylim(c(-1.2, 1.2)) +
   xlab("Proj 1") + ylab("Proj 2") +
-  ggtitle(paste("b. 45 deg: ", mat_rot1_idx)) +
+  ggtitle(paste("b. 45 deg, Index = ", sprintf("%.2f", mat_rot1_idx))) +
   theme_bw() +
   theme(aspect.ratio=1)
 p3 <- ggplot(mat_rot2, aes(x=x, y=y)) + 
@@ -130,7 +132,7 @@ p3 <- ggplot(mat_rot2, aes(x=x, y=y)) +
   geom_text(data=tibble(V5=rot2[1,], V6=rot2[2,], label=c("V5", "V6")), aes(x=V5, y=V6, label=label)) +
   xlim(c(-1.2, 1.2)) + ylim(c(-1.2, 1.2)) +
   xlab("Proj 1") + ylab("Proj 2") +
-  ggtitle(paste("c. 60 deg: ", mat_rot2_idx)) +
+  ggtitle(paste("c. 60 deg, Index = ", sprintf("%.2f", mat_rot2_idx))) +
   theme_bw() +
   theme(aspect.ratio=1)
 p1+p2+p3
@@ -170,7 +172,7 @@ where $I_d$ is the identity matrix in d dimensions.
 
 In order to make the interpolation algorithm simple, we carry out a preprojection step to find the subspace that the interpolation path, $F(t)$, is traversing. In other words, the preprojection step defines the joint subspace of $F_a$ and $F_z$ and makes sure the interpolation path is limited to that space.
 
-The procedure starts with forming an orthonormal basis by applying Gram-Schmidt to $F_z$ with regards to $F_a$, i.e. we find the $p\times d$ matrix that contains the component of $F_z$ that is orthogonal to $F_a$. We denote this orthonormal basis by $F_\star$. Then we build the preprojection basis $B$ by combining $F_a$ and $F_\star$ as follows:
+The procedure starts with forming an orthonormal basis by applying Gram-Schmidt to $F_z$ with regards to $F_a$: $F_\star = F_z - F_a(F_a^\top F_a)^{-1}F_aF_z$, followed by orthonormalizing subsequent columns of $F_\star$ against all preceding columns. (The function `orthonormalise_by()` in the \CRANpkg{tourr} does this.) Then we build the preprojection basis $B$ by combining $F_a$ and $F_\star$ as follows:
 
 $$B = (F_a, F_{\star})$$
 
@@ -196,7 +198,7 @@ $$E_d=((1, 0, 0, ...)^T, (0, 1, 0, ...)^T, ...).$$
 
 The resulting interpolation path construction algorithm from starting frame $F_a$ to target frame $F_z$ is illustrated below. The example is for $p=6$ and $d=2$. 
 
-1. Construct preprojection basis $B$ by orthonormalizing $F_z$ with regards tp $F_a$ with Gram-Schmidt.
+1. Construct preprojection basis $B$ by orthonormalizing $F_z$ with regards tp $F_a$ with Gram-Schmidt (same procedure as described above).
 
 In our example, $F_a$ and $F_z$ are $p\times d$ or $6\times2$ matrices that are orthonormal. The preprojection basis $B$ is $p\times 2d$ matrix that is $6\times 4$.
 
@@ -406,8 +408,9 @@ sp_path$typecol <- case_when(sp_path$type=="proj_space" ~ clrs[1],
 sp_path$typecol <- case_when(sp_path$type=="proj_space" ~ clrs3[1],
                              sp_path$type=="point1" ~ clrs3[4],
                              sp_path$type=="f_path" ~ clrs3[2],
-                             sp_path$type=="point2" ~ clrs3[3],
-                             sp_path$type=="p_path" ~ clrs3[3])
+                             sp_path$type=="point2" ~ clrs3[4],
+                             sp_path$type=="p_path" ~ clrs3[3],
+                             sp_path$type=="path" ~ clrs3[4])
 
 edges <- matrix(c(n+20+1, seq(n+1, n+10, 1), seq(n+11, n+19, 1), nrow(sp_path), seq(n+1, n+10, 1), n+20+2, seq(n+12, n+20, 1), n+20), ncol=2, byrow=FALSE)
 edges.col <- c(rep(clrs[3], 10), rep(clrs[6], 10), clrs[1]) 
@@ -416,13 +419,14 @@ edges.col <- c(rep(clrs3[2], 10), rep(clrs3[3], 10), clrs3[1]) #factor(rep("path
                                   "point2"))
   
 cex <- c(rep(1, n), rep(3, nrow(sp_path)-n))
+pch <- c(rep(16, n), rep(15, 10), rep(17, 10), rep(16, 2))
   
 animate_xy(as.matrix(sp_path[,1:p]), axes="off",
            col=sp_path$typecol,
            edges=edges,
            edges.col=edges.col,
            edges.width=3,
-           cex=cex)
+           cex=cex, pch=pch)
 
 tourr::render_gif(as.matrix(sp_path[,1:p]), 
                   tour_path = grand_tour(),
@@ -740,12 +744,15 @@ rates_sub_long <- rates_sub %>%
   pivot_longer(cols=ARS:MYR, 
                names_to="currency",
                values_to="crossrate") 
-ggplot(rates_sub_long, aes(x=date, y=crossrate, colour=currency)) +
-  geom_line() +
-  scale_colour_brewer("", palette = "Dark2") +
+ggplot(rates_sub_long) +
+  geom_line(aes(x=date, y=crossrate, 
+                colour=currency, 
+                linetype=currency)) +
+  scale_colour_brewer(palette = "Dark2") +
   theme_bw() +
   theme(aspect.ratio = 0.3,
-        legend.position = "bottom")
+        legend.position = "bottom",
+        legend.title = element_blank())
 # saving months for coloring in later
 rate_march <- lubridate::month(rates$date)==3
 ```

@@ -20,7 +20,7 @@ library(corrplot)
 library(kableExtra)
 
 
-## ----splines2d-static, out.width = "100%", fig.width = 9, fig.height = 4.5, layout = "l-body", fig.cap="The impact of rotation on a spline index that is NOT rotation invariant. The index value for different within-plane rotations take very different values: (a) original projection has a maximum index value of 1.00, (b) axes rotated 45$^o$ drops index value to 0.83, (c) axes rotated 60$^o$ drops index to a very low 0.26. Geodesic interpolation between planes will have difficulty finding the maximum of an index like this because it is focused only on the projection plane, not the frame defining the plane.", fig.alt = "Three side-by-side scatterplots. The left side plot shows two variables, V5, V6, with a sine curve. The index value is the maximum of 1. The middle plot shows the two variables rotated 45 degrees clockwise, and the calculated index value is 0.83. The right-side plot is rotated 60 degrees, and the calculated index value is 0.26."----
+## ----splines2d-static, out.width = "100%", fig.width = 9, fig.height = 3.5, layout = "l-body", fig.cap="The impact of rotation on a spline index that is NOT rotation invariant. The index value for different within-plane rotations take very different values: (a) original projection has a maximum index value of 1.00, (b) axes rotated 45$^o$ drops index value to 0.83, (c) axes rotated 60$^o$ drops index to a very low 0.26. Geodesic interpolation between planes will have difficulty finding the maximum of an index like this because it is focused only on the projection plane, not the frame defining the plane.", fig.alt = "Three side-by-side scatterplots. The left side plot shows two variables, V5, V6, with a sine curve. The index value is the maximum of 1. The middle plot shows the two variables rotated 45 degrees clockwise, and the calculated index value is 0.83. The right-side plot is rotated 60 degrees, and the calculated index value is 0.26."----
 data("sine_curve")
 
 # modified the splines2d
@@ -61,7 +61,7 @@ p1 <- ggplot(mat, aes(x=V5, y=V6)) +
   geom_text(data=tibble(V5=c(1,0), V6=c(0,1), label=c("V5", "V6")), aes(x=V5, y=V6, label=label)) +
   xlim(c(-1.2, 1.2)) + ylim(c(-1.2, 1.2)) +
   xlab("Proj 1") + ylab("Proj 2") +
-  ggtitle(paste("a. 0 deg: ", mat_idx)) +
+  ggtitle(paste("a. 0 deg, Index = ", sprintf("%.2f", mat_idx))) +
   theme_bw() +
   theme(aspect.ratio=1)
 p2 <- ggplot(mat_rot1, aes(x=x, y=y)) + 
@@ -70,7 +70,7 @@ p2 <- ggplot(mat_rot1, aes(x=x, y=y)) +
   geom_text(data=tibble(V5=rot1[1,], V6=rot1[2,], label=c("V5", "V6")), aes(x=V5, y=V6, label=label)) +
   xlim(c(-1.2, 1.2)) + ylim(c(-1.2, 1.2)) +
   xlab("Proj 1") + ylab("Proj 2") +
-  ggtitle(paste("b. 45 deg: ", mat_rot1_idx)) +
+  ggtitle(paste("b. 45 deg, Index = ", sprintf("%.2f", mat_rot1_idx))) +
   theme_bw() +
   theme(aspect.ratio=1)
 p3 <- ggplot(mat_rot2, aes(x=x, y=y)) + 
@@ -79,7 +79,7 @@ p3 <- ggplot(mat_rot2, aes(x=x, y=y)) +
   geom_text(data=tibble(V5=rot2[1,], V6=rot2[2,], label=c("V5", "V6")), aes(x=V5, y=V6, label=label)) +
   xlim(c(-1.2, 1.2)) + ylim(c(-1.2, 1.2)) +
   xlab("Proj 1") + ylab("Proj 2") +
-  ggtitle(paste("c. 60 deg: ", mat_rot2_idx)) +
+  ggtitle(paste("c. 60 deg, Index = ", sprintf("%.2f", mat_rot2_idx))) +
   theme_bw() +
   theme(aspect.ratio=1)
 p1+p2+p3
@@ -222,26 +222,37 @@ knitr::include_graphics("figures/compare-paths.png")
 # 
 # # Colours from
 # # paletteer::scale_colour_paletteer_d("rcartocolor::TealRose")
-# clrs <- c("#F1EAC8FF", "#B1C7B3FF", "#72AAA1FF", "#009392FF", "#E5B9ADFF", "#D98994FF", "#D0587EFF",
-#           "lightgrey")
+# clrs <- c("#F1EAC8FF", "#B1C7B3FF", "#72AAA1FF", "#009392FF", "#E5B9ADFF", "#D98994FF", "#D0587EFF", "lightgrey")
+# clrs2 <-  c("#3B99B1", "#4CAFA1", "#8BBD94", "#C1C88C", "#EABA21", "#E79812", "#E97000", "#F5191C")  #colorspace::divergingx_hcl(8, palette = "Zissou 1")
+# clrs3 <- c("#F1EAC8FF", "#4CAFA1", "#E97000", "lightgrey")
+# 
 # sp_path$typecol <- case_when(sp_path$type=="proj_space" ~ clrs[1],
 #                              sp_path$type=="point1" ~ clrs[8],
 #                              sp_path$type=="f_path" ~ clrs[3],
 #                              sp_path$type=="point2" ~ clrs[4],
 #                              sp_path$type=="p_path" ~ clrs[6])
+# sp_path$typecol <- case_when(sp_path$type=="proj_space" ~ clrs3[1],
+#                              sp_path$type=="point1" ~ clrs3[4],
+#                              sp_path$type=="f_path" ~ clrs3[2],
+#                              sp_path$type=="point2" ~ clrs3[4],
+#                              sp_path$type=="p_path" ~ clrs3[3],
+#                              sp_path$type=="path" ~ clrs3[4])
 # 
 # edges <- matrix(c(n+20+1, seq(n+1, n+10, 1), seq(n+11, n+19, 1), nrow(sp_path), seq(n+1, n+10, 1), n+20+2, seq(n+12, n+20, 1), n+20), ncol=2, byrow=FALSE)
-# edges.col <- c(rep(clrs[3], 10), rep(clrs[6], 10), clrs[1]) #factor(rep("path", 10), levels=c("point1", "path", "proj_space",
+# edges.col <- c(rep(clrs[3], 10), rep(clrs[6], 10), clrs[1])
+# edges.col <- c(rep(clrs3[2], 10), rep(clrs3[3], 10), clrs3[1]) #factor(rep("path",
+# #factor(rep("path", 10), levels=c("point1", "path", "proj_space",
 #                                   "point2"))
 # 
 # cex <- c(rep(1, n), rep(3, nrow(sp_path)-n))
+# pch <- c(rep(16, n), rep(15, 10), rep(17, 10), rep(16, 2))
 # 
 # animate_xy(as.matrix(sp_path[,1:p]), axes="off",
 #            col=sp_path$typecol,
 #            edges=edges,
 #            edges.col=edges.col,
 #            edges.width=3,
-#            cex=cex)
+#            cex=cex, pch=pch)
 # 
 # tourr::render_gif(as.matrix(sp_path[,1:p]),
 #                   tour_path = grand_tour(),
@@ -541,12 +552,15 @@ rates_sub_long <- rates_sub %>%
   pivot_longer(cols=ARS:MYR, 
                names_to="currency",
                values_to="crossrate") 
-ggplot(rates_sub_long, aes(x=date, y=crossrate, colour=currency)) +
-  geom_line() +
-  scale_colour_brewer("", palette = "Dark2") +
+ggplot(rates_sub_long) +
+  geom_line(aes(x=date, y=crossrate, 
+                colour=currency, 
+                linetype=currency)) +
+  scale_colour_brewer(palette = "Dark2") +
   theme_bw() +
   theme(aspect.ratio = 0.3,
-        legend.position = "bottom")
+        legend.position = "bottom",
+        legend.title = element_blank())
 # saving months for coloring in later
 rate_march <- lubridate::month(rates$date)==3
 
