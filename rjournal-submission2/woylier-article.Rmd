@@ -394,16 +394,25 @@ sp_path <- rbind(sp_path, point1, point2)
 
 # Colours from
 # paletteer::scale_colour_paletteer_d("rcartocolor::TealRose")
-clrs <- c("#F1EAC8FF", "#B1C7B3FF", "#72AAA1FF", "#009392FF", "#E5B9ADFF", "#D98994FF", "#D0587EFF",
-          "lightgrey")
+clrs <- c("#F1EAC8FF", "#B1C7B3FF", "#72AAA1FF", "#009392FF", "#E5B9ADFF", "#D98994FF", "#D0587EFF", "lightgrey")
+clrs2 <-  c("#3B99B1", "#4CAFA1", "#8BBD94", "#C1C88C", "#EABA21", "#E79812", "#E97000", "#F5191C")  #colorspace::divergingx_hcl(8, palette = "Zissou 1")
+clrs3 <- c("#F1EAC8FF", "#4CAFA1", "#E97000", "lightgrey")
+
 sp_path$typecol <- case_when(sp_path$type=="proj_space" ~ clrs[1],
                              sp_path$type=="point1" ~ clrs[8],
                              sp_path$type=="f_path" ~ clrs[3],
                              sp_path$type=="point2" ~ clrs[4],
                              sp_path$type=="p_path" ~ clrs[6])
+sp_path$typecol <- case_when(sp_path$type=="proj_space" ~ clrs3[1],
+                             sp_path$type=="point1" ~ clrs3[4],
+                             sp_path$type=="f_path" ~ clrs3[2],
+                             sp_path$type=="point2" ~ clrs3[3],
+                             sp_path$type=="p_path" ~ clrs3[3])
 
 edges <- matrix(c(n+20+1, seq(n+1, n+10, 1), seq(n+11, n+19, 1), nrow(sp_path), seq(n+1, n+10, 1), n+20+2, seq(n+12, n+20, 1), n+20), ncol=2, byrow=FALSE)
-edges.col <- c(rep(clrs[3], 10), rep(clrs[6], 10), clrs[1]) #factor(rep("path", 10), levels=c("point1", "path", "proj_space", 
+edges.col <- c(rep(clrs[3], 10), rep(clrs[6], 10), clrs[1]) 
+edges.col <- c(rep(clrs3[2], 10), rep(clrs3[3], 10), clrs3[1]) #factor(rep("path", 
+#factor(rep("path", 10), levels=c("point1", "path", "proj_space", 
                                   "point2"))
   
 cex <- c(rep(1, n), rep(3, nrow(sp_path)-n))
