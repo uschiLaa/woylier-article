@@ -76,7 +76,7 @@ Usability:
 - It would be nice to see longer descriptions/motivations for some of the package functions that include some of the content in the paper (e.g. the math notation underlying how the functions work), rather than the one sentence descriptions that are currently present.
 - The plots in the vignette should be optimized for accessibility and color contrast, and if possible, it would be nice to not have the points overlap the projection indicator in the bottom left corner. https://numbats.github.io/woylier/articles/Plotting_with_woylier.html
 
-RESPONSE: DC to do
+RESPONSE: Thanks, the page has been updated.
 
 Code:
 
