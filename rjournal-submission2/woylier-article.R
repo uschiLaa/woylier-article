@@ -337,11 +337,6 @@ knitr::include_graphics(c("figures/sphere_static.png", "figures/torus_static.png
 #     i <- i+1
 # }
 # 
-# # Only keep the filled rows
-# #connect_flipped <- as.data.frame(flip_connect) |>
-# #  filter(!is.nan(V1)) |>
-# #  mutate(type="connect")
-# # Label these are target planes
 # rot_base2 <- as.data.frame(rbind(base2_rot_1, base2_rot_2)) |>
 #   mutate(type="target")
 # # starting base as tibble
@@ -352,16 +347,13 @@ knitr::include_graphics(c("figures/sphere_static.png", "figures/torus_static.png
 #                        path_2d_f, path_2d_geo, start_2d)
 # 
 # 
-# # Colours from
-# # paletteer::scale_colour_paletteer_d("rcartocolor::TealRose")
-# #clrs <- c("#F1EAC8FF", "#B1C7B3FF", "#72AAA1FF", "#009392FF", "#E5B9ADFF", "#D98994FF", "#D0587EFF",
-# #          "lightgrey")
+# # Set the colours of points according to their type
 # proj_path$typecol <- case_when(proj_path$type=="torus" ~ clrs3[1],
 #                              proj_path$type=="start" ~ clrs3[5],
 #                              proj_path$type=="givens" ~ clrs3[2],
 #                              proj_path$type=="target" ~ clrs3[1],
-#                              proj_path$type=="geodesic" ~ clrs3[3]) #,
-#                              #proj_path$type=="connect" ~ clrs3[1])
+#                              proj_path$type=="geodesic" ~ clrs3[3])
+# # Connect the points to indicate paths, and the equivalent target planes
 # edges <- matrix(c(which(proj_path$type=="target")[1:40], # starting nodes for target
 #                   which(proj_path$type=="target")[42:81], # starting nodes for flipped target
 #                   head(which(proj_path$type=="givens"),-1), # starting nodes for givens
@@ -375,6 +367,7 @@ knitr::include_graphics(c("figures/sphere_static.png", "figures/torus_static.png
 #                rep(clrs3[2], sum(proj_path$type=="givens")-1),
 #                rep(clrs3[3], sum(proj_path$type=="geodesic")-1))
 # 
+# # Set point sizeand type according to type
 # cex <- case_when(proj_path$type=="torus" ~ 0.5,
 #                  proj_path$type=="start" ~ 2,
 #                  proj_path$type=="givens" ~ 1,
@@ -386,13 +379,7 @@ knitr::include_graphics(c("figures/sphere_static.png", "figures/torus_static.png
 #                  proj_path$type=="target" ~ 2,
 #                  proj_path$type=="geodesic" ~ 17)
 # 
-# #cex <- c(rep(0.5, n+4), rep(1, nrow(proj_path)-(n+41)))
-# #cex[which(proj_path$type == "start")] <- 2
-# #cex[which(proj_path$type == "target")] <- 0.1
-# #pch <- c(rep(16, n+41), rep(3, nrow(proj_path)-(n+41)))
-# #pch[which(proj_path$type == "start")] <- 5
-# #pch[which(proj_path$type == "target")] <- 16
-# 
+# # To run in an interactive session
 # animate_xy(as.matrix(proj_path[,1:(2*p)]),
 #            axes="off",
 #            col=proj_path$typecol,
@@ -401,6 +388,7 @@ knitr::include_graphics(c("figures/sphere_static.png", "figures/torus_static.png
 #            edges.width=3,
 #            cex=cex, pch=pch)
 # 
+# # To generate the animated gif for the paper
 # set.seed(1211)
 # tourr::render_gif(as.matrix(proj_path[,1:(2*p)]),
 #                   tour_path = grand_tour(),
@@ -410,7 +398,7 @@ knitr::include_graphics(c("figures/sphere_static.png", "figures/torus_static.png
 #                     edges.col=edges.col,
 #                     edges.width=3,
 #                     cex=cex, pch=pch),
-#                   frames = 150,
+#                   frames = 120,
 #                   gif_file = "torus.gif")
 
 
@@ -576,7 +564,7 @@ knitr::include_graphics(c("figures/sphere_static.png", "figures/torus_static.png
 # anim_save("figures/sine_anim_geodesic.gif")
 
 
-## ----currency, out.width="100%", fig.width = 9, fig.height = 4.5, layout = "l-body", fig.cap="Examining the behaviour of six cross-currency rates (ARS, EUR, KRW, AUD, JPY, MYR) prior to and in the first month of the pandemic. All the currencies are standardised and the sign is flipped. JPY and EUR strengthened against the USD (high values) in March, while the other currencies weakened (low values).", fig.alt="Six time series plots all very similar until March 2020 when JPY and EUR go up. All currencies go down in mid-March and JPY and EUR increase again at the end of March."----
+## ----currency, out.width="100%", fig.width = 7, fig.height = 3, layout = "l-body", fig.cap="Examining the behaviour of six cross-currency rates (ARS, EUR, KRW, AUD, JPY, MYR) prior to and in the first month of the pandemic. All the currencies are standardised and the sign is flipped. JPY and EUR strengthened against the USD (high values) in March, while the other currencies weakened (low values).", fig.alt="Six time series plots all very similar until March 2020 when JPY and EUR go up. All currencies go down in mid-March and JPY and EUR increase again at the end of March."----
 rates <- read_csv("data/rates_Nov19_Mar20.csv", show_col_types = FALSE) %>% 
   select(date, ARS, AUD, EUR, JPY, KRW, MYR) 
 rates_sub <- rates %>%
@@ -593,7 +581,13 @@ ggplot(rates_sub_long) +
   theme_bw() +
   theme(aspect.ratio = 0.3,
         legend.position = "bottom",
-        legend.title = element_blank())
+        legend.title = element_blank()) +
+  guides(
+    colour = guide_legend(
+      nrow = 1,
+      byrow = TRUE
+    )
+  )
 # saving months for coloring in later
 rate_march <- lubridate::month(rates$date)==3
 
