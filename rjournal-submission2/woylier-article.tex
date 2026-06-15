@@ -225,11 +225,11 @@ A 1D projection of data in \(p\) dimensions corresponds to a linear combination 
 
 \begin{figure}
 
-{\centering \includegraphics[width=0.45\linewidth,alt={Two highlighted points on the surface of a 3D sphere (left) and 6D torus (right) connected by a path of points which are the interpolation steps, static views.}]{figures/sphere_static} \includegraphics[width=0.45\linewidth,alt={Two highlighted points on the surface of a 3D sphere (left) and 6D torus (right) connected by a path of points which are the interpolation steps, static views.}]{figures/torus_static} 
+{\centering \includegraphics[width=0.45\linewidth,alt={Two highlighted points on the surface of a 3D sphere (left) and 6D torus (right) connected by a path of points which are the interpolation steps, static view.}]{figures/sphere_static} \includegraphics[width=0.45\linewidth,alt={Two highlighted points on the surface of a 3D sphere (left) and 6D torus (right) connected by a path of points which are the interpolation steps, static view.}]{figures/torus_static} 
 
 }
 
-\caption{Interpolation steps of 1D (left) and 2D (right) projections of 3D data made with a Givens path (forest green) and a geodesic path (deep red). The cream points represent the space of all projections, which is a sphere for 1D projections and a torus for 2D projections. In the 1D example, geodesic arrives at the opposite side of the sphere to Givens, indicating that it has flipped the direction of the vector in order to make the shortest path to the same plane. A similar thing happens for the 2D example, geodesic flips the sign of one basis vector, but it defines the same plane, as indicated by the cream circles.}\label{fig:1d-path-static}
+\caption{Interpolation steps of 1D (left) and 2D (right) projections of 3D data made with a Givens path (forest green square) and a geodesic path (dark orange triangle). The black diamond indicates the starting basis common to both interpolations. The cream points represent the space of all projections, which is a sphere for 1D projections and a torus for 2D projections. In the 1D example, geodesic arrives at the opposite side of the sphere to Givens, indicating that it has flipped the direction of the vector in order to make the shortest path to the same plane. A similar thing happens for the 2D example, geodesic flips the sign of one basis vector, but it defines the same plane, as indicated by the cream circles.}\label{fig:1d-path-static}
 \end{figure}
 
 In the case of 2D projections, we can plot the interpolated path between 2 frames on a torus. A torus can be seen as a crossing of 2 circles that are orthonormal, as is the case with our projection onto 2D. Figure \ref{fig:1d-path-static} (right) compares the interpolation paths for \(p=3\).

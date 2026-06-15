@@ -17,7 +17,7 @@ RESPONSE: Thanks for the comment. Yes, for the spline index, but we will keep it
     - Figure 4: Use of red and green is absolutely not colorblind accessible, and color contrast should be optimized for this figure as well. Double-encode points used so that people viewing the paper on low-color devices (or black-and-white printer physical copies) can still make out the differences between the (currently) red and greenpoints.
     - Figure 5: Double encode lines using linetype to help differentiate colors.
 
-RESPONSE: Fig 1 adjusted as suggested. Lines in Fig 5 are encoded with linetype as well as colour.
+RESPONSE: Fig 1 adjusted as suggested. Lines in Fig 5 are encoded with linetype as well as colour. Our apologies for Fig 4 - this is embarassing! We mistakenly assumed the palette used was robust to colour issues - some reds and greens are distinguishable. We've changed to and orange and green now and simulated the colours for various colour deficiencies. We've also added a different symbol, and a marker for the starting basis of both interpolations.
 
 - In the preprojection algorithm section, define the full process using mathematical notation, don't just assume that Gram-Schmidt is a known procedure (yes, it's standard in linear algebra, but it's been a while for a lot of readers).
 

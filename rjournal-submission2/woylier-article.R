@@ -189,26 +189,35 @@ knitr::include_graphics("figures/compare-paths.png")
 
 ## ----echo = FALSE, eval=FALSE-------------------------------------------------
 # set.seed(315)
-# p <- 3
-# n <- 2000
+# p <- 3 # dimension of data is 3
+# n <- 2000 # for simulated data
+# 
+# # Set up two 1D bases to interpolate between
 # base1 <- tourr::basis_random(p, d=1)
 # base2 <- tourr::basis_random(p, d=1)
 # 
+# # Givens path 0 length is 11 because includes both start and target
 # frames <- givens_full_path(base1, base2, nsteps = 10)
+# #frames <- frames[,,-1, drop = FALSE] # remove start because it is in the other path
 # 
+# # geodesic path
 # base <- save_history(flea[,1:3], grand_tour(1), max_bases = 2)
 # base[,,1] <- base1[,1]
 # base[,,2] <- base2[,1]
-# planes <- interpolate(base, angle=proj_dist(base1, base2)/10)[,,1:10] #last plane duplicated
+# planes <- interpolate(base, angle=proj_dist(base1, base2)/10)[,,1:11] # last plane duplicated
 # 
+# # Sample of random projections, to use as the base for showing
+# # bases used in the interpolation
 # sp <- generate_space_view(n=n, p=p)
 # 
+# # add the interpolation paths to the base
 # sp_path <- add_path(sp, frames)
 # sp_path <- add_path(sp_path, planes)
-# # Correct labels
-# sp_path$type[(n+1):(n+10)] <- "f_path"
-# sp_path$type[(n+11):(n+20)] <- "p_path"
+# # Label the points belonging to the paths
+# sp_path$type[(n+1):(n+11)] <- "f_path"
+# sp_path$type[(n+12):(n+22)] <- "p_path"
 # 
+# # Add original start and end frame, just because
 # point1 <- as.data.frame(t(base1))
 # point1$type <- "point1"
 # 
@@ -216,37 +225,32 @@ knitr::include_graphics("figures/compare-paths.png")
 # point2$type <- "point2"
 # 
 # sp_path <- rbind(sp_path, point1, point2)
-# #sp_path$type <- factor(sp_path$type,
-# #                       levels = c("point1", "path", "proj_space",
-# #                                  "point2"))
 # 
-# # Colours from
+# # Colours taken from paletteer and Zissou 1
 # # paletteer::scale_colour_paletteer_d("rcartocolor::TealRose")
-# clrs <- c("#F1EAC8FF", "#B1C7B3FF", "#72AAA1FF", "#009392FF", "#E5B9ADFF", "#D98994FF", "#D0587EFF", "lightgrey")
-# clrs2 <-  c("#3B99B1", "#4CAFA1", "#8BBD94", "#C1C88C", "#EABA21", "#E79812", "#E97000", "#F5191C")  #colorspace::divergingx_hcl(8, palette = "Zissou 1")
-# clrs3 <- c("#F1EAC8FF", "#4CAFA1", "#E97000", "lightgrey")
+# #clrs <- c("#F1EAC8FF", "#B1C7B3FF", "#72AAA1FF", "#009392FF", "#E5B9ADFF", "#D98994FF", "#D0587EFF", "lightgrey")
+# #clrs2 <-  c("#3B99B1", "#4CAFA1", "#8BBD94", "#C1C88C", "#EABA21", "#E79812", "#E97000", "#F5191C")  #colorspace::divergingx_hcl(8, palette = "Zissou 1")
+# # Colour-blind proofed
+# clrs3 <- c("#F1EAC8FF", "#4CAFA1", "#E97000", "lightgrey", "black")
 # 
-# sp_path$typecol <- case_when(sp_path$type=="proj_space" ~ clrs[1],
-#                              sp_path$type=="point1" ~ clrs[8],
-#                              sp_path$type=="f_path" ~ clrs[3],
-#                              sp_path$type=="point2" ~ clrs[4],
-#                              sp_path$type=="p_path" ~ clrs[6])
+# # Set colours for points
 # sp_path$typecol <- case_when(sp_path$type=="proj_space" ~ clrs3[1],
-#                              sp_path$type=="point1" ~ clrs3[4],
+#                              sp_path$type=="point1" ~ clrs3[5],
 #                              sp_path$type=="f_path" ~ clrs3[2],
-#                              sp_path$type=="point2" ~ clrs3[4],
-#                              sp_path$type=="p_path" ~ clrs3[3],
-#                              sp_path$type=="path" ~ clrs3[4])
+#                              sp_path$type=="point2" ~ clrs3[2],
+#                              sp_path$type=="p_path" ~ clrs3[3])
 # 
-# edges <- matrix(c(n+20+1, seq(n+1, n+10, 1), seq(n+11, n+19, 1), nrow(sp_path), seq(n+1, n+10, 1), n+20+2, seq(n+12, n+20, 1), n+20), ncol=2, byrow=FALSE)
-# edges.col <- c(rep(clrs[3], 10), rep(clrs[6], 10), clrs[1])
-# edges.col <- c(rep(clrs3[2], 10), rep(clrs3[3], 10), clrs3[1]) #factor(rep("path",
-# #factor(rep("path", 10), levels=c("point1", "path", "proj_space",
-#                                   "point2"))
+# # Connect consecutive points for each path, and colour by path
+# edges <- matrix(c(seq(n+1, n+10, 1), seq(n+12, n+21, 1), n+11,
+#                   seq(n+2, n+11, 1), seq(n+13, n+22, 1), nrow(sp_path)-2),
+#                 ncol=2, byrow=FALSE)
+# edges.col <- c(rep(clrs3[2], 10), rep(clrs3[3], 10), clrs3[1])
 # 
-# cex <- c(rep(1, n), rep(3, nrow(sp_path)-n))
-# pch <- c(rep(16, n), rep(15, 10), rep(17, 10), rep(16, 2))
+# # Add point size and type to help differentiate paths
+# cex <- c(rep(1, n), rep(3, nrow(sp_path)-n-2), rep(2, 2))
+# pch <- c(rep(16, n), rep(15, 11), rep(17, 11), rep(5, 2))
 # 
+# # This will run the tour in an interactive session
 # animate_xy(as.matrix(sp_path[,1:p]), axes="off",
 #            col=sp_path$typecol,
 #            edges=edges,
@@ -254,6 +258,8 @@ knitr::include_graphics("figures/compare-paths.png")
 #            edges.width=3,
 #            cex=cex, pch=pch)
 # 
+# # This saves the gif to include in the paper
+# set.seed(1218)
 # tourr::render_gif(as.matrix(sp_path[,1:p]),
 #                   tour_path = grand_tour(),
 #                   display = display_xy(axes="off",
@@ -261,44 +267,54 @@ knitr::include_graphics("figures/compare-paths.png")
 #                       edges=edges,
 #                       edges.col=edges.col,
 #                       edges.width=3,
-#                       cex=cex),
+#                       cex=cex, pch=pch),
 #                   frames = 100,
-#                   "sphere.gif")
+#                   gif_file = "sphere.gif")
 
 
-## ----1d-path-dynamic, out.width="45%", fig.align="center", echo = FALSE, fig.height = 3, fig.show='hold', fig.cap="Interpolation steps of 1D (left) and 2D (right) projections of 3D data made with a Givens path (forest green) and a geodesic path (deep red). The cream points represent the space of all projections, which is a sphere for 1D projections and a torus for 2D projections. In the 1D example, geodesic arrives at the opposite side of the sphere to Givens, indicating that it has flipped the direction of the vector in order to make the shortest path to the same plane. A similar thing happens for the 2D example, geodesic flips the sign of one basis vector, but it defines the same plane, as indicated by the cream circles.", include=knitr::is_html_output(), eval=knitr::is_html_output(), fig.alt = "Two highlighted points on the surface of a 3D sphere (left) and 6D torus (right) connected by a path of points which are the interpolation steps, rotating."----
+## ----1d-path-dynamic, out.width="45%", fig.align="center", echo = FALSE, fig.height = 3, fig.show='hold', fig.cap="Interpolation steps of 1D (left) and 2D (right) projections of 3D data made with a Givens path (forest green square) and a geodesic path (dark orange triangle). The black diamond indicates the starting basis common to both interpolations. The cream points represent the space of all projections, which is a sphere for 1D projections and a torus for 2D projections. In the 1D example, geodesic arrives at the opposite side of the sphere to Givens, indicating that it has flipped the direction of the vector in order to take the shortest path to the same plane. A similar thing happens for the 2D example, geodesic flips the sign of one basis vector, but it defines the same plane, as indicated by the cream circles.", include=knitr::is_html_output(), eval=knitr::is_html_output(), fig.alt = "Two highlighted points on the surface of a 3D sphere (left) and 6D torus (right) connected by a path of points which are the interpolation steps, rotating."----
 # knitr::include_graphics(c("figures/sphere.gif", "figures/torus.gif"))
 
 
-## ----1d-path-static, out.width="45%", fig.align="center", echo = FALSE, fig.height = 3, fig.show='hold', fig.cap="Interpolation steps of 1D (left) and 2D (right) projections of 3D data made with a Givens path (forest green) and a geodesic path (deep red). The cream points represent the space of all projections, which is a sphere for 1D projections and a torus for 2D projections. In the 1D example, geodesic arrives at the opposite side of the sphere to Givens, indicating that it has flipped the direction of the vector in order to make the shortest path to the same plane. A similar thing happens for the 2D example, geodesic flips the sign of one basis vector, but it defines the same plane, as indicated by the cream circles.", include=knitr::is_latex_output(), eval=knitr::is_latex_output(), fig.alt = "Two highlighted points on the surface of a 3D sphere (left) and 6D torus (right) connected by a path of points which are the interpolation steps, static views."----
+## ----1d-path-static, out.width="45%", fig.align="center", echo = FALSE, fig.height = 3, fig.show='hold', fig.cap="Interpolation steps of 1D (left) and 2D (right) projections of 3D data made with a Givens path (forest green square) and a geodesic path (dark orange triangle). The black diamond indicates the starting basis common to both interpolations. The cream points represent the space of all projections, which is a sphere for 1D projections and a torus for 2D projections. In the 1D example, geodesic arrives at the opposite side of the sphere to Givens, indicating that it has flipped the direction of the vector in order to make the shortest path to the same plane. A similar thing happens for the 2D example, geodesic flips the sign of one basis vector, but it defines the same plane, as indicated by the cream circles.", include=knitr::is_latex_output(), eval=knitr::is_latex_output(), fig.alt = "Two highlighted points on the surface of a 3D sphere (left) and 6D torus (right) connected by a path of points which are the interpolation steps, static view."----
 knitr::include_graphics(c("figures/sphere_static.png", "figures/torus_static.png"))
 
 
 ## ----echo = FALSE, eval=FALSE-------------------------------------------------
+# # Set up parameters.
 # set.seed(319)
-# p <- 3
-# n <- 5000
-# d <- 2
+# p <- 3 # data dimension
+# n <- 5000 # for simulated data, need more than used for 1D
+# d <- 2 # projection dimension
+# 
+# # Set up two 2D bases to interpolate between
 # base1 <- orthonormalise(tourr::basis_random(p, d=2))
 # base2 <- orthonormalise(tourr::basis_random(p, d=2))
+# 
 # # generating the torus spanning the space
-# proj_2d <- map(1:n, ~basis_random(n=p,  d=2)) %>%
-#   purrr::flatten_dbl() %>%
-#   matrix(ncol = p*2, byrow = TRUE) %>%
-#   as.tibble() %>%
+# # the bases are flattened into p*2 vectors
+# proj_2d <- map(1:n, ~basis_random(n=p,  d=2)) |>
+#   purrr::flatten_dbl() |>
+#   matrix(ncol = p*2, byrow = TRUE) |>
+#   as_tibble() |>
 #   mutate(type="torus")
+# 
 # # Givens path, fixing number of steps to 100
 # frames_2d <- givens_full_path(base1, base2, 100)
-# path_2d <- rbind(as.data.frame(t(as.vector(base1))),
-#                  as.data.frame(t(apply(frames_2d, 3, c)))) %>%
+# path_2d_f <- rbind(as.data.frame(t(as.vector(base1))),
+#                  as.data.frame(t(apply(frames_2d, 3, c)))) |>
 #   mutate(type = "givens")
+# 
 # # Geodesic path, also taking 100 steps
 # pt_geo <- save_history(flea[, 1:p], planned_tour(list(base1, base2)))
 # int_geo <- interpolate(pt_geo, angle = proj_dist(base1, base2)/100)[,,1:101]
 # # the last plane is duplicate of the target
-# path_2d_geo <- as.data.frame(t(apply(int_geo, 3, c))) %>%
+# path_2d_geo <- as.data.frame(t(apply(int_geo, 3, c))) |>
 #   mutate(type = "geodesic")
-# # generating the equivalent bases (rotations in the target plane)
+# 
+# # There are equivalent bases to the specified target plane
+# # Based on vector order and orientation.
+# # Here we generate circles of equivalent bases.
 # base2_rot_1 <- matrix(ncol = 6, nrow = 41)
 # base2_rot_2 <- matrix(ncol = 6, nrow = 41)
 # i <- 1
@@ -321,29 +337,31 @@ knitr::include_graphics(c("figures/sphere_static.png", "figures/torus_static.png
 #     i <- i+1
 # }
 # 
-# connect_flipped <- as.data.frame(flip_connect) %>%
-#   filter(!is.nan(V1)) %>%
-#   mutate(type="connect")
-# rot_base2 <- as.data.frame(rbind(base2_rot_1, base2_rot_2)) %>%
+# # Only keep the filled rows
+# #connect_flipped <- as.data.frame(flip_connect) |>
+# #  filter(!is.nan(V1)) |>
+# #  mutate(type="connect")
+# # Label these are target planes
+# rot_base2 <- as.data.frame(rbind(base2_rot_1, base2_rot_2)) |>
 #   mutate(type="target")
 # # starting base as tibble
-# start_2d <- as.tibble(t(as.vector(base1))) %>%
+# start_2d <- as.data.frame(t(as.vector(base1))) |>
 #   mutate(type = "start")
 # # putting everything together
 # proj_path <- bind_rows(proj_2d, rot_base2, #connect_flipped,
-#                        path_2d, path_2d_geo, start_2d)
+#                        path_2d_f, path_2d_geo, start_2d)
 # 
 # 
 # # Colours from
 # # paletteer::scale_colour_paletteer_d("rcartocolor::TealRose")
-# clrs <- c("#F1EAC8FF", "#B1C7B3FF", "#72AAA1FF", "#009392FF", "#E5B9ADFF", "#D98994FF", "#D0587EFF",
-#           "lightgrey")
-# proj_path$typecol <- case_when(proj_path$type=="torus" ~ clrs[1],
-#                              proj_path$type=="start" ~ clrs[8],
-#                              proj_path$type=="givens" ~ clrs[3],
-#                              proj_path$type=="target" ~ clrs[8],
-#                              proj_path$type=="geodesic" ~ clrs[6],
-#                              proj_path$type=="connect" ~ clrs[8])
+# #clrs <- c("#F1EAC8FF", "#B1C7B3FF", "#72AAA1FF", "#009392FF", "#E5B9ADFF", "#D98994FF", "#D0587EFF",
+# #          "lightgrey")
+# proj_path$typecol <- case_when(proj_path$type=="torus" ~ clrs3[1],
+#                              proj_path$type=="start" ~ clrs3[5],
+#                              proj_path$type=="givens" ~ clrs3[2],
+#                              proj_path$type=="target" ~ clrs3[1],
+#                              proj_path$type=="geodesic" ~ clrs3[3]) #,
+#                              #proj_path$type=="connect" ~ clrs3[1])
 # edges <- matrix(c(which(proj_path$type=="target")[1:40], # starting nodes for target
 #                   which(proj_path$type=="target")[42:81], # starting nodes for flipped target
 #                   head(which(proj_path$type=="givens"),-1), # starting nodes for givens
@@ -353,13 +371,27 @@ knitr::include_graphics(c("figures/sphere_static.png", "figures/torus_static.png
 #                   tail(which(proj_path$type=="givens"),-1), # ending nodes for givens
 #                   tail(which(proj_path$type=="geodesic"),-1)), # ending nodes for geodesic
 #                 ncol=2, byrow=FALSE)
-# edges.col <- c(rep(clrs[1], sum(proj_path$type=="target")-1),
-#                rep(clrs[3], sum(proj_path$type=="givens")-1),
-#                rep(clrs[6], sum(proj_path$type=="geodesic")-1))
+# edges.col <- c(rep(clrs3[1], sum(proj_path$type=="target")-1),
+#                rep(clrs3[2], sum(proj_path$type=="givens")-1),
+#                rep(clrs3[3], sum(proj_path$type=="geodesic")-1))
 # 
-# cex <- c(rep(0.5, n+41), rep(1, nrow(proj_path)-(n+41)))
-# cex[which(proj_path$type == "start")] <- 2
-# cex[which(proj_path$type == "target")] <- 0.1
+# cex <- case_when(proj_path$type=="torus" ~ 0.5,
+#                  proj_path$type=="start" ~ 2,
+#                  proj_path$type=="givens" ~ 1,
+#                  proj_path$type=="target" ~ 0.5,
+#                  proj_path$type=="geodesic" ~ 1)
+# pch <- case_when(proj_path$type=="torus" ~ 16,
+#                  proj_path$type=="start" ~ 5,
+#                  proj_path$type=="givens" ~ 15,
+#                  proj_path$type=="target" ~ 2,
+#                  proj_path$type=="geodesic" ~ 17)
+# 
+# #cex <- c(rep(0.5, n+4), rep(1, nrow(proj_path)-(n+41)))
+# #cex[which(proj_path$type == "start")] <- 2
+# #cex[which(proj_path$type == "target")] <- 0.1
+# #pch <- c(rep(16, n+41), rep(3, nrow(proj_path)-(n+41)))
+# #pch[which(proj_path$type == "start")] <- 5
+# #pch[which(proj_path$type == "target")] <- 16
 # 
 # animate_xy(as.matrix(proj_path[,1:(2*p)]),
 #            axes="off",
@@ -367,8 +399,9 @@ knitr::include_graphics(c("figures/sphere_static.png", "figures/torus_static.png
 #            edges=edges,
 #            edges.col=edges.col,
 #            edges.width=3,
-#            cex=cex)
+#            cex=cex, pch=pch)
 # 
+# set.seed(1211)
 # tourr::render_gif(as.matrix(proj_path[,1:(2*p)]),
 #                   tour_path = grand_tour(),
 #                   display = display_xy(axes="off",
@@ -376,9 +409,9 @@ knitr::include_graphics(c("figures/sphere_static.png", "figures/torus_static.png
 #                     edges=edges,
 #                     edges.col=edges.col,
 #                     edges.width=3,
-#                     cex=cex),
-#                   frames = 100,
-#                   "torus.gif")
+#                     cex=cex, pch=pch),
+#                   frames = 150,
+#                   gif_file = "torus.gif")
 
 
 ## ----echo = FALSE, eval=FALSE-------------------------------------------------
