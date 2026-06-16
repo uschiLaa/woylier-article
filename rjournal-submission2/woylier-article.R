@@ -20,7 +20,7 @@ library(corrplot)
 library(kableExtra)
 
 
-## ----splines2d-static, out.width = "100%", fig.width = 9, fig.height = 3.5, layout = "l-body", fig.cap="The impact of rotation on a spline index that is NOT rotation invariant. The index value for different within-plane rotations take very different values: (a) original projection has a maximum index value of 1.00, (b) axes rotated 45$^o$ drops index value to 0.83, (c) axes rotated 60$^o$ drops index to a very low 0.26. Geodesic interpolation between planes will have difficulty finding the maximum of an index like this because it is focused only on the projection plane, not the frame defining the plane.", fig.alt = "Three side-by-side scatterplots. The left side plot shows two variables, V5, V6, with a sine curve. The index value is the maximum of 1. The middle plot shows the two variables rotated 45 degrees clockwise, and the calculated index value is 0.83. The right-side plot is rotated 60 degrees, and the calculated index value is 0.26."----
+## ----splines2d-static, out.width = "100%", fig.width = 9, fig.height = 3.5, layout = "l-body", fig.cap="The impact of rotation on a spline index that is NOT rotation invariant. The index value for different within-plane rotations takes very different values: (a) the original projection has a maximum index value of 1.00, (b) axes rotated 45$^o$ drops the index value to 0.83, (c) axes rotated 60$^o$ drops the index to a very low 0.26. Geodesic interpolation between planes will have difficulty finding the maximum of an index like this because it is focused only on the projection plane, not the frame defining the plane.", fig.alt = "Three side-by-side scatterplots. The left-side plot shows two variables, V5 and V6, with a sine curve. The index value is the maximum of 1. The middle plot shows the two variables rotated 45 degrees clockwise, and the calculated index value is 0.83. The right-side plot is rotated 60 degrees, and the calculated index value is 0.26."----
 data("sine_curve")
 
 # modified the splines2d
@@ -85,7 +85,7 @@ p3 <- ggplot(mat_rot2, aes(x=x, y=y)) +
 p1+p2+p3
 
 
-## ----dogs, echo=FALSE, out.width="100%", fig.align = "center", fig.show='hold', fig.cap="Plane to plane interpolation (left) and frame to frame interpolation (right). We use the dog index for illustration purposes. Orientation of the data within the plane could affect the index value. Frame to frame interpolation guarantees reaching a particular frame of the many defining a plane."----
+## ----dogs, echo=FALSE, out.width="100%", fig.align = "center", fig.show='hold', fig.cap="Plane to plane interpolation (left) and frame to frame interpolation (right). We use the dog index for illustration purposes. Orientation of the data within the plane could affect the index value. Frame-to-frame interpolation guarantees reaching a particular frame of the many defining a plane."----
 knitr::include_graphics(
   "figures/dog_index.png")
 
@@ -108,7 +108,7 @@ tbl <- tibble(name = c("`givens_full_path(Fa, Fz, nsteps)`",
                         "An orthonormal frame F and the pre-projection matrix B",
                         "Matrix A, components to rotate (i, j) and rotation angle theta", 
                         "Pre-projected frames (Wa, Wz)",
-                        "Pre-projection matrix B, frame of givens path"),
+                        "Pre-projection matrix B, frame of Givens path"),
               output = c("An array with nsteps matrices. Each matrix is an interpolated frame in between starting and target frames.", 
                          "B pre-projection p x 2d matrix",
                          "Pre-projected frame in pre-projection space", 
@@ -149,7 +149,7 @@ tbl <- tibble(name = c("givens_full_path(Fa, Fz, nsteps)",
                         "Starting and target frame (Fa, Fz) ", 
                         "A frame and the pre-projection p x 2D matrix", "A frame and the pre-projection p x 2D matrix", 
                         "Preprojected frames (Wa, Wz)",
-                        "Pre-projection matrix B, Each frame of givens path"),
+                        "Pre-projection matrix B, Each frame of Givens path"),
               output = c("An array with nsteps matrix. Each matrix is interpolated frame in between starting and target frames.", 
                          "B pre-projection p x 2D matrix",
                          "Pre-projected frame in pre-projection space", 
@@ -182,7 +182,7 @@ kbl(tbl, caption="Primary functions in the woylier package.") %>%
 # givens_full_path(base1, base2, nsteps = 5)
 
 
-## ----compare-paths, echo=FALSE, eval=TRUE, out.width="80%", fig.width=6, fig.height=10, fig.align="center", fig.cap="Comparison of Givens path and geodesic path between 2D projections. The Givens path preserves the frame ending at the provided basis (frame), while geodesic is agnostic to the particular basis. In general the geodesic is preferred because it removes within-plane spin, but occasionally it is helpful to very specifically arrive at the prescribed basis.", fig.alt="Four columns and five rows: first column projection coefficients from the Givens path; second column has scatterplots showing the corresponding projected data; third column projection coefficients from the geodesic path; fourth column has scatterplots showing the  corresponding projected data. First row is the same starting projection, subsequent rows are the steps for each path. Final row is the ending projection, which can be seen that both are the same plane, but the Givens goes to the specified frame showing the sine curve, and geodesic goes to a rotated view of the sine curve."----
+## ----compare-paths, echo=FALSE, eval=TRUE, out.width="80%", fig.width=6, fig.height=10, fig.align="center", fig.cap="Comparison of Givens path and geodesic path between 2D projections. The Givens path preserves the frame ending at the provided basis (frame), while geodesic is agnostic to the particular basis. In general, the geodesic is preferred because it removes within-plane spin, but occasionally it is helpful to very specifically arrive at the prescribed basis.", fig.alt="Four columns and five rows: first column projection coefficients from the Givens path; second column has scatterplots showing the corresponding projected data; third column projection coefficients from the geodesic path; fourth column has scatterplots showing the corresponding projected data. The first row is the same starting projection; subsequent rows are the steps for each path. The final row is the ending projection, which can be seen as both are on the same plane, but the Givens goes to the specified frame showing the sine curve, and geodesic goes to a rotated view of the sine curve."----
 # from code in comparison_plot_table.R
 knitr::include_graphics("figures/compare-paths.png")
 
@@ -564,7 +564,7 @@ knitr::include_graphics(c("figures/sphere_static.png", "figures/torus_static.png
 # anim_save("figures/sine_anim_geodesic.gif")
 
 
-## ----currency, out.width="100%", fig.width = 7, fig.height = 3, layout = "l-body", fig.cap="Examining the behaviour of six cross-currency rates (ARS, EUR, KRW, AUD, JPY, MYR) prior to and in the first month of the pandemic. All the currencies are standardised and the sign is flipped. JPY and EUR strengthened against the USD (high values) in March, while the other currencies weakened (low values).", fig.alt="Six time series plots all very similar until March 2020 when JPY and EUR go up. All currencies go down in mid-March and JPY and EUR increase again at the end of March."----
+## ----currency, out.width="100%", fig.width = 7, fig.height = 3, layout = "l-body", fig.cap="Examining the behaviour of six cross-currency rates (ARS, EUR, KRW, AUD, JPY, MYR) prior to and in the first month of the pandemic. All the currencies are standardised, and the sign is flipped. JPY and EUR strengthened against the USD (high values) in March, while the other currencies weakened (low values).", fig.alt="Six time series plots all very similar until March 2020 when JPY and EUR go up. All currencies go down in mid-March, and JPY and EUR increase again at the end of March."----
 rates <- read_csv("data/rates_Nov19_Mar20.csv", show_col_types = FALSE) %>% 
   select(date, ARS, AUD, EUR, JPY, KRW, MYR) 
 rates_sub <- rates %>%
@@ -592,7 +592,7 @@ ggplot(rates_sub_long) +
 rate_march <- lubridate::month(rates$date)==3
 
 
-## ----pca-result-static, echo=FALSE, out.width="80%", fig.width=8, fig.height=8, fig.align = "center", fig.show='hold', fig.cap="Scatterplot matrix of the six principal components. Observations in March 2020 are highlighted in dark blue, all other months are shown in grey. There is a strong non-linear dependence between PC1 and PC2.", fig.alt="PC1 and PC2 exhibit almost a sine wave, which starts with grey points and ends with blue. The other pairs of plots have little structure."----
+## ----pca-result-static, echo=FALSE, out.width="80%", fig.width=8, fig.height=8, fig.align = "center", fig.show='hold', fig.cap="Scatterplot matrix of the six principal components. Observations in March 2020 are highlighted in dark blue; all other months are shown in grey. There is a strong non-linear dependence between PC1 and PC2.", fig.alt="PC1 and PC2 exhibit almost a sine wave, which starts with grey points and ends with blue. The other pairs of plots have little structure."----
 # Use PCA to remove linear dependence
 rates_pca <- prcomp(rates[,-1], scale. = TRUE)
 pca <- ggscatmat(cbind(tibble::as_tibble(rates_pca$x), rate_march),

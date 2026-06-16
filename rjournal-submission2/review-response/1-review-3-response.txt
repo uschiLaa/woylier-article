@@ -26,7 +26,7 @@ RESPONSE: Done
 -  "In the literature, a number of such criteria have been developed based on clustering, spread, and outliers."
 Did you want to cite this literature parenthetically at the end of the sentence?
 
-RESPONSE: ZB to do
+RESPONSE: Done
 
 - Formally cite the open exchange rates site as well as providing the link to the site directly in the text.
 
